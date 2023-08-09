@@ -628,9 +628,9 @@ function string_shift_code($val){
 }
 
 // 사용중 아이템(패키지)
-function get_shop_item($table=null){
+function get_g5_item($table=null){
 	$array = array();
-	$sql = "SELECT * FROM g5_shop_item";
+	$sql = "SELECT * FROM g5_item";
 	$sql .= " WHERE it_use = 1 ORDER BY it_order";
 
 	if($table != null){
@@ -651,7 +651,7 @@ function get_shop_item($table=null){
 // 아이템 그룹 내 구매패키지정보
 function ordered_items($mb_id, $table=null){
 
-	$item = get_shop_item($table);
+	$item = get_g5_item($table);
 	$upgrade_array = array();
 
 	for($i = 1; $i < count($item); $i++){
@@ -669,7 +669,7 @@ function ordered_items($mb_id, $table=null){
 	
 		for($j = 0; $j < $row = sql_fetch_array($result); $j++){
 			
-			$order_sql = "SELECT * FROM g5_shop_order WHERE od_id = '{$row['od_id']}'";
+			$order_sql = "SELECT * FROM g5_order WHERE od_id = '{$row['od_id']}'";
 			$order_row = sql_fetch($order_sql);
 
 			array_push($upgrade_array, array(
