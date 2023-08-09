@@ -8,31 +8,16 @@ $g5['title'] = '주문내역';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 
+
+if (empty($fr_date)) $fr_date = date("Y-m-d", strtotime(date("Y-m-d")."-3 months"));
+if (empty($to_date)) $to_date = G5_TIME_YMD;
+
 $where = array();
 
-$doc = isset($_GET['doc']) ? clean_xss_tags($_GET['doc'], 1, 1) : '';
-$sort1 = (isset($_GET['sort1']) && in_array($_GET['sort1'], array('od_id', 'od_cart_price', 'od_receipt_price', 'od_cancel_price', 'od_misu', 'od_cash'))) ? $_GET['sort1'] : '';
-$sort2 = (isset($_GET['sort2']) && in_array($_GET['sort2'], array('desc', 'asc'))) ? $_GET['sort2'] : 'desc';
-$sel_field = (isset($_GET['sel_field']) && in_array($_GET['sel_field'], array('od_id', 'mb_id', 'od_name', 'od_tel', 'od_hp', 'od_b_name', 'od_b_tel', 'od_b_hp', 'od_deposit_name', 'od_invoice')) ) ? $_GET['sel_field'] : ''; 
-$od_status = isset($_GET['od_status']) ? get_search_string($_GET['od_status']) : '';
-$search = isset($_GET['search']) ? get_search_string($_GET['search']) : '';
-
-$fr_date = (isset($_GET['fr_date']) && preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $_GET['fr_date'])) ? $_GET['fr_date'] : '';
-$to_date = (isset($_GET['to_date']) && preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $_GET['to_date'])) ? $_GET['to_date'] : '';
-
-$od_misu = isset($_GET['od_misu']) ? preg_replace('/[^0-9a-z]/i', '', $_GET['od_misu']) : '';
-$od_cancel_price = isset($_GET['od_cancel_price']) ? preg_replace('/[^0-9a-z]/', '', $_GET['od_cancel_price']) : '';
-$od_refund_price = isset($_GET['od_refund_price']) ? preg_replace('/[^0-9a-z]/i', '', $_GET['od_refund_price']) : '';
-$od_receipt_point = isset($_GET['od_receipt_point']) ? preg_replace('/[^0-9a-z]/i', '', $_GET['od_receipt_point']) : '';
-$od_coupon = isset($_GET['od_coupon']) ? preg_replace('/[^0-9a-z]/i', '', $_GET['od_coupon']) : ''; 
-$od_settle_case = isset($_GET['od_settle_case']) ? clean_xss_tags($_GET['od_settle_case'], 1, 1) : ''; 
-$od_escrow = isset($_GET['od_escrow']) ? clean_xss_tags($_GET['od_escrow'], 1, 1) : ''; 
-
-$tot_itemcount = $tot_orderprice = $tot_receiptprice = $tot_ordercancel = $tot_misu = $tot_couponprice = 0;
 $sql_search = "";
 if ($search != "") {
     if ($sel_field != "") {
-        $where[] = " $sel_field like '%$search%' ";
+        $where[] = " $sel_field like '%$search%' and od_status <>'재구매' ";
     }
 
     if ($save_search != $search) {
@@ -55,26 +40,26 @@ if ($od_status) {
 
     switch ($od_status) {
         case '주문' :
-            $sort1 = "od_id";
+            $sort1 = "od_time";
             $sort2 = "desc";
             break;
         case '입금' :   // 결제완료
-            $sort1 = "od_receipt_time";
+            $sort1 = "od_time";
             $sort2 = "desc";
             break;
         case '배송' :   // 배송중
-            $sort1 = "od_invoice_time";
+            $sort1 = "od_time";
             $sort2 = "desc";
             break;
     }
 }
 
 if ($od_settle_case) {
-    if( $od_settle_case === '간편결제' ) {
-        $where[] = " od_settle_case in ('간편결제', '삼성페이', 'lpay', 'inicis_kakaopay') ";
-    } else {
-        $where[] = " od_settle_case = '$od_settle_case' ";
-    }
+    $where[] = " od_settle_case = '$od_settle_case' ";
+}
+
+if ($od_name) {
+    $where[] = " od_name = '$od_name' ";
 }
 
 if ($od_misu) {
@@ -109,23 +94,24 @@ if ($where) {
     $sql_search = ' where '.implode(' and ', $where);
 }
 
-if ($sel_field == "")  $sel_field = "od_id";
-if ($sort1 == "") $sort1 = "od_id";
+if ($sel_field == "")  $sel_field = "mb_id";
+if ($sort1 == "") $sort1 = "od_time";
 if ($sort2 == "") $sort2 = "desc";
 
 $sql_common = " from {$g5['g5_shop_order_table']} $sql_search ";
 
 $sql = " select count(od_id) as cnt " . $sql_common;
+
+
 $row = sql_fetch($sql);
 $total_count = $row['cnt'];
 
-$rows = $config['cf_page_rows'];
+$rows = 100;
 $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page < 1) { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
 
-$sql  = " select *,
-            (od_cart_coupon + od_coupon + od_send_coupon) as couponprice
+$sql  = " select *
            $sql_common
            order by $sort1 $sort2
            limit $from_record, $rows ";
@@ -138,6 +124,20 @@ $qstr = "$qstr1&amp;sort1=$sort1&amp;sort2=$sort2&amp;page=$page";
 
 $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목록</a>';
 
+// 통계 데이터 산출
+$stats_sql = "select od_name, COUNT(*) AS cnt, SUM(od_cash) AS amt ".$sql_common."group by od_name ";
+$stats_result = sql_query($stats_sql);
+
+// 구매상품명 리턴
+
+function  od_name_return_rank($val){
+    if(strlen($val) < 5){
+        return substr($val,1,1);
+    }else{
+        return 0;
+    }
+}
+
 // 주문삭제 히스토리 테이블 필드 추가
 if(!sql_query(" select mb_id from {$g5['g5_shop_order_delete_table']} limit 1 ", false)) {
     sql_query(" ALTER TABLE `{$g5['g5_shop_order_delete_table']}`
@@ -145,19 +145,21 @@ if(!sql_query(" select mb_id from {$g5['g5_shop_order_delete_table']} limit 1 ",
                     ADD `de_ip` varchar(255) NOT NULL DEFAULT '' AFTER `mb_id`,
                     ADD `de_datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `de_ip` ", true);
 }
-
-if( function_exists('pg_setting_check') ){
-	pg_setting_check(true);
-}
 ?>
 
-<div class="local_ov01 local_ov">
-    <?php echo $listall; ?>
-    <span class="btn_ov01"><span class="ov_txt">전체 주문내역</span><span class="ov_num"> <?php echo number_format($total_count); ?>건</span></span>
-    <?php if($od_status == '준비' && $total_count > 0) { ?>
-    <a href="./orderdelivery.php" id="order_delivery" class="ov_a">엑셀배송처리</a>
-    <?php } ?>
-</div>
+<style>
+	.local_ov strong{color:red; font-weight:600;}
+	.local_ov .tit{color:black; font-weight:600;}
+	.local_ov a{margin-left:20px;padding-right:10px;}
+
+    .od_cancle{border:1px solid #ccc;background:white;border-radius: 0;padding:5px 10px;}
+    .od_cancle:hover{background: black;;border:1px solid black;color:white}
+    .cancle_log_btn{border-radius: 0;}
+</style>
+<link rel="stylesheet" href="/adm/css/scss/admin_custom.css">
+<script src="../../excel/tabletoexcel/xlsx.core.min.js"></script>
+<script src="../../excel/tabletoexcel/FileSaver.min.js"></script>
+<script src="../../excel/tabletoexcel/tableExport.js"></script>
 
 <form name="frmorderlist" class="local_sch01 local_sch">
 <input type="hidden" name="doc" value="<?php echo $doc; ?>">
@@ -165,6 +167,8 @@ if( function_exists('pg_setting_check') ){
 <input type="hidden" name="sort2" value="<?php echo $sort2; ?>">
 <input type="hidden" name="page" value="<?php echo $page; ?>">
 <input type="hidden" name="save_search" value="<?php echo $search; ?>">
+<input type="hidden" name="fr_date" value="<?=$fr_date?>">
+<input type="hidden" name="to_date" value="<?=$to_date?>">
 
 <label for="sel_field" class="sound_only">검색대상</label>
 <select name="sel_field" id="sel_field">
@@ -182,11 +186,15 @@ if( function_exists('pg_setting_check') ){
 
 <label for="search" class="sound_only">검색어<strong class="sound_only"> 필수</strong></label>
 <input type="text" name="search" value="<?php echo $search; ?>" id="search" required class="required frm_input" autocomplete="off">
+<!-- 구매상품 : 
+<input type="text" name="od_name" value="<?php echo $od_name; ?>" id="od_name" class="required frm_input"> -->
 <input type="submit" value="검색" class="btn_submit">
+
 
 </form>
 
-<form class="local_sch03 local_sch">
+<form class="local_sch02 local_sch">
+<!-- 
 <div>
     <strong>주문상태</strong>
     <input type="radio" name="od_status" value="" id="od_status_all"    <?php echo get_checked($od_status, '');     ?>>
@@ -207,10 +215,19 @@ if( function_exists('pg_setting_check') ){
     <label for="od_status_pcancel">부분취소</label>
 </div>
 
-<!-- <div>
+<div>
     <strong>결제수단</strong>
     <input type="radio" name="od_settle_case" value="" id="od_settle_case01"        <?php echo get_checked($od_settle_case, '');          ?>>
     <label for="od_settle_case01">전체</label>
+
+    <input type="radio" name="od_settle_case" value="현금" id="od_settle_case11"   <?php echo get_checked($od_settle_case, '현금');    ?>>
+    <label for="od_settle_case11">현금</label>
+    <input type="radio" name="od_settle_case" value="매장카드" id="od_settle_case12"   <?php echo get_checked($od_settle_case, '매장카드');    ?>>
+    <label for="od_settle_case12">매장카드</label>
+	
+
+
+
     <input type="radio" name="od_settle_case" value="무통장" id="od_settle_case02"   <?php echo get_checked($od_settle_case, '무통장');    ?>>
     <label for="od_settle_case02">무통장</label>
     <input type="radio" name="od_settle_case" value="가상계좌" id="od_settle_case03" <?php echo get_checked($od_settle_case, '가상계좌');  ?>>
@@ -222,10 +239,10 @@ if( function_exists('pg_setting_check') ){
     <input type="radio" name="od_settle_case" value="신용카드" id="od_settle_case06" <?php echo get_checked($od_settle_case, '신용카드');  ?>>
     <label for="od_settle_case06">신용카드</label>
     <input type="radio" name="od_settle_case" value="간편결제" id="od_settle_case07" <?php echo get_checked($od_settle_case, '간편결제');  ?>>
-    <label for="od_settle_case07" data-tooltip-text="NHN_KCP 간편결제 : PAYCO, 네이버페이, 카카오페이(NHN_KCP) &#xa;LG유플러스 간편결제 : PAYNOW &#xa;KG 이니시스 간편결제 : KPAY, 삼성페이, LPAY, 카카오페이(KG이니시스)">PG간편결제</label>
+    <label for="od_settle_case07">PG간편결제</label>
     <input type="radio" name="od_settle_case" value="KAKAOPAY" id="od_settle_case08" <?php echo get_checked($od_settle_case, 'KAKAOPAY');  ?>>
     <label for="od_settle_case08">KAKAOPAY</label>
-</div> -->
+</div>
 
 <div>
     <strong>기타선택</strong>
@@ -236,14 +253,15 @@ if( function_exists('pg_setting_check') ){
     <input type="checkbox" name="od_refund_price" value="Y" id="od_misu03" <?php echo get_checked($od_refund_price, 'Y'); ?>>
     <label for="od_misu03">환불</label>
     <input type="checkbox" name="od_receipt_point" value="Y" id="od_misu04" <?php echo get_checked($od_receipt_point, 'Y'); ?>>
-    <label for="od_misu04">포인트주문</label>
+    <label for="od_misu04">PV주문</label>
     <input type="checkbox" name="od_coupon" value="Y" id="od_misu05" <?php echo get_checked($od_coupon, 'Y'); ?>>
     <label for="od_misu05">쿠폰</label>
     <?php if($default['de_escrow_use']) { ?>
     <input type="checkbox" name="od_escrow" value="Y" id="od_misu06" <?php echo get_checked($od_escrow, 'Y'); ?>>
     <label for="od_misu06">에스크로</label>
     <?php } ?>
-</div>
+</div>  -->
+
 
 <div class="sch_last">
     <strong>주문일자</strong>
@@ -256,45 +274,51 @@ if( function_exists('pg_setting_check') ){
     <button type="button" onclick="javascript:set_date('지난주');">지난주</button>
     <button type="button" onclick="javascript:set_date('지난달');">지난달</button>
     <button type="button" onclick="javascript:set_date('전체');">전체</button>
-    <input type="submit" value="검색" class="btn_submit">
+    <input type="submit" style="padding: 5px; width: 100px" value="검색" class="btn_submit" style='width:100px;'> | 
+    <input type="button" style="padding: 5px" class="btn_submit excel" id="btnExport"  data-name='hwajo_order_list' value="엑셀 다운로드" />
+    <button type='button' class="btn cancle_log_btn" style='margin-left:10px'>취소 내역보기</button>
 </div>
+
 </form>
+
+
+<div class="local_ov01 local_ov">
+    <?php echo $listall; ?>
+    전체 주문내역 <?php echo number_format($total_count); ?>건
+    
+    <?
+    while($stats = sql_fetch_array($stats_result)){
+        echo "<a href='./orderlist.php?".$qstr."&od_name=".$stats['od_name']." '><span class='tit'>";
+        echo $stats['od_name'];
+        echo "</span> : ".$stats['cnt'];
+        echo "건 = <strong>".Number_format($stats['amt'])."</strong></a>|";
+    }
+    ?>
+</div>
 
 <form name="forderlist" id="forderlist" onsubmit="return forderlist_submit(this);" method="post" autocomplete="off">
 <input type="hidden" name="search_od_status" value="<?php echo $od_status; ?>">
 
-<div class="tbl_head01 tbl_wrap">
-    <table id="sodr_list">
+<div class="tbl_head02 tbl_wrap">
+    <table id="table">
     <caption>주문 내역 목록</caption>
     <thead>
     <tr>
-        <th scope="col" rowspan="3">
-            <label for="chkall" class="sound_only">주문 전체</label>
-            <input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)">
-        </th>
-        <th scope="col" id="th_ordnum" rowspan="2" colspan="2"><a href="<?php echo title_sort("od_id", 1)."&amp;$qstr1"; ?>">주문번호</a></th>
-        <th scope="col" id="th_odrer">주문자</th>
-        <th scope="col" id="th_odrertel">주문자전화</th>
-        <th scope="col" id="th_recvr">받는분</th>
-        <th scope="col" rowspan="3">주문합계<br>선불배송비포함</th>
-        <th scope="col" rowspan="3">입금합계</th>
-        <th scope="col" rowspan="3">주문취소</th>
-        <th scope="col" rowspan="3">쿠폰</th>
-        <th scope="col" rowspan="3">미수금</th>
-        <th scope="col" rowspan="3">보기</th>
+        <th scope="col" >no</th>
+        <th scope="col" id="th_odrid" >회원ID</th>
+        <th scope="col" id="odrstat" >구매(매출)일자</th>
+        <th scope="col" width="10%" id="th_odrnum"><a href="<?php echo title_sort("od_id", 1)."&amp;$qstr1"; ?>">주문번호</a></th>
+        <th scope="col" id="odrstat" >주문상태</th>
+        <th scope="col" id="odrstat" ><a href="<?php echo title_sort("od_name", 1)."&amp;$qstr1"; ?>">구매상품</th>
+        <th scope="col" id="th_odrall" >결제금액</th>
+        <th scope="col" id="odrpay" >결제수단</th>
+		<th scope="col" id="th_odrcnt" >구매가격</th>
+		<th scope="col" id="th_odrcnt" >판매실적(pv)</th>
+        <!-- <th scope="col" >마이닝(MH/s)</th> -->
+        <th scope="col" width="7%">관리</th>
     </tr>
-    <tr>
-        <th scope="col" id="th_odrid">회원ID</th>
-        <th scope="col" id="th_odrcnt">주문상품수</th>
-        <th scope="col" id="th_odrall">누적주문수</th>
-    </tr>
-    <tr>
-        <th scope="col" id="odrstat">주문상태</th>
-        <th scope="col" id="odrpay">결제수단</th>
-        <th scope="col" id="delino">운송장번호</th>
-        <th scope="col" id="delicom">배송회사</th>
-        <th scope="col" id="delidate">배송일시</th>
-    </tr>
+    <tr></tr>
+    <tr></tr>
     </thead>
     <tbody>
     <?php
@@ -304,17 +328,26 @@ if( function_exists('pg_setting_check') ){
         $s_receipt_way = $s_br = "";
         if ($row['od_settle_case'])
         {
-
-            
-
-            if($row['od_settle_case'] == "코인"){
-                $s_receipt_way =  $row['od_settle_case']."<br> <a href='https://etherscan.io/tx/{$row['od_hash']}' style='font-style:italic'>". substr($row['od_hash'],0,12).' ... '.substr($row['od_hash'],strlen($row['od_hash'])-12,12) ."</a>";
-            }else{
-                $s_receipt_way = check_pay_name_replace($row['od_settle_case'], $row);
-            }
-         
-          
+            $s_receipt_way = $row['od_settle_case'];
             $s_br = '<br />';
+
+            // 간편결제
+            if($row['od_settle_case'] == '간편결제') {
+                switch($row['od_pg']) {
+                    case 'lg':
+                        $s_receipt_way = 'PAYNOW';
+                        break;
+                    case 'inicis':
+                        $s_receipt_way = 'KPAY';
+                        break;
+                    case 'kcp':
+                        $s_receipt_way = 'PAYCO';
+                        break;
+                    default:
+                        $s_receipt_way = $row['od_settle_case'];
+                        break;
+                }
+            }
         }
         else
         {
@@ -323,7 +356,7 @@ if( function_exists('pg_setting_check') ){
         }
 
         if ($row['od_receipt_point'] > 0)
-            $s_receipt_way .= $s_br."포인트";
+            $s_receipt_way .= $s_br."PV";
 
         $mb_nick = get_sideview($row['mb_id'], get_text($row['od_name']), $row['od_email'], '');
 
@@ -346,7 +379,7 @@ if( function_exists('pg_setting_check') ){
                 $disp_od_id = substr($row['od_id'],0,8).'-'.substr($row['od_id'],8);
                 break;
             default:
-                $disp_od_id = substr($row['od_id'],0,6).'-'.substr($row['od_id'],6);
+                $disp_od_id = substr($row['od_id'],0,8).'-'.substr($row['od_id'],8);
                 break;
         }
 
@@ -369,102 +402,83 @@ if( function_exists('pg_setting_check') ){
             $bg .= 'cancel';
             $td_color = 1;
         }
+        $od_settle_case = $row['od_settle_case'];
     ?>
+
+
+	<style>
+	/* td{width:140px !important;} */
+	</style>
     <tr class="orderlist<?php echo ' '.$bg; ?>">
-        <td rowspan="3" class="td_chk">
+        <!-- <td rowspan="2" class="td_chk">
             <input type="hidden" name="od_id[<?php echo $i ?>]" value="<?php echo $row['od_id'] ?>" id="od_id_<?php echo $i ?>">
             <label for="chk_<?php echo $i; ?>" class="sound_only">주문번호 <?php echo $row['od_id']; ?></label>
             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i ?>">
-        </td>
-        <td headers="th_ordnum" class="td_odrnum2" rowspan="2" colspan="2">
-            <a href="<?php echo G5_SHOP_URL; ?>/orderinquiryview.php?od_id=<?php echo $row['od_id']; ?>&amp;uid=<?php echo $uid; ?>" class="orderitem"><?php echo $disp_od_id; ?></a>
-            <?php echo $od_mobile; ?>
-            <?php echo $od_paytype; ?>
-        </td>
-        <td headers="th_odrer" class="td_name"><?php echo $mb_nick; ?></td>
-        <td headers="th_odrertel" class="td_tel"><?php echo get_text($row['od_tel']); ?></td>
-        <td headers="th_recvr" class="td_name"><a href="<?php echo $_SERVER['SCRIPT_NAME']; ?>?sort1=<?php echo $sort1; ?>&amp;sort2=<?php echo $sort2; ?>&amp;sel_field=od_b_name&amp;search=<?php echo get_text($row['od_b_name']); ?>"><?php echo get_text($row['od_b_name']); ?></a></td>
-        <td rowspan="3" class="td_num_right"><?php echo number_format($row['od_cart_price'] + $row['od_send_cost'] + $row['od_send_cost2']); ?> 
-        <?php if($row['od_settle_case'] == "코인"){?>
-        (<?=$row['od_token_price']?> VCT-K)
-        <?php } ?>
-        </td>
-        <td rowspan="3" class="td_num_right"><?php echo number_format($row['od_receipt_price']); ?></td>
-        <td rowspan="3" class="td_numcancel<?php echo $td_color; ?> td_num"><?php echo number_format($row['od_cancel_price']); ?></td>
-        <td rowspan="3" class="td_num_right"><?php echo number_format($row['couponprice']); ?></td>
-        <td rowspan="3" class="td_num_right"><?php echo number_format($row['od_misu']); ?></td>
-        <td rowspan="3" class="td_mng td_mng_s">
-            <a href="./orderform.php?od_id=<?php echo $row['od_id']; ?>&amp;<?php echo $qstr; ?>" class="mng_mod btn btn_02"><span class="sound_only"><?php echo $row['od_id']; ?> </span>보기</a>
-        </td>
-    </tr>
-    <tr class="<?php echo $bg; ?>">
-        <td headers="th_odrid">
+        </td> -->
+        <td><?= $i + 1 ?></td>
+		<td>
             <?php if ($row['mb_id']) { ?>
             <a href="<?php echo $_SERVER['SCRIPT_NAME']; ?>?sort1=<?php echo $sort1; ?>&amp;sort2=<?php echo $sort2; ?>&amp;sel_field=mb_id&amp;search=<?php echo $row['mb_id']; ?>"><?php echo $row['mb_id']; ?></a>
             <?php } else { ?>
             비회원
             <?php } ?>
         </td>
-        <td headers="th_odrcnt"><?php echo $row['od_cart_count']; ?>건</td>
-        <td headers="th_odrall"><?php echo $od_cnt; ?>건</td>
+        <td ><?php echo $row['od_date']; ?></td>
+        <td headers="th_ordnum" class="td_odrnum2">
+            <a href="<?php echo G5_SHOP_URL; ?>/orderinquiryview.php?od_id=<?php echo $row['od_id']; ?>&amp;uid=<?php echo $uid; ?>" class="orderitem"><?php echo $disp_od_id; ?></a>
+            <?php echo $od_mobile; ?>
+            <?php echo $od_paytype; ?>
+        </td>
+		<td class="td_odrstatus" style="width:150px;">
+			<?php echo $row['od_status']; ?>
+        </td>
+        <td class="td_numsum " ><span class='badge t_white color<?=od_name_return_rank($row['od_name'])?>' ><?=$row['od_name']?></span></td>
+        <td class="td_numsum" style='text-align:right'><!-- <?= shift_auto($row['od_cart_price'],$od_settle_case)?> <?=$od_settle_case?> --></td>
+        <td style="text-align:center"><?php echo $row['od_settle_case'] ?></td>
+		<td style="text-align:right;font-weight:600"><!-- <?=shift_auto($row['od_cash'],$od_settle_case)?> <?=$od_settle_case?> --></td>
+		<td style="text-align:right"><?=number_format($row['upstair'])?> </td>
+        <!-- <td > <?php echo $row['pv']; ?></td> -->
+        <td style="text-align:center"><input type='button' class='btn od_cancle' value='구매취소' data-id="<?=$row['od_id']?>"></td>
+       
     </tr>
+
     <tr class="<?php echo $bg; ?>">
-        <td headers="odrstat" class="odrstat">
-            <input type="hidden" name="current_status[<?php echo $i ?>]" value="<?php echo $row['od_status'] ?>">
-            <?php echo $row['od_status']; ?>
-        </td>
-        <td headers="odrpay" class="odrpay">
-            <input type="hidden" name="current_settle_case[<?php echo $i ?>]" value="<?php echo $row['od_settle_case'] ?>">
-           <?php echo $s_receipt_way; ?>        
-        </td>
-        <td headers="delino" class="delino">
-            <?php if ($od_status == '준비') { ?>
-                <input type="text" name="od_invoice[<?php echo $i; ?>]" value="<?php echo $row['od_invoice']; ?>" class="frm_input" size="10">
-            <?php } else {
-                echo ($row['od_invoice'] ? $row['od_invoice'] : '-');
-            } ?>
-        </td>
-        <td headers="delicom">
-            <?php if ($od_status == '준비') { ?>
-                <select name="od_delivery_company[<?php echo $i; ?>]">
-                    <?php echo get_delivery_company($delivery_company); ?>
-                </select>
-            <?php } else {
-                echo ($row['od_delivery_company'] ? $row['od_delivery_company'] : '-');
-            } ?>
-        </td>
-        <td headers="delidate">
-            <?php if ($od_status == '준비') { ?>
-                <input type="text" name="od_invoice_time[<?php echo $i; ?>]" value="<?php echo $invoice_time; ?>" class="frm_input" size="10" maxlength="19">
-            <?php } else {
-                echo (is_null_time($row['od_invoice_time']) ? '-' : substr($row['od_invoice_time'],2,14));
-            } ?>
-        </td>
+
     </tr>
+
+
     <?php
-        $tot_itemcount     += $row['od_cart_count'];
+        $tot_itemcount     = $i+1;
         $tot_orderprice    += ($row['od_cart_price'] + $row['od_send_cost'] + $row['od_send_cost2']);
         $tot_ordercancel   += $row['od_cancel_price'];
-        $tot_receiptprice  += $row['od_receipt_price'];
+        $tot_receiptprice  += $row['od_cash'];
+		/*##  ################################################*/
+        $tot_receiptcash  += $row['od_receipt_cash'];
+        $tot_pv  += $row['pv'];
+        $tot_bv  += $row['bv'];
+		/*@@End.  #####*/
+
         $tot_couponprice   += $row['couponprice'];
         $tot_misu          += $row['od_misu'];
+		$tot_odcount     = $i+1;
     }
     sql_free_result($result);
     if ($i == 0)
-        echo '<tr><td colspan="12" class="empty_table">자료가 없습니다.</td></tr>';
+        echo '<tr><td colspan="13" class="empty_table">자료가 없습니다.</td></tr>';
     ?>
     </tbody>
     <tfoot>
     <tr class="orderlist">
         <th scope="row" colspan="3">&nbsp;</th>
-        <td>&nbsp;</td>
-        <td><?php echo number_format($tot_itemcount); ?>건</td>
+        <td><?php echo number_format($tot_odcount); ?>건</td>
+        <td>
+            <!-- <?php echo number_format($tot_itemcount); ?>건 -->
+        </td>
         <th scope="row">합 계</th>
-        <td><?php echo number_format($tot_orderprice); ?></td>
-        <td><?php echo number_format($tot_receiptprice); ?></td>
-        <td><?php echo number_format($tot_ordercancel); ?></td>
-        <td><?php echo number_format($tot_couponprice); ?></td>
-        <td><?php echo number_format($tot_misu); ?></td>
+        <td class="td_numsum" style='text-align:right; padding: 7px 5px'><!-- <?=shift_auto($tot_orderprice,$curencys[1])?> <?=$curencys[1]?> --></td>
+        <td></td>
+        <td style='text-align:right; padding: 7px 5px'><!-- <?=shift_auto($tot_receiptprice,$curencys[1])?> <?=$curencys[1]?> --></td>
+        <td></td>
         <td></td>
     </tr>
     </tfoot>
@@ -498,14 +512,14 @@ if( function_exists('pg_setting_check') ){
 <?php } ?>
     <?php if ($od_status == '주문') { ?> <span>주문상태에서만 삭제가 가능합니다.</span> <input type="submit" value="선택삭제" class="btn_submit" onclick="document.pressed=this.value"><?php } ?>
 </div>
-
+<!-- 
 <div class="local_desc02 local_desc">
 <p>
     &lt;무통장&gt;인 경우에만 &lt;주문&gt;에서 &lt;입금&gt;으로 변경됩니다. 가상계좌는 입금시 자동으로 &lt;입금&gt;처리됩니다.<br>
     &lt;준비&gt;에서 &lt;배송&gt;으로 변경시 &lt;에스크로배송등록&gt;을 체크하시면 에스크로 주문에 한해 PG사에 배송정보가 자동 등록됩니다.<br>
     <strong>주의!</strong> 주문번호를 클릭하여 나오는 주문상세내역의 주소를 외부에서 조회가 가능한곳에 올리지 마십시오.
 </p>
-</div>
+</div> -->
 
 </form>
 
@@ -520,7 +534,7 @@ $(function(){
         var $this = $(this);
         var od_id = $this.text().replace(/[^0-9]/g, "");
 
-        if($this.next("#orderitemlist").length)
+        if($this.next("#orderitemlist").size())
             return false;
 
         $("#orderitemlist").remove();
@@ -540,14 +554,12 @@ $(function(){
     });
 
     // 상품리스트 닫기
-    $("#sodr_list").on("click", "#orderitemlist-x", function(e) {
+    $(".orderitemlist-x").on("click", function() {
         $("#orderitemlist").remove();
     });
 
-    $("body").on("click", function(e) {
-        if ($(e.target).closest("#orderitemlist").length === 0){
-            $("#orderitemlist").remove();
-        }
+    $("body").on("click", function() {
+        $("#orderitemlist").remove();
     });
 
     // 엑셀배송처리창
@@ -555,6 +567,46 @@ $(function(){
         var opt = "width=600,height=450,left=10,top=10";
         window.open(this.href, "win_excel", opt);
         return false;
+    });
+
+
+    // 구매취소 추가 
+    $(".od_cancle").on('click',function(){
+
+        if (confirm("해당구매건을 취소하시겠습니까?\n구매시 사용되었던금액이 반환됩니다.")) {
+        } else {
+            return false;
+        }
+
+        var od_id = $(this).data('id');
+        
+        $.ajax({
+        url: './order_proc.php',
+        type: 'POST',
+        cache: false,
+        dataType: 'json',
+        data: {
+          "od_id": od_id
+        },
+        success: function(result) {
+          if (result.response == "OK") {
+            alert("해당건 구매가 취소되었습니다.");
+            location.reload();
+          }else{
+            alert("정상처리되지 않았습니다.");
+            location.reload();
+          }
+        },
+        error: function(e) {
+            alert("시스템오류로 정상처리되지 않았습니다.");
+        }
+
+      });
+
+    });
+
+    $('.cancle_log_btn').on('click',function(){
+        location.href = "../order_delete.php";
     });
 });
 
@@ -694,3 +746,4 @@ function forderlist_submit(f)
 
 <?php
 include_once (G5_ADMIN_PATH.'/admin.tail.php');
+?>
