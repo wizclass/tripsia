@@ -1,8 +1,8 @@
 <?php
 if (!defined('_GNUBOARD_')) exit;
-define('G5_MYSQL_HOST', 'localhost');
+define('G5_MYSQL_HOST', '127.0.0.1');
 define('G5_MYSQL_USER', 'root');
-define('G5_MYSQL_PASSWORD', 'wizclass235689!@');
+define('G5_MYSQL_PASSWORD', 'cocoplay08@');
 define('G5_MYSQL_DB', 'tripsia');
 define('G5_MYSQL_SET_MODE', true);
 

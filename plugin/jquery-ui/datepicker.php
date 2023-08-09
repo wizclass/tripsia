@@ -5,11 +5,11 @@ add_stylesheet('<link type="text/css" href="//ajax.googleapis.com/ajax/libs/jque
 add_stylesheet('<link type="text/css" href="'.G5_PLUGIN_URL.'/jquery-ui/style.css">', 0);
 ?>
 
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
 <script>
 jQuery(function($){
     $.datepicker.regional["ko"] = {
-        closeText: "닫기",
+        closeText: "close",
         prevText: "이전달",
         nextText: "다음달",
         currentText: "오늘",
