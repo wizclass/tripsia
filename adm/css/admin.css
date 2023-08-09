@@ -1002,6 +1002,10 @@ box-shadow: 2px 2px 3px 0px rgba(0,0,0,0.2);}
 .account_provider .btn_info{position:absolute;top:-7px;right:0}
 .account_provider .social_unlink{height:30px;line-height:30px;background:#a0a8b8;padding:0 10px;color:#fff;display:inline-block;vertical-align:middle}
 .account_provider .social_unlink:hover{text-decoration:none}
+.btn.wd {
+  width: 100%;
+  padding: 10px 15px;
+}
 
 /*부가서비스*/
 .lnb_svc{color:#ff3061;font-weight:bold}
@@ -1153,3 +1157,5 @@ input[type="text"]{max-width:200px}
 /* Styles */
 input[type="text"]{max-width:200px}
 }
+
+i{font-style:italic; vertical-align: middle;} /*아이콘*/
