@@ -32,9 +32,9 @@ $notice_result_num = sql_num_rows($notice_sql_query);
 
 function check_value($val){
 	if($val == 1){
-		$icon = "<i class='ri-checkbox-circle-line icon value_yes'></i>";
+		$icon = "<i class='ri-check-line icon value_yes'></i>";
 	}else{
-		$icon = "<i class='ri-close-circle-line icon value_no'></i>";
+		$icon = "<i class='ri-close-line icon value_no'></i>";
 	}
 	return $icon;
 }
@@ -165,41 +165,7 @@ $title = 'Dashboard';
 					</ul> 
 				</div>
 				<div class="total_view_top" id="collapseExample">
-					<!-- <ul class="row">
-						<li class="col-4">
-							<dt class="title" >마이 해시</dt>
-							<dd class="value"><?=$member['mb_rate']?> <?=side_exp($mining_hash[0])?></dd>
-						</li>
-						<li class="col-4">
-							<dt class="title" >총보너스해시</dt>
-							<dd class="value"><?=percent_value($total_hash)?></dd>
-						</li>
-						<li class="col-4">
-							<dt class="title" >메가풀 보너스 해시</dt>
-							<dd class="value"><?=percent_value($member['recom_mining'])?>  <?=remain_hash($member['recom_mining'],3)?></dd>
-						</li>
-					</ul> -->
-					<!-- <?if(percent_value_number($member['super_mining'],$member['mb_rate']) > 100){?>
-					<ul class='extra'>
-						받지 못한 보너스가 있어요. <i class="ri-zoom-in-line"></i> CLICK
-					</ul>
-					<?}?> -->
-					<!-- <ul class="row">
-						<li class="col-4">
-							<dt class="title">제타풀 보너스 해시</dt>
-							<dd class="value"><?=percent_value($member['brecom_mining'])?> <?=remain_hash($member['brecom_mining'],3)?></dd>
-						</li>
-						<li class="col-4">
-							<dt class="title">제타+풀 보너스 해시</dt>
-							<dd class="value"><?=percent_value($member['brecom2_mining'])?> <?=remain_hash($member['brecom2_mining'],3)?></dd>
-						</li>
-						<li class="col-4">
-							<dt class="title" >슈퍼풀 보너스 해시</dt>
-							<dd class="value"><?=percent_value($member['super_mining'])?> <?=remain_hash($member['super_mining'],1)?></dd>
-						</li>
-					</ul> -->
 					
-
 					<ul class="row">
 					<li class="col-4">
 							<!-- <dt class="title"><span class='badge'>Mining : <?=Number_format($member['mb_rate'])?> mh/s</span></dt>
@@ -220,7 +186,7 @@ $title = 'Dashboard';
 
 					</ul>
 
-					<!-- <ul class="row" style="margin:0 20px;">
+					<ul class="row" style="margin:0 10px;">
 						<li class="col-12">
 							
 							<dd class="value">
@@ -229,36 +195,36 @@ $title = 'Dashboard';
 								</div>
 								
 								<div class='exp_per'>
-									<p class='start'>0%</p>
-									<p class='end'>300%</p>
+									<p class='start'>0 %</p>
+									<p class='end'><?=$limited?> %</p>
 								</div>
 							</dd>
-							<dt class="title" >수당한계</dt>
+							<dt class="title" style="font-size:10px;" >수당한계</dt>
 						</li>
-					</ul> -->
+					</ul>
 
-					<ul class="row">
+					<ul class="row mb10">
 						<li class="rank_title">다음승급조건달성</li>
 
-						<!-- <li class="col-4">
-							<dt class="title">본인매출</dt>
-							<dd class="value">
-								<?=check_value($member['mb_5'])?>
-							</dd>
-						</li> -->
-
-						<li class="col-6">
+						<li class="col-4">
 							<dt class="title">구매등급</dt>
 							<dd class="value">
 								<?=check_value($member['mb_5'])?>
 							</dd>
 						</li>
 
-
-						<li class="col-6">
-							<dt class="title">승급대상포인트(산하매출)</dt>
+						<li class="col-4">
+							<dt class="title">승급대상포인트</dt>
 							<dd class="value">
 								<?=check_value($member['mb_7'])?>
+							</dd>
+						</li>
+
+
+						<li class="col-4">
+							<dt class="title">승급기준</dt>
+							<dd class="value">
+								<?=check_value($member['mb_9'])?>
 							</dd>
 						</li>
 					</ul>
@@ -280,9 +246,11 @@ $title = 'Dashboard';
 <script src="https://cdnjs.cloudflare.com/ajax/libs/egjs-jquery-transform/2.0.0/transform.min.js" integrity="sha512-vOc3jz0QulHRiyMXfp676lHxeSuzUhfuw//VUX12odAmlUbnKiXH4GQxBRqwKhF3Mkswqr5ILY9MtEM4ZwcS2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- 펼쳐보기 -->
 <script>
+	
 		function collapse(id, mode) {
+			console.log("Theme :" + Theme);
+			console.log(getCookie('mode'));
 			
-
 			$('.fold_img_wrap img').attr('src','<?=G5_THEME_URL?>/img/arrow_up_'+Theme+'.png');
 			
 			var user_height = $('#collapseExample').height();
@@ -290,7 +258,7 @@ $title = 'Dashboard';
 			if ($(id).css("display") == "none") {
 				$(id).css("display", "block");
 				$(id).animate({
-					height: user_height + 150
+					height: user_height + 210
 				}, 500, function() {
 					$('.fold_wrap p').text('접기');
 				});
@@ -304,6 +272,18 @@ $title = 'Dashboard';
 				});
 				animateRotate(180);
 			}
+		}
+
+		function collapseClosed(){
+			target = $('#collapseExample');
+
+			target.animate({
+				height: "0px",
+			}, 0, function() {
+				target.css("display", "none");
+				$('.fold_wrap p').text('펼쳐보기');
+			});
+			animateRotate(180);
 		}
 
 		function animateRotate(d) {
@@ -327,7 +307,7 @@ $title = 'Dashboard';
 		}
 
 	$(document).ready(function(){
-		// move(<?=bonus_per()?>,1);
+		move(<?=$bonus_per?>,1);
 
 		// 공지사항 - 하단공지로 사용안함
 		var notice_open = getCookie('notice');

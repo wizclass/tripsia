@@ -138,19 +138,24 @@ $(document).ready(function(){
 				<a href="/page.php?id=center_page">
 					<div class="gnb_img_wrap"></div>
 					<div class="gnb_title_Wrap">
-						<span >센터회원관리</span> -->
+						<span >센터회원관리</span> 
 					</div>
 				</a>
 			</li>
 			<?}?>
+			-->
+
+			<? if($member['mb_level'] > 0){?>
 			<li class="recommend_icon <? if($_GET['id'] === 'structure') {echo 'active';}?>">
 				<a href="/page.php?id=structure">
 					<div class="gnb_img_wrap"></div>
 					<div class="gnb_title_Wrap">
-						<span >추천조직도</span>
+						<span >추천등록코드</span>
 					</div>
 				</a>
 			</li>
+			<?}?>
+
 			<!-- <li class="support_icon <?// if($_GET['id'] === 'binary') {echo 'active';}?>">
 				<a href="/page.php?id=binary">
 					<div class="gnb_img_wrap"></div>
