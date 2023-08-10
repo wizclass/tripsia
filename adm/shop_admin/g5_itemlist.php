@@ -1,5 +1,5 @@
 <?php
-$sub_menu = '600300';
+$sub_menu = '600150';
 include_once('./_common.php');
 include_once('../adm.wallet.php');
 

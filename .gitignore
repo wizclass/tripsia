@@ -15,6 +15,6 @@ g5_tree/
 naver*.html
 initests01/
 SIRsoft000/
-/data/*
+data/*
 config.php
 wizclass.php

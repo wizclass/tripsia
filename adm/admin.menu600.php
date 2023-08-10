@@ -2,7 +2,9 @@
 if($member['mb_id'] == 'admin'){
 $menu['menu600'] = array (
 
+    array('600000', '마케팅관리', ''.G5_ADMIN_URL.'/bonus/bonus_list.php','bbs'),
     array('600000', '마케팅플랜', ''.G5_ADMIN_URL.'/bonus/bonus_list.php','bbs_board'),
+
     array('600100', '마케팅 수당 설정', G5_ADMIN_URL.'/bonus/bonus_config2.php', 'bbs_board'),
     array('600200', '수당지급 및 지급내역', ''.G5_ADMIN_URL.'/bonus/bonus_list.php','bbs_board'),
     // array('600300', '마이닝지급 및 내역', ''.G5_ADMIN_URL.'/bonus/bonus_mining.php','bbs_board'),
@@ -19,7 +21,9 @@ $menu['menu600'] = array (
 );
 }else{
     $menu['menu600'] = array (
+        array('600000', '마케팅관리', ''.G5_ADMIN_URL.'/bonus/bonus_list.php','bbs'),
         array('600000', '마케팅플랜', ''.G5_ADMIN_URL.'/bonus/bonus_list.php','bbs_board'),
+
         array('600100', '마케팅 수당 설정', G5_ADMIN_URL.'/bonus/bonus_config.php', 'bbs_board'),
         array('600200', '수당지급 및 지급내역', ''.G5_ADMIN_URL.'/bonus/bonus_list.php','bbs_board'),
         // array('600300', '마이닝지급 및 내역', ''.G5_ADMIN_URL.'/bonus/bonus_mining.php','bbs_board'),

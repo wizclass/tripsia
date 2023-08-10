@@ -1,5 +1,5 @@
 <?php
-$sub_menu = "600300";
+$sub_menu = "600500";
 include_once('./_common.php');
 
 $g5['title'] = "멤버 승급 기록";
