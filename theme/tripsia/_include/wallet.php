@@ -40,7 +40,7 @@ $available_fund = $total_deposit;
 $mining_acc = $member[$mining_target];
 $mining_amt = $member[$mining_amt_target];
 
-$mining_total = calculate_math($mining_acc - $mining_amt,COIN_NUMBER_POINT);
+// $mining_total = calculate_math($mining_acc - $mining_amt,COIN_NUMBER_POINT);
 
 
 // 이전자산
@@ -628,7 +628,7 @@ function string_shift_code($val){
 }
 
 // 사용중 아이템(패키지)
-function get_g5_item($table=null){
+function get_g5_item($table=null, $used = 1){
 	$array = array();
 	$sql = "SELECT * FROM g5_item";
 	$sql .= " WHERE it_use = 1 ORDER BY it_order";
@@ -651,7 +651,9 @@ function get_g5_item($table=null){
 // 아이템 그룹 내 구매패키지정보
 function ordered_items($mb_id, $table=null){
 
+	if($table != null){
 	$item = get_g5_item($table);
+	
 	$upgrade_array = array();
 
 	for($i = 1; $i < count($item); $i++){
@@ -696,6 +698,7 @@ function ordered_items($mb_id, $table=null){
 		
 	}
 	return $upgrade_array;
+	}
 }
 
 
