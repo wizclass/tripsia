@@ -58,6 +58,7 @@ if(!isset($g5['title'])){
 	<!-- JQuery  기본 설정 //-->
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<script src="<?=G5_THEME_URL?>/_common/js/jquery-ui.min.js"></script>
+	<script src="<?=G5_URL?>/js/common.js"></script>
 	<script src="<?=G5_THEME_URL?>/_common/js/common.js"></script>
 	<script src="<?=G5_THEME_URL?>/_common/js/gnb.js"></script>
 
