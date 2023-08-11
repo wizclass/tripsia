@@ -27,20 +27,21 @@ if ($w == "") {
     // 회원 로그인을 한 경우 회원가입 할 수 없다
     // 경고창이 뜨는것을 막기위해 아래의 코드로 대체
     // alert("이미 로그인중이므로 회원 가입 하실 수 없습니다.", "./");
-    if ($is_member) {
+    /* if ($is_member) {
         goto_url(G5_URL);
     }
+    */
 
     // 리퍼러 체크
     referer_check();
 
-    if (!isset($_POST['agree']) || !$_POST['agree']) {
+    /* if (!isset($_POST['agree']) || !$_POST['agree']) {
         alert('회원가입약관의 내용에 동의하셔야 회원가입 하실 수 있습니다.', G5_BBS_URL.'/register.php');
     }
 
     if (!isset($_POST['agree2']) || !$_POST['agree2']) {
         alert('개인정보처리방침안내의 내용에 동의하셔야 회원가입 하실 수 있습니다.', G5_BBS_URL.'/register.php');
-    }
+    } */
 
     $agree  = preg_replace('#[^0-9]#', '', $_POST['agree']);
     $agree2 = preg_replace('#[^0-9]#', '', $_POST['agree2']);
@@ -48,6 +49,7 @@ if ($w == "") {
     $member['mb_birth'] = '';
     $member['mb_sex']   = '';
     $member['mb_name']  = '';
+
     if (isset($_POST['birth'])) {
         $member['mb_birth'] = $_POST['birth'];
     }
@@ -126,7 +128,7 @@ if ($w == "") {
     alert('w 값이 제대로 넘어오지 않았습니다.');
 }
 
-include_once('./_head.php');
+// include_once('./_head.php');
 
 // 회원아이콘 경로
 $mb_icon_path = G5_DATA_PATH.'/member/'.substr($member['mb_id'],0,2).'/'.get_mb_icon_name($member['mb_id']).'.gif';
@@ -150,8 +152,13 @@ $agree2 = isset($_REQUEST['agree2']) ? preg_replace('#[^0-9]#', '', $_REQUEST['a
 if ($config['cf_use_addr'])
     add_javascript(G5_POSTCODE_JS, 0);    //다음 주소 js
 
-include_once($member_skin_path.'/register_form.skin.php');
+if(G5_THEME_PATH){
+    $member_skin_path = G5_THEME_PATH;
+}
+
+// include_once($member_skin_path.'/register_form.skin.php');
 
 run_event('register_form_after', $w, $agree, $agree2);
 
-include_once('./_tail.php');
+// include_once('./_tail.php');
+include_once($member_skin_path.'/enroll.php');

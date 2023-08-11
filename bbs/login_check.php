@@ -8,8 +8,10 @@ $mb_password = isset($_POST['mb_password']) ? trim($_POST['mb_password']) : '';
 
 run_event('member_login_check_before', $mb_id);
 
-if (!$mb_id || !$mb_password)
-    alert('회원아이디나 비밀번호가 공백이면 안됩니다.');
+if (!$mb_id || !$mb_password){
+    echo json_encode(array('code'=>'300', 'msg'=>'아이디나 비밀번호가 공백이면 안됩니다.','url'=>'/'));
+    exit;
+}
 
 $mb = get_member($mb_id);
 
@@ -58,7 +60,7 @@ if ( is_use_email_certify() && !preg_match("/[1-9]/", $mb['mb_email_certify'])) 
 
 run_event('login_session_before', $mb, $is_social_login);
 
-@include_once($member_skin_path.'/login_check.skin.php');
+// @include_once($member_skin_path.'/login_check.skin.php');
 
 // 회원아이디 세션 생성
 set_session('ss_mb_id', $mb['mb_id']);
@@ -75,6 +77,8 @@ if($config['cf_use_point']) {
 
 // 3.26
 // 아이디 쿠키에 한달간 저장
+$auto_login = true;
+
 if (isset($auto_login) && $auto_login) {
     // 3.27
     // 자동로그인 ---------------------------
@@ -159,4 +163,7 @@ if( is_admin($mb['mb_id']) && is_dir(G5_DATA_PATH.'/tmp/') ){
     }
 }
 
-goto_url($link);
+set_cookie("ck_ca_id", $mb_id, time() + 86400*31);
+echo json_encode(array("code"=>"200", "msg"=>"", "url"=>"/"));
+
+// goto_url($link);

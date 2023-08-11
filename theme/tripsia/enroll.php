@@ -796,7 +796,7 @@ if ($_GET['recom_referral']){
 
 			<div class="btn2_wrap mb40" style='width:100%;height:60px'>
 				<input class="btn btn_double enroll_cancel_pop_open btn_cancle pop_open" type="button" value="취소">
-				<input class="btn btn_double btn_secondary" type="button" onclick="fregisterform_submit();" value="신규 회원 등록하기">
+				<input class="btn btn_double btn_primary" type="button" onclick="fregisterform_submit();" value="신규 회원 등록하기">
 			</div>
 
 
@@ -806,8 +806,8 @@ if ($_GET['recom_referral']){
 </div>
 
 <div class='footer' style="position:relative;bottom:25px;">
-		<p class='company mb10'> HWAJO GLOBAL ASSET <br>이메일 : <?=$config['cf_admin_email']?>
-		<p class='copyright'>Copyright ⓒ 2023. Hwajo Co. ALL right reserved.</p>
+		<p class='company mb10'> <?=CONFIG_SUB_TITLE?> <br>이메일 : <?=$config['cf_admin_email']?>
+		<p class='copyright'>Copyright ⓒ 2023. <?=CONFIG_TITLE?> Co. ALL right reserved.</p>
 	</div>
 </section>
 

@@ -59,7 +59,7 @@
 	</div>
 
 	<div class='footer'>
-		<p class='copyright'>Copyright ⓒ 2023. HWAJO Co. ALL right reserved.</p>
+		<p class='copyright'>Copyright ⓒ 2023. <?=CONFIG_TITLE?> Co. ALL right reserved.</p>
 	</div>
 	
 </section>
@@ -71,7 +71,7 @@
 		/* $('form[name=flogin]').submit(); */
 
 		$.ajax({
-			url : '/bbs/login_check.php',
+			url : g5_url + '/bbs/login_check.php',
 			type : "POST",
 			dataType : "json",
 			async : false,
