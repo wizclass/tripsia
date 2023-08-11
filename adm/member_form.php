@@ -707,7 +707,6 @@ $rank_result = sql_fetch($rank_sql);
 
 			$pack_array = package_have_return($mb['mb_id']);
 			$get_shop_item = get_g5_item(null,0);
-
 			for ($i = 0; $i < count($pack_array); $i++) {
 				
 			?>
