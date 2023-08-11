@@ -1,5 +1,5 @@
 <?php
-$sub_menu = "900120";
+$sub_menu = "850200";
 include_once('./_common.php');
 
 $g5['title'] = "데이터 초기화 설정";
