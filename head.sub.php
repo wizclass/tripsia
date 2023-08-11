@@ -4,9 +4,12 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
 // 테마 head.sub.php 파일
 if(!defined('G5_IS_ADMIN') && defined('G5_THEME_PATH') && is_file(G5_THEME_PATH.'/head.sub.php')) {
-    require_once(G5_THEME_PATH.'/head.sub.php');
+    // require_once(G5_THEME_PATH.'/head.sub.php');
+    require_once(G5_THEME_PATH.'/_include/head.php');
     return;
 }
+
+$begin_time = get_microtime();
 
 $g5_debug['php']['begin_time'] = $begin_time = get_microtime();
 
@@ -49,7 +52,7 @@ if (G5_IS_MOBILE) {
 
     $pageName = basename($_SERVER['PHP_SELF']);
     if($pageName == "orderform.php" || $pageName == "item.php"){
-    echo '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">';
+        echo '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">';
     }
 } else {
     echo '<meta http-equiv="imagetoolbar" content="no">'.PHP_EOL;
