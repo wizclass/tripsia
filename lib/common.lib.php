@@ -3889,3 +3889,42 @@ function option_array_checked($option, $arr=array()){
 
     return $checked;
 }
+
+
+
+function get_brecommend($mb_id){
+		
+    $sql = "select mb_brecommend from g5_member where mb_id = '{$mb_id}'";
+    $query = sql_query($sql);
+    $result = sql_fetch_array($query);
+    return $result['mb_brecommend'];
+}
+
+function update_brecommend($mb_id,$brecommend,$bre_commend_type){
+$sql = " update g5_member set mb_brecommend = '$brecommend',mb_brecommend_type = '$bre_commend_type' where mb_id = '$mb_id' ";
+$result = sql_query($sql);
+return $result['mb_brecommend'];
+}
+
+
+function bonus_earnings($gubun,$mb_id){
+if($mb_id != null && $mb_id != '')
+{
+    $benefit = "SELECT * FROM soodang_pay WHERE allowance_name = '$gubun' AND mb_id = '$mb_id'";
+}else{
+    $benefit = "SELECT * FROM soodang_pay WHERE allowance_name = '$gubun'";
+}
+$result = sql_query($benefit);
+
+return $result;  
+}
+
+
+
+function login_check($mb_id)
+{
+
+if (!$mb_id) {
+    goto_url('/');
+}
+}
