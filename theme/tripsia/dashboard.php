@@ -1,5 +1,6 @@
 <?
 	include_once('./_common.php');
+    require_once(G5_THEME_PATH.'/_include/head.php');
 	include_once(G5_THEME_PATH.'/_include/wallet.php');
 	include_once(G5_THEME_PATH.'/_include/gnb.php');
 	include_once(G5_PATH.'/util/package.php');

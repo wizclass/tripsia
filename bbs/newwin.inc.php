@@ -16,7 +16,7 @@ $result = sql_query($sql, false);
 
 <!-- 팝업레이어 시작 { -->
 <div id="hd_pop">
-    <h2>팝업레이어 알림</h2>
+    <!-- <h2>팝업레이어 알림</h2> -->
 
 <?php
 for ($i=0; $nw=sql_fetch_array($result); $i++)

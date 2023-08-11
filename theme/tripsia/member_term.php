@@ -32,8 +32,8 @@ $title = '회원약관';
         <div class="white mb-4 contents"><?=conv_content($array[1]['wr_content'],2)?></div>
 	</div>    
     <div class='footer'>
-        <p class='company'> HWAJO GLOBAL ASSET <br>이메일 : <?=$config['cf_admin_email']?></p>
-        <p class='copyright'>Copyright ⓒ 2023. HWAJO Co. ALL right reserved.</p>
+        <p class='company'> <?=CONFIG_SUB_TITLE?> <br>이메일 : <?=$config['cf_admin_email']?></p>
+        <p class='copyright'>Copyright ⓒ 2023. <?=CONFIG_TITLE?> Co. ALL right reserved.</p>
     </div>
 </main>
 

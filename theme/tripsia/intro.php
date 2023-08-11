@@ -170,8 +170,8 @@ body{overflow-y: hidden;}
 		</div>
 
 		<div class='intro_title'>
-			<p class='company'> HWAJO GLOBAL ASSET <br>이메일 : <?=$config['cf_admin_email']?></p>
-			<p class='copyright'>Copyright ⓒ 2023. HWAJO Co. ALL right reserved.</p>
+			<p class='company'> <?=CONFIG_SUB_TITLE?> <br>이메일 : <?=$config['cf_admin_email']?></p>
+			<p class='copyright'>Copyright ⓒ 2023. <?=CONFIG_TITLE?> Co. ALL right reserved.</p>
 		</div>
 	</div>
 </body>
