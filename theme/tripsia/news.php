@@ -8,10 +8,10 @@ include_once(G5_THEME_PATH.'/_include/gnb.php');
 $bo_table = "g5_write_notice";
 $bo_table_java = "notice";
 
-$list_cnt = sql_fetch("select count(*) as cnt from {$bo_table} order by wr_datetime desc");
+$list_cnt = sql_fetch("select count(*) as cnt from {$bo_table} where wr_id=wr_parent order by wr_datetime desc");
 $cnt = $list_cnt['cnt'];
 
-$sql = "select * from {$bo_table} order by wr_datetime desc";
+$sql = "select * from {$bo_table} where wr_id=wr_parent order by wr_datetime desc";
 $list = sql_query($sql);
 
 $title = 'News';

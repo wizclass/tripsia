@@ -2,7 +2,7 @@
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 
 if(!$is_member){
-	alert("로그인 페이지로 이동합니다.",G5_BBS_URL."/login.php");
+	alert("로그인 페이지로 이동합니다.",G5_URL);
 }
 
 $q = isset($_GET['q']) ? clean_xss_tags($_GET['q'], 1, 1) : '';

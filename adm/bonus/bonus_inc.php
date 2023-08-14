@@ -259,7 +259,7 @@ function ordered_items($mb_id, $table=null){
 		for($j = 0; $j < sql_num_rows($result); $j++){
 			$row = sql_fetch_array($result);
 
-			$order_sql = "SELECT * FROM g5_shop_order WHERE od_id = '{$row['od_id']}'";
+			$order_sql = "SELECT * FROM g5_order WHERE od_id = '{$row['od_id']}'";
 			$order_row = sql_fetch($order_sql);
 
 			array_push($upgrade_array, array(

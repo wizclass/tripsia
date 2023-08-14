@@ -89,7 +89,7 @@ function habu_sales_calc($gubun, $recom, $deep){
         $recom=$rrr['mb_id'];
        
         //누적매출
-		$sql1= sql_fetch("select sum(pv)as hap from g5_shop_order where mb_id='".$recom."' ");
+		$sql1= sql_fetch("select sum(pv)as hap from g5_order where mb_id='".$recom."' ");
         $noo +=$sql1['hap'];
         
         //월간매출
@@ -101,7 +101,7 @@ function habu_sales_calc($gubun, $recom, $deep){
         
         //일일매출
 		$day_search = " and od_date ='$bonus_day'";
-		$sql3= sql_fetch("select sum(pv)as hap from g5_shop_order where mb_id='".$recom."' $day_search");
+		$sql3= sql_fetch("select sum(pv)as hap from g5_order where mb_id='".$recom."' $day_search");
         $today +=$sql3['hap'];
         
          // 디버그 로그
@@ -347,7 +347,7 @@ function habu_sales_calc($gubun, $recom, $deep){
 function today_sales($mb_id, $day){
     
 	$day_search = " and od_date = '$day'";
-	$sql= sql_fetch("select sum(pv)as hap from g5_shop_order where mb_id='".$mb_id."' $day_search");
+	$sql= sql_fetch("select sum(pv)as hap from g5_order where mb_id='".$mb_id."' $day_search");
 	if($sql['hap']=='')
 	{
 		$hap=0;

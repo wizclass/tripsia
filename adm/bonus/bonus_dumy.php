@@ -40,7 +40,7 @@ for($i=2;$i < 12; $i++ ){
     $d_mb_id = $dumy_member['mb_id'];
     $orderid = $order_id.$dumy_member['mb_no'];
 
-    $sql_order_dumy = "INSERT g5_shop_order set od_id = '{$orderid}',
+    $sql_order_dumy = "INSERT g5_order set od_id = '{$orderid}',
     mb_no = '{$i}' ,
     mb_id = '{$d_mb_id}',
     od_cart_price = {$dumy_output_val},

@@ -157,7 +157,7 @@ function  excute(){
                 if($mem_cnt >$lvlimit_cnt[$i]){$rank_cnt += 1; echo "<span class='red'> == OK </span>";}
 
                 // 내 매출 
-                $mem_sales_sql ="SELECT SUM(od_cart_price) as hap FROM g5_shop_order WHERE od_date BETWEEN '{$week_frdate}' AND '{$week_todate}' AND mb_id ='{$mb_id}'";
+                $mem_sales_sql ="SELECT SUM(od_cart_price) as hap FROM g5_order WHERE od_date BETWEEN '{$week_frdate}' AND '{$week_todate}' AND mb_id ='{$mb_id}'";
                 $mem_sales_result = sql_fetch($mem_sales_sql);
                 $mem_sales = $mem_sales_result['hap'];
                 echo "<br>지난주 매출 : <span class='blue'>".$mem_sales."</span>";

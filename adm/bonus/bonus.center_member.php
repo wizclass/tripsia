@@ -37,7 +37,7 @@ function active_check($val, $target){
 
 $colspan = 8;
 
-$sql_common = " FROM g5_shop_order A left JOIN g5_member B ON A.mb_id = B.mb_id ";
+$sql_common = " FROM g5_order A left JOIN g5_member B ON A.mb_id = B.mb_id ";
 $sql_search = " where B.mb_center = '{$select_id}' and B.mb_center != '' ";
 
 if($fr_date && $to_date){
@@ -268,10 +268,10 @@ function fvisit_submit(act)
     <?php
     for ($i=0; $row=sql_fetch_array($result); $i++) {
 
-        $order_total_sql = "SELECT sum(upstair) as upstair_total, sum(pv) as pv_total from g5_shop_order WHERE mb_id = '{$row['mb_id']}' AND od_date >= '{$fr_date}' AND od_date <= '{$to_date}' ";
+        $order_total_sql = "SELECT sum(upstair) as upstair_total, sum(pv) as pv_total from g5_order WHERE mb_id = '{$row['mb_id']}' AND od_date >= '{$fr_date}' AND od_date <= '{$to_date}' ";
         $order_total = sql_fetch($order_total_sql);
         
-        $membership_sql = " SELECT * from g5_shop_order WHERE mb_id = '{$row['mb_id']}' AND od_date >= '{$fr_date}' AND od_date <= '{$to_date}' AND od_cash = 300000 ";
+        $membership_sql = " SELECT * from g5_order WHERE mb_id = '{$row['mb_id']}' AND od_date >= '{$fr_date}' AND od_date <= '{$to_date}' AND od_cash = 300000 ";
         $membership_yn = sql_fetch($membership_sql)['od_cash'];
 
         $bg = 'bg'.($i%2);

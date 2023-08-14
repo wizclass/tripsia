@@ -74,7 +74,7 @@ $total_order = $total_order_reult['hap'];
 */
 
 //지난달 매출 합계 
-$total_order_query = "SELECT SUM(od_cash) AS hap FROM g5_shop_order WHERE od_date BETWEEN '{$month_frdate}' AND '{$month_todate}' ";
+$total_order_query = "SELECT SUM(od_cash) AS hap FROM g5_order WHERE od_date BETWEEN '{$month_frdate}' AND '{$month_todate}' ";
 $total_order_reult = sql_fetch($total_order_query);
 $total_order = $total_order_reult['hap'];
 

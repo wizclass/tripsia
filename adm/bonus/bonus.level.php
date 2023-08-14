@@ -45,7 +45,7 @@ $bonus_layer_tx = bonus_layer_tx($bonus_layer);
 
 
 //보름간 매출 합계 
-$total_order_query = "SELECT SUM(od_cart_price) AS hap FROM g5_shop_order WHERE od_date BETWEEN '{$half_frdate}' AND '{$half_todate}' "; 
+$total_order_query = "SELECT SUM(od_cart_price) AS hap FROM g5_order WHERE od_date BETWEEN '{$half_frdate}' AND '{$half_todate}' "; 
 $total_order_reult = sql_fetch($total_order_query);
 $total_order = $total_order_reult['hap'];
 

@@ -26,7 +26,7 @@ $bonus_layer_tx = bonus_layer_tx($bonus_layer);
 
 
 //회원 리스트를 읽어 온다.
-$sql_common = " FROM g5_shop_order AS o, g5_member AS m ";
+$sql_common = " FROM g5_order AS o, g5_member AS m ";
 $sql_search=" WHERE o.mb_id=m.mb_id AND DATE_FORMAT(o.od_time,'%Y-%m-%d')='".$bonus_day."'";
 $sql_mgroup=' GROUP BY m.mb_id ORDER BY m.mb_no asc';
 

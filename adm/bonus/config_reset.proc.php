@@ -47,7 +47,7 @@ if($_POST['nw_member_reset'] == 'on'){
 
 if($_POST['nw_order_reset'] == 'on'){
 
-    $trunc5 = sql_query(" TRUNCATE TABLE `g5_shop_order` ");
+    $trunc5 = sql_query(" TRUNCATE TABLE `g5_order` ");
     $trunc6 = sql_query(" TRUNCATE TABLE `package_log`; ");
     
     $pack_cnt = sql_fetch("SELECT count(it_id) as cnt from g5_shop_item WHERE it_use > 0")['cnt'];
@@ -116,7 +116,7 @@ if($_POST['nw_data_test'] == 'on'){
     
    if($update_member){
 
-    $insert_order_sql = " INSERT INTO `g5_shop_order` (od_id, mb_id, mb_no, od_cart_price, upstair, od_cash, od_name, od_tno, pv, od_time, od_date, od_settle_case, od_email, od_tel, od_hp, od_zip1, od_zip2, od_addr1, od_addr2, od_addr3, od_addr_jibeon, od_b_name, od_b_tel, od_b_hp, od_b_zip1, od_b_zip2, od_b_addr1, od_b_addr2, od_b_addr3, od_b_addr_jibeon, od_memo, od_cart_count, od_cart_coupon, od_send_cost, od_send_coupon, od_receipt_price, od_cancel_price, od_receipt_point, od_receipt_cash, od_refund_price, od_bank_account, od_receipt_time, od_coupon, od_misu, od_shop_memo, od_mod_history, od_status, od_hope_date, od_test, od_mobile, od_pg, od_app_no, od_escrow, od_casseqno, od_tax_flag, od_tax_mny, od_vat_mny, od_free_mny, od_delivery_company, od_invoice, od_invoice_time, od_cash_no, od_cash_info, od_pwd, od_ip) VALUE " ;
+    $insert_order_sql = " INSERT INTO `g5_order` (od_id, mb_id, mb_no, od_cart_price, upstair, od_cash, od_name, od_tno, pv, od_time, od_date, od_settle_case, od_email, od_tel, od_hp, od_zip1, od_zip2, od_addr1, od_addr2, od_addr3, od_addr_jibeon, od_b_name, od_b_tel, od_b_hp, od_b_zip1, od_b_zip2, od_b_addr1, od_b_addr2, od_b_addr3, od_b_addr_jibeon, od_memo, od_cart_count, od_cart_coupon, od_send_cost, od_send_coupon, od_receipt_price, od_cancel_price, od_receipt_point, od_receipt_cash, od_refund_price, od_bank_account, od_receipt_time, od_coupon, od_misu, od_shop_memo, od_mod_history, od_status, od_hope_date, od_test, od_mobile, od_pg, od_app_no, od_escrow, od_casseqno, od_tax_flag, od_tax_mny, od_vat_mny, od_free_mny, od_delivery_company, od_invoice, od_invoice_time, od_cash_no, od_cash_info, od_pwd, od_ip) VALUE " ;
 
     for($i=5; $i <= 30 ; $i++){
         $orderid = date("YmdHis",time()).mt_rand(0000,9999);
