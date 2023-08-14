@@ -559,7 +559,7 @@ function admin_menu_find_by($call, $search_key){
 // 접근 권한 검사
 if (!$member['mb_id'])
 {
-    alert('로그인 하십시오.', G5_BBS_URL.'/login.php?url=' . urlencode(correct_goto_url(G5_ADMIN_URL)));
+    alert('로그인 하십시오.', G5_BBS_URL.'/login_pw.php?url=' . urlencode(correct_goto_url(G5_ADMIN_URL)));
 }
 else if ($is_admin != 'super')
 {
@@ -579,16 +579,16 @@ else if ($is_admin != 'super')
 
 // 관리자의 아이피, 브라우저와 다르다면 세션을 끊고 관리자에게 메일을 보낸다.
 $admin_key = md5($member['mb_datetime'] . get_real_client_ip() . $_SERVER['HTTP_USER_AGENT']);
-if (get_session('ss_mb_key') !== $admin_key) {
+// if (get_session('ss_mb_key') !== $admin_key) {
 
-    session_destroy();
+//     session_destroy();
 
-    include_once(G5_LIB_PATH.'/mailer.lib.php');
-    // 메일 알림
-    mailer($member['mb_nick'], $member['mb_email'], $member['mb_email'], 'XSS 공격 알림', $_SERVER['REMOTE_ADDR'].' 아이피로 XSS 공격이 있었습니다.<br><br>관리자 권한을 탈취하려는 접근이므로 주의하시기 바랍니다.<br><br>해당 아이피는 차단하시고 의심되는 게시물이 있는지 확인하시기 바랍니다.'.G5_URL, 0);
+//     include_once(G5_LIB_PATH.'/mailer.lib.php');
+//     // 메일 알림
+//     mailer($member['mb_nick'], $member['mb_email'], $member['mb_email'], 'XSS 공격 알림', $_SERVER['REMOTE_ADDR'].' 아이피로 XSS 공격이 있었습니다.<br><br>관리자 권한을 탈취하려는 접근이므로 주의하시기 바랍니다.<br><br>해당 아이피는 차단하시고 의심되는 게시물이 있는지 확인하시기 바랍니다.'.G5_URL, 0);
 
-    alert_close('정상적으로 로그인하여 접근하시기 바랍니다.');
-}
+//     alert_close('정상적으로 로그인하여 접근하시기 바랍니다.');
+// }
 
 if(isset($auth) && is_array($auth)) {
     @ksort($auth);

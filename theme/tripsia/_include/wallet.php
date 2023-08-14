@@ -9,7 +9,7 @@ $nw_upstair = $nw['nw_upstair'];
 
 
 /*날짜선택 기본값 지정 : 3개월전~ 오늘*/
-if (empty($fr_date)) {$fr_date = date("Y-m-d", strtotime(date("Y-m-d")."-3 month"));}
+if (empty($fr_date)) {$fr_date = date("Y-m-d", strtotime(date("Y-m-d")."-1 week"));}
 if (empty($to_date)) {$to_date =  date("Y-m-d", strtotime(date("Y-m-d")));}
 
 /* 시세업데이트 시간*/
@@ -31,17 +31,17 @@ $total_fund = $total_bonus;
 // $shop_point = $total_bonus*0.1;
 
 // 출금가능금액 :: 총보너스 - 기출금
-$total_withraw = $total_bonus - $total_shift_amt;
+$total_withraw = $total_bonus - $total_shift_amt - $member['mb_fee'];
 
 // 구매가능잔고 :: 입금액 - 구매금액 = 남은금액
-$available_fund = $total_deposit;
+$available_fund = $total_deposit + $total_bonus - $total_shift_amt;
 
 // 마이닝합계
-$mining_acc = $member[$mining_target];
+/* $mining_acc = $member[$mining_target];
 $mining_amt = $member[$mining_amt_target];
 
-// $mining_total = calculate_math($mining_acc - $mining_amt,COIN_NUMBER_POINT);
-
+$mining_total = calculate_math($mining_acc - $mining_amt,COIN_NUMBER_POINT);
+ */
 
 // 이전자산
 $before_mining_total = ($member[$before_mining_target] - $member[$before_mining_amt_target]);
@@ -52,6 +52,10 @@ $pre_setting = sql_fetch($bonus_sql);
 
 $limited = $pre_setting['limited'];
 $limited_per = ($limited/100)/100;
+
+// 수당제외금액 (직급수당)
+$mb_balance_ignore = $member['mb_balance_ignore'];
+
 
 $day_mint_sql = "SELECT rate from  {$g5['bonus_config']} WHERE code = 'mining' ";
 $day_mint_value = sql_fetch($day_mint_sql)['rate'];
@@ -216,7 +220,7 @@ function express_nick_name($mb_id){
 
 // 보너스 수당-한계 퍼센트
 function bonus_per($mb_id ='',$mb_balance='', $mb_limit = ''){
-	global $member,$limited_per;
+	global $member,$limited_per,$mb_balance_ignore;
 
 	if($mb_id == ''){
 		if($member['mb_save_point'] != 0 && $member['mb_balance'] !=0 && $limited_per != 0){
@@ -226,7 +230,7 @@ function bonus_per($mb_id ='',$mb_balance='', $mb_limit = ''){
 		}
 	}else{
 		if($mb_limit != 0 && $mb_balance !=0 && $limited_per != 0){
-			$bonus_per = ($mb_balance/($mb_limit * $limited_per));
+			$bonus_per = (($mb_balance-$mb_balance_ignore)/($mb_limit * $limited_per));
 		}else{
 			$bonus_per = 0;
 		}
@@ -472,7 +476,6 @@ function shift_auto($val,$type = 'eth'){
 	return clean_number_format($val,$decimal);
 }
 
-
 function get_coins_price(){
 	$result = array();
 	$url_list = array(
@@ -637,16 +640,26 @@ function string_shift_code($val){
 }
 
 // 사용중 아이템(패키지)
-function get_g5_item($table=null, $used = 1){
+function get_g5_item($table=null,$used = 1){
 	$array = array();
 	$sql = "SELECT * FROM g5_item";
-	$sql .= " WHERE it_use = 1 ORDER BY it_order";
+	
+	
+	if($used == 1){
+		$average = " it_use = 1 ";
+	}else{
+		$average = " it_use >= 0 ";
+	}
+
+	$sql .= " WHERE ".$average;
 
 	if($table != null){
 		$table = strtoupper($table);
-		$sql .= " WHERE it_use = 1 AND it_name='{$table}' ";
+		$sql .= " AND it_name='{$table}' ";
 	}
-	
+
+	$sql .= " ORDER BY it_order";
+
 	$result = sql_query($sql);
 
 	while($row = sql_fetch_array($result)){
@@ -660,12 +673,10 @@ function get_g5_item($table=null, $used = 1){
 // 아이템 그룹 내 구매패키지정보
 function ordered_items($mb_id, $table=null){
 
-	if($table != null){
 	$item = get_g5_item($table);
-	
 	$upgrade_array = array();
 
-	for($i = 1; $i < count($item); $i++){
+	for($i = 0; $i < count($item); $i++){
 
 		if($table != null){
 			$name_lower = $table;
@@ -707,7 +718,6 @@ function ordered_items($mb_id, $table=null){
 		
 	}
 	return $upgrade_array;
-	}
 }
 
 

@@ -105,12 +105,15 @@
 		.kyc_icon{color:#2b3a6d;}
 
 		.box + .box{margin-top:20px;}
+		.hja_addr{color:black;min-width:80%;color:black !important;background:#f1f4fb !important;border:1px solid #dae0ef !important}
+		.dark .hja_addr{color:black;min-width:80%;background:rgba(255,255,255,0.9)}
+
 	</style>
 
 	<link href="<?=G5_THEME_URL?>/css/scss/radio_set_<?=$_COOKIE['mode']?>.css" rel="stylesheet">
     <main>
         <div class='container profile nomargin nopadding'>
-			<section class="profile_wrap content-box6">
+			<section class="profile_wrap content-box6" style="height: 100%">
 				<div class="col-sm-12 col-12 profile-box">
 					<h3 class='title b_line'>
 						<i class='p1'><img src="<?=G5_THEME_URL?>/img/personl_information.png" alt=""></i>
@@ -224,6 +227,35 @@
 					<!-- <div class="google-auth-top-qr" id="qrcode"></div> -->
 				</div>
 
+				<div class='col-sm-12 col-12 profile-box certificate'>
+					<h3 class='title b_line'>
+						<i class="ri-wallet-2-line kyc_icon" style="font-weight:300;"></i>
+						<span >HJA 주소 등록</span>
+					</h3>
+					<ul class='row mt10'>
+						<li class='col-sm-9 col-9' style="margin-right:0;padding-right:0;">
+							<label >※ HJA BEP-20 주소 등록</label>
+							<input type='text' id='hja_addr' class='hja_addr' placeholder="<?=$member['hja_addr']?>" />
+							
+						</li>
+						<li class='col-sm-3 col-3 text-right' style="">
+							<button class="addr_btn btn" data-name="ch_addr" style="margin:30px 5px 10px 0;"> 등록/변경</button>
+						</li>
+					</ul>
+
+					<!-- <ul class='row'>
+						<li class='col-sm-9 col-8'>
+							<label >환불계좌(실명계좌) 등록</label>
+							<p ><?=get_name($member['mb_center'])?></p>
+						</li>
+						<li class='col-sm-3 col-4 text-right'>
+							<span class="reg_btn" data-name="ch_cert_bank"> 변경</span>
+						</li>
+					</ul> -->
+
+					<!-- <div class="google-auth-top-qr" id="qrcode"></div> -->
+				</div>
+
 				<!-- <div class='col-sm-12 col-12 profile-box'>
 					<h3 class='title b_line'>
 						<i><img src="<?=G5_THEME_URL?>/img/alert_setting.png" alt=""></i>
@@ -246,7 +278,7 @@
 					</ul>
 				</div> -->
 
-				<div class='col-sm-12 col-12 profile-box' style="padding-bottom:80px;">
+				<!-- <div class='col-sm-12 col-12 profile-box'>
 					<h3 class='title b_line'>
 						<i class="p3"><img src="<?=G5_THEME_URL?>/img/recommendation_information.png" alt=""></i>
 						<span >추천인 정보</span>
@@ -258,14 +290,25 @@
 						</li>
 					</ul>
 
-					<!-- <ul class='row'>
+					<ul class='row'>
 						<li class='col-sm-12 col-12'>
 							<label >나의 센터</label>
 							<p ><?=get_name($member['mb_center'])?></p>
 						</li>
-					</ul> -->
+					</ul>
+				</div> -->
 
+				<div class='col-sm-12 col-12 profile-box'>
+					
+					<ul class='row mt10'>
+						
+						<li class='col-12 '>
+							<button class="btn wd" onclick="location.href='page.php?id=member_leave'">회원 탈퇴</button>
+						</li>
+					</ul>
 				</div>
+
+				
 
 
 			</section>
@@ -287,6 +330,30 @@
 			dimShow();
 			$('#'+target).css("display","block");
 			
+		});
+
+		$('.addr_btn').click(function(){
+			var hja_addr = $('#hja_addr').val();
+
+			$.ajax({
+			type: "POST",
+			url: "/util/profile_proc.php",
+			dataType: "json",
+			data:  {
+				"category" : "addr",
+				"hja_addr" : hja_addr
+			},
+			success: function(data) {
+				if(data.result =='success'){
+					dialogModal('주소 등록','<strong> 주소가 등록되었습니다.</strong>','failed',false);
+				}else{
+					dialogModal('처리 실패!','<strong> '+ data.sql+'</strong>','failed',false);
+				}
+			},
+			error:function(e){
+				dialogModal('처리 실패!','<strong> 다시 시도해주세요. 문제가 계속되면 관리자에게 연락주세요.</strong>','failed',false);
+			}
+		});
 		});
 
 		$('.person_agree_view').on('click',function(){
@@ -860,12 +927,13 @@ $(function() {
 	<form method="post" action="">
 		<div class="reset_input_box">
 			<label for="" >성명</label>
-			<input type="text" id="tax_name" maxlength="6" value="">
+			<input type="text" id="tax_name" maxlength="6" value="" style="color: #000">
 			<label for="" >주민등록번호</label>
-			<input type="text" pattern="\d*" id="tax_person_number_1" maxlength="6" class="half" inputmode="number"> 
+			<input type="text" pattern="\d*" id="tax_person_number_1" maxlength="6" class="half" inputmode="number" style="color: #000"> 
 			<label style="display:inline;font-size:22px">-</label>
 			<input type="password" pattern="\d*" id="tax_person_number_2" maxlength="7" class="half" inputmode="number">
 			<input type="hidden" id="tax_person_number_3" maxlength="7" class="half" >
+		
 
 			<label>KYC신분증 첨부 </label>
 				<input type="file" accept="image/*" class='filebox' name="bf_file[1]"  >
@@ -895,7 +963,7 @@ $(function() {
 					</label>
 					<label>
 						<input type="radio" id="wallet_type1" name="wallet_type" class="selector-item_radio" value=3>
-						<span>개인/기타 지갑</span>
+						<span>개인/기타 지갑(메타마스크등)</span>
 					</label>
 				</div>
 
@@ -924,8 +992,9 @@ $(function() {
 <script type="text/javascript">
 	$(function(){  
 		$("#kyc_rec_btn").on('click',function(){
+			
 			var kyc_name = $("#tax_name").val();
-			var kyc_person_number = $("#tax_person_number_1").val()+'-'+$('#tax_person_number_3').val()
+			var kyc_person_number = $("#tax_person_number_1").val()+'-'+$('#tax_person_number_3').val();
 			
 			var fileInput = $(".filebox");
 			
@@ -939,18 +1008,18 @@ $(function() {
 			var rule = 0;
 			var person_number_rule1 = /^(?:[0-9]{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[1,2][0-9]|3[0,1]))/;
 			if(!$("#tax_person_number_1").val().match(person_number_rule1)){
-				alert("올바른 주민등록번호를 입력해주세요 ");
+				dialogModal('KYC 인증','<strong> 올바른 주민등록번호를 입력해주세요. </strong>','warning',false);
 				return false;
 			}else{
 				rule += 1;
 			}
 			var person_number_rule2 = /^[1-4][0-9]{6}$/;
 			if(!$("#tax_person_number_2").val().match(person_number_rule2)){
-				alert("주민등록번호 형식이 맞지 않습니다.\n올바른 주민등록번호를 입력해주세요 ");
+				dialogModal('KYC 인증','<strong> 주민등록번호 형식이 맞지 않습니다.\n올바른 주민등록번호를 입력해주세요. </strong>','warning',false);
 				return false;
 			}else{
 				rule += 1;
-			}
+			}			
 
 			// console.log("파일업로드1 :: " + fileInput[0].files.length);
 			// console.log("파일업로드2 :: " + fileInput[1].files.length);
