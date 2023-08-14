@@ -1169,3 +1169,11 @@ input[type="text"]{max-width:200px}
 }
 
 i{font-style:italic; vertical-align: middle;} /*아이콘*/
+.badge {
+  background: #e1e1e1;
+  border-radius: 0.5rem;
+  padding: 5px 8px;
+  font-size: 80%;
+  margin-left: 5px;
+  color: #333;
+}

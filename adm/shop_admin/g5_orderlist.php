@@ -432,7 +432,7 @@ if(!sql_query(" select mb_id from {$g5['g5_order_delete_table']} limit 1 ", fals
 		<td class="td_odrstatus" style="width:150px;">
 			<?php echo $row['od_status']; ?>
         </td>
-        <td class="td_numsum " ><span class='badge t_white color<?=od_name_return_rank($row['od_name'])?>' ><?=$row['od_name']?></span></td>
+        <td class="td_numsum" style="text-align:center !important"><span class='badge t_white color<?=od_name_return_rank($row['od_name'])?>' ><?=$row['od_name']?></span></td>
         <td class="td_numsum" style='text-align:right'> <?=$od_settle_case?></td>
         <td style="text-align:center"><?php echo $row['od_settle_case'] ?></td>
 		<td style="text-align:right;font-weight:600"> <?=$od_settle_case?></td>
