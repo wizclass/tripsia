@@ -2175,7 +2175,21 @@ function sql_real_escape_string($str, $link=null)
         return mysqli_real_escape_string($link, $str);
     }
 
-    return mysql_real_escape_string($str, $link);
+    return mysqli_real_escape_string($str, $link);
+}
+
+function sql_escape($str, $link=null)
+{
+    global $g5;
+
+    if(!$link)
+        $link = $g5['connect_db'];
+    
+    if(function_exists('mysqli_connect') && G5_MYSQLI_USE) {
+        return mysqli_real_escape_string($link, htmlspecialchars(trim($str),ENT_QUOTES));
+    }
+
+    return $str;
 }
 
 function escape_trim($field)

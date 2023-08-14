@@ -126,4 +126,22 @@ $(function() {
 
         return true;
     });
+
+    $(document).ready(function(){
+        $("#btnExport").on('click',function(){
+            var filename = $(this).data('name');
+            $("#table").tableExport({
+                separator: ",",
+                headings: true,
+                buttonContent: "Export",
+                addClass: "", 
+                defaultClass: "btn",
+                defaultTheme: "btn-default",
+                type: "excel",
+                fileName: filename,
+                position: "bottom",
+                stripQuotes: true 
+            });
+        })
+    });
 });

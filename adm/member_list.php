@@ -255,8 +255,12 @@ $stats_result = sql_fetch($stats_sql); */
 	}
 
 	.local_sch .btn_submit {
+		background: #ff3061 !important;
+		color: #fff;
+		font-size: 0.95em;
 		width: 80px;
 		height: 33px;
+		text-indent: 0px;
 	}
 
 	.f_blue {
@@ -643,7 +647,7 @@ $stats_result = sql_fetch($stats_sql); */
 		<?}else{?>
 			<a href="./member_list.php?range=all" >회원전체보기</a>
 		<?}?>
-		<a id="btnExport" data-name='hwajo_member_info' class="excel" style="padding:10px 10px;">엑셀 다운로드</a>
+		<a id="btnExport" data-name='tripsia_member_info' class="excel" style="padding:10px 10px;">엑셀 다운로드</a>
 	</div>
 <?php } ?>
 
@@ -911,7 +915,7 @@ while ($l_row = sql_fetch_array($get_lc)) {
 
 	// 엑셀 다운로드
 	$('#excel_btn').on("click", function() {
-
+		
 		var s_date = $('#s_date').val();
 		var e_date = $('#e_date').val();
 		//var idx_num = $('.select-btn').val();

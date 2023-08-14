@@ -168,6 +168,16 @@ a.btn_submit{background:#ff4081;color:#fff}
 .btn_list01 {}
 .btn_list01 a:focus {background:#555}
 
+.btn_list01 input, .btn_list01 button, .btn_list01 a {
+  display: inline-block;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background: #fafafa;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .btn_list02 {}
 .btn_list02 a:focus {background:#555}
 
