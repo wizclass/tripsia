@@ -215,7 +215,7 @@ add_stylesheet('<link rel="stylesheet" href="'.$board_skin_url.'/style.css">', 0
 
     <?php
     // 코멘트 입출력
-    include_once(G5_BBS_PATH.'/view_comment.php');
+    include_once(G5_ADMIN_BBS_PATH.'/view_comment.php');
 	?>
 </article>
 <!-- } 게시판 읽기 끝 -->

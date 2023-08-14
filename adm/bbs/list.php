@@ -6,7 +6,7 @@ $is_category = false;
 $category_option = '';
 if ($board['bo_use_category']) {
     $is_category = true;
-    $category_href = G5_ADMIN_URL.'/bbs/board.php?bo_table='.$bo_table;
+    $category_href = get_pretty_url($bo_table,'','','',G5_ADMIN_BBS_URL);
 
     $category_option .= '<li><a href="'.$category_href.'"';
     if ($sca=='')
@@ -17,7 +17,7 @@ if ($board['bo_use_category']) {
     for ($i=0; $i<count($categories); $i++) {
         $category = trim($categories[$i]);
         if ($category=='') continue;
-        $category_option .= '<li><a href="'.($category_href."&amp;sca=".urlencode($category)).'"';
+        $category_option .= '<li><a href="'.(get_pretty_url($bo_table,'','sca='.urlencode($category),G5_ADMIN_BBS_URL)).'"';
         $category_msg = '';
         if ($category==$sca) { // 현재 선택된 카테고리라면
             $category_option .= ' id="bo_cate_on"';
@@ -33,7 +33,11 @@ if ($sop != 'and' && $sop != 'or')
 
 // 분류 선택 또는 검색어가 있다면
 $stx = trim($stx);
-if ($sca || $stx) {
+//검색인지 아닌지 구분하는 변수 초기화
+$is_search_bbs = false;
+
+if ($sca || $stx || $stx === '0') {     //검색이면
+    $is_search_bbs = true;      //검색구분변수 true 지정
     $sql_search = get_sql_search($sca, $sfl, $stx, $sop);
 
     // 가장 작은 번호를 얻어서 변수에 저장 (하단의 페이징에서 사용)
@@ -44,12 +48,8 @@ if ($sca || $stx) {
     if (!$spt) $spt = $min_spt;
 
     $sql_search .= " and (wr_num between {$spt} and ({$spt} + {$config['cf_search_part']})) ";
-
-    // 원글만 얻는다. (코멘트의 내용도 검색하기 위함)
-    // 라엘님 제안 코드로 대체 http://sir.kr/g5_bug/2922
-    $sql = " SELECT COUNT(DISTINCT `wr_parent`) AS `cnt` FROM {$write_table} WHERE {$sql_search} ";
-    $row = sql_fetch($sql);
-    $total_count = $row['cnt'];
+    $where = "WHERE";
+ 
     /*
     $sql = " select distinct wr_parent from {$write_table} where {$sql_search} ";
     $result = sql_query($sql);
@@ -57,9 +57,15 @@ if ($sca || $stx) {
     */
 } else {
     $sql_search = "";
-
-    $total_count = $board['bo_count_write'];
+    $where = "";
+    // $total_count = $board['bo_count_write'];
 }
+
+   // 원글만 얻는다. (코멘트의 내용도 검색하기 위함)
+    // 라엘님 제안 코드로 대체 http://sir.kr/g5_bug/2922
+    $sql = " SELECT COUNT(DISTINCT `wr_parent`) AS `cnt` FROM {$write_table} {$where} {$sql_search} ";
+    $row = sql_fetch($sql);
+    $total_count = $row['cnt'];
 
 if(G5_IS_MOBILE) {
     $page_rows = $board['bo_mobile_page_rows'];
@@ -80,7 +86,7 @@ $notice_count = 0;
 $notice_array = array();
 
 // 공지 처리
-if (!$sca && !$stx) {
+if (!$is_search_bbs) {
     $arr_notice = explode(',', trim($board['bo_notice']));
     $from_notice_idx = ($page - 1) * $page_rows;
     if($from_notice_idx < 0)
@@ -92,15 +98,15 @@ if (!$sca && !$stx) {
 
         $row = sql_fetch(" select * from {$write_table} where wr_id = '{$arr_notice[$k]}' ");
 
-        if (!$row['wr_id']) continue;
+        if (!isset($row['wr_id']) || !$row['wr_id']) continue;
 
         $notice_array[] = $row['wr_id'];
 
         if($k < $from_notice_idx) continue;
 
-        $list[$i] = get_list($row, $board, $board_skin_url, G5_IS_MOBILE ? $board['bo_mobile_subject_len'] : $board['bo_subject_len'],G5_ADMIN_BBS_URL);
+        $list[$i] = get_list($row, $board, $board_skin_url, G5_IS_MOBILE ? $board['bo_mobile_subject_len'] : $board['bo_subject_len'], G5_ADMIN_BBS_URL);
         $list[$i]['is_notice'] = true;
-
+        $list[$i]['num'] = 0;
         $i++;
         $notice_count++;
 
@@ -149,20 +155,25 @@ if (!$sst) {
         $sod = "";
     }
 } else {
-    // 게시물 리스트의 정렬 대상 필드가 아니라면 공백으로 (nasca 님 09.06.16)
-    // 리스트에서 다른 필드로 정렬을 하려면 아래의 코드에 해당 필드를 추가하세요.
-    // $sst = preg_match("/^(wr_subject|wr_datetime|wr_hit|wr_good|wr_nogood)$/i", $sst) ? $sst : "";
-    $sst = preg_match("/^(wr_datetime|wr_hit|wr_good|wr_nogood)$/i", $sst) ? $sst : "";
+    $board_sort_fields = get_board_sort_fields($board, 1);
+    if (!$sod && array_key_exists($sst, $board_sort_fields)) {
+        $sst = $board_sort_fields[$sst];
+    } else {
+        // 게시물 리스트의 정렬 대상 필드가 아니라면 공백으로 (nasca 님 09.06.16)
+        // 리스트에서 다른 필드로 정렬을 하려면 아래의 코드에 해당 필드를 추가하세요.
+        // $sst = preg_match("/^(wr_subject|wr_datetime|wr_hit|wr_good|wr_nogood)$/i", $sst) ? $sst : "";
+        $sst = preg_match("/^(wr_datetime|wr_hit|wr_good|wr_nogood)$/i", $sst) ? $sst : "";
+    }
 }
 
 if(!$sst)
-    $sst  = "wr_datetime, wr_num";
+    $sst  = "wr_num, wr_reply";
 
 if ($sst) {
     $sql_order = " order by {$sst} {$sod} ";
 }
 
-if ($sca || $stx) {
+if ($is_search_bbs) {
     $sql = " select distinct wr_parent from {$write_table} where {$sql_search} {$sql_order} limit {$from_record}, $page_rows ";
 } else {
     $sql = " select * from {$write_table} where wr_is_comment = 0 ";
@@ -180,11 +191,10 @@ if($page_rows > 0) {
     while ($row = sql_fetch_array($result))
     {
         // 검색일 경우 wr_id만 얻었으므로 다시 한행을 얻는다
-        if ($sca || $stx)
+        if ($is_search_bbs)
             $row = sql_fetch(" select * from {$write_table} where wr_id = '{$row['wr_parent']}' ");
 
-        $list[$i] = get_list($row, $board, $board_skin_url, G5_IS_MOBILE ? $board['bo_mobile_subject_len'] : $board['bo_subject_len'],G5_ADMIN_BBS_URL);
-        var_dump( $list[$i]);
+        $list[$i] = get_list($row, $board, $board_skin_url, G5_IS_MOBILE ? $board['bo_mobile_subject_len'] : $board['bo_subject_len'], G5_ADMIN_BBS_URL);
         if (strstr($sfl, 'subject')) {
             $list[$i]['subject'] = search_font($stx, $list[$i]['subject']);
         }
@@ -197,13 +207,15 @@ if($page_rows > 0) {
     }
 }
 
-$write_pages = get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, './board.php?bo_table='.$bo_table.'&'.$qstr.'&amp;page=');
+g5_latest_cache_data($board['bo_table'], $list);
+
+$write_pages = get_paging(G5_IS_MOBILE ? $config['cf_mobile_pages'] : $config['cf_write_pages'], $page, $total_page, get_pretty_url($bo_table, '', $qstr.'&amp;page=','',G5_ADMIN_BBS_URL));
 
 $list_href = '';
 $prev_part_href = '';
 $next_part_href = '';
-if ($sca || $stx) {
-    $list_href = './board.php?bo_table='.$bo_table;
+if ($is_search_bbs) {
+    $list_href = get_pretty_url($bo_table,'','','',G5_ADMIN_BBS_URL);
 
     $patterns = array('#&amp;page=[0-9]*#', '#&amp;spt=[0-9\-]*#');
 
@@ -211,22 +223,21 @@ if ($sca || $stx) {
     $prev_spt = $spt - $config['cf_search_part'];
     if (isset($min_spt) && $prev_spt >= $min_spt) {
         $qstr1 = preg_replace($patterns, '', $qstr);
-        $prev_part_href = './board.php?bo_table='.$bo_table.$qstr1.'&amp;spt='.$prev_spt.'&amp;page=1';
-        $write_pages = page_insertbefore($write_pages, '<a href="'.$prev_part_href.'" class="pg_page pg_prev">이전검색</a>');
+        $prev_part_href = get_pretty_url($bo_table,0,$qstr1.'&amp;spt='.$prev_spt.'&amp;page=1',G5_ADMIN_BBS_URL);
+        $write_pages = page_insertbefore($write_pages, '<a href="'.$prev_part_href.'" class="pg_page pg_search pg_prev">이전검색</a>');
     }
 
     $next_spt = $spt + $config['cf_search_part'];
     if ($next_spt < 0) {
         $qstr1 = preg_replace($patterns, '', $qstr);
-        $next_part_href = './board.php?bo_table='.$bo_table.$qstr1.'&amp;spt='.$next_spt.'&amp;page=1';
-        $write_pages = page_insertafter($write_pages, '<a href="'.$next_part_href.'" class="pg_page pg_end">다음검색</a>');
+        $next_part_href = get_pretty_url($bo_table,0,$qstr1.'&amp;spt='.$next_spt.'&amp;page=1',G5_ADMIN_BBS_URL);
+        $write_pages = page_insertafter($write_pages, '<a href="'.$next_part_href.'" class="pg_page pg_search pg_next">다음검색</a>');
     }
 }
 
-
 $write_href = '';
 if ($member['mb_level'] >= $board['bo_write_level']) {
-    $write_href = G5_ADMIN_URL.'/bbs/write.php?bo_table='.$bo_table;
+    $write_href = short_url_clean(G5_ADMIN_BBS_URL.'/write.php?bo_table='.$bo_table);
 }
 
 $nobr_begin = $nobr_end = "";
@@ -238,9 +249,8 @@ if (preg_match("/gecko|firefox/i", $_SERVER['HTTP_USER_AGENT'])) {
 // RSS 보기 사용에 체크가 되어 있어야 RSS 보기 가능 061106
 $rss_href = '';
 if ($board['bo_use_rss_view']) {
-    $rss_href = './rss.php?bo_table='.$bo_table;
+    $rss_href = G5_ADMIN_BBS_URL.'/rss.php?bo_table='.$bo_table;
 }
 
 $stx = get_text(stripslashes($stx));
 include_once($board_skin_path.'/list.skin.php');
-?>

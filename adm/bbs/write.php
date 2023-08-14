@@ -1,21 +1,25 @@
 <?php
-include_once('./_common.php');
-if($bo_table == "notice")  $sub_menu = "300250";
-if($bo_table == "kyc")  $sub_menu = "300400";
-if($bo_table == "agreement")  $sub_menu = "300500";
-include_once('../admin.head.php');
-include_once(G5_EDITOR_LIB);
-include_once(G5_CAPTCHA_PATH.'/captcha.lib.php');
-?>
+$sub_menu = "750250";
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<?php
+include_once('./_common.php');
+
+auth_check($auth[$sub_menu], 'r');
+
+// $token = get_token();
+
+if ($is_admin != 'super')
+    alert('최고관리자만 접근 가능합니다.');
+
+$g5['title'] = '공지사항';
+
+include_once ('../admin.head.php');
+
 if (!$board['bo_table']) {
-    alert('존재하지 않는 게시판입니다.', G5_ADMIN_URL);
+    alert('존재하지 않는 게시판입니다.', G5_URL);
 }
 
 if (!$bo_table) {
-    alert("bo_table 값이 넘어오지 않았습니다.\\nwrite.php?bo_table=code 와 같은 방식으로 넘겨 주세요.", G5_ADMIN_URL);
+    alert("bo_table 값이 넘어오지 않았습니다.\\nwrite.php?bo_table=code 와 같은 방식으로 넘겨 주세요.", G5_URL);
 }
 
 check_device($board['bo_device']);
@@ -36,18 +40,25 @@ if ($w == 'u' || $w == 'r') {
     } else {
         alert("글이 존재하지 않습니다.\\n삭제되었거나 이동된 경우입니다.", G5_URL);
     }
+} else if ($w == '') { // 게시글 입력시에도 $wr_1 ~ $wr_10 변수 사용시 오류 나오지 않도록 가변변수 생성  (다온테마님,210806)
+    for ($i=1; $i<=10; $i++) {
+        $vvar = "wr_".$i;
+        $$vvar = '';
+    }
 }
+
+run_event('bbs_write', $board, $wr_id, $w);
 
 if ($w == '') {
     if ($wr_id) {
-        alert('글쓰기에는 \$wr_id 값을 사용하지 않습니다.', G5_ADMIN_URL.'/bbs/board.php?bo_table='.$bo_table);
+        alert('글쓰기에는 \$wr_id 값을 사용하지 않습니다.', G5_ADMIN_BBS_URL.'/board.php?bo_table='.$bo_table);
     }
 
     if ($member['mb_level'] < $board['bo_write_level']) {
         if ($member['mb_id']) {
             alert('글을 쓸 권한이 없습니다.');
         } else {
-            alert("글을 쓸 권한이 없습니다.\\n회원이시라면 로그인 후 이용해 보십시오.", './login.php?'.$qstr.'&amp;url='.urlencode($_SERVER['SCRIPT_NAME'].'?bo_table='.$bo_table));
+            alert("글을 쓸 권한이 없습니다.\\n회원이시라면 로그인 후 이용해 보십시오.", G5_ADMIN_BBS_URL.'/login.php?'.$qstr.'&amp;url='.urlencode($_SERVER['SCRIPT_NAME'].'?bo_table='.$bo_table));
         }
     }
 
@@ -63,13 +74,13 @@ if ($w == '') {
 } else if ($w == 'u') {
     // 김선용 1.00 : 글쓰기 권한과 수정은 별도로 처리되어야 함
     //if ($member['mb_level'] < $board['bo_write_level']) {
-    if($member['mb_id'] && $write['mb_id'] == $member['mb_id']) {
+    if($member['mb_id'] && $write['mb_id'] === $member['mb_id']) {
         ;
     } else if ($member['mb_level'] < $board['bo_write_level']) {
         if ($member['mb_id']) {
             alert('글을 수정할 권한이 없습니다.');
         } else {
-            alert('글을 수정할 권한이 없습니다.\\n\\n회원이시라면 로그인 후 이용해 보십시오.', './login.php?'.$qstr.'&amp;url='.urlencode($_SERVER['SCRIPT_NAME'].'?bo_table='.$bo_table));
+            alert('글을 수정할 권한이 없습니다.\\n\\n회원이시라면 로그인 후 이용해 보십시오.', G5_ADMIN_BBS_URL.'/login.php?'.$qstr.'&amp;url='.urlencode($_SERVER['SCRIPT_NAME'].'?bo_table='.$bo_table));
         }
     }
 
@@ -102,7 +113,7 @@ if ($w == '') {
         if ($member['mb_id'])
             alert('글을 답변할 권한이 없습니다.');
         else
-            alert('답변글을 작성할 권한이 없습니다.\\n\\n회원이시라면 로그인 후 이용해 보십시오.', './login.php?'.$qstr.'&amp;url='.urlencode($_SERVER['SCRIPT_NAME'].'?bo_table='.$bo_table));
+            alert('답변글을 작성할 권한이 없습니다.\\n\\n회원이시라면 로그인 후 이용해 보십시오.', G5_ADMIN_BBS_URL.'/login.php?'.$qstr.'&amp;url='.urlencode($_SERVER['SCRIPT_NAME'].'?bo_table='.$bo_table));
     }
 
     $tmp_point = isset($member['mb_point']) ? $member['mb_point'] : 0;
@@ -123,7 +134,7 @@ if ($w == '') {
     if (strstr($write['wr_option'], 'secret')) {
         if ($write['mb_id']) {
             // 회원의 경우는 해당 글쓴 회원 및 관리자
-            if (!($write['mb_id'] == $member['mb_id'] || $is_admin))
+            if (!($write['mb_id'] === $member['mb_id'] || $is_admin))
                 alert('비밀글에는 자신 또는 관리자만 답변이 가능합니다.');
         } else {
             // 비회원의 경우는 비밀글에 답변이 불가함
@@ -175,7 +186,7 @@ if (!empty($group['gr_use_access'])) {
         alert("접근 권한이 없습니다.\\n\\n회원이시라면 로그인 후 이용해 보십시오.", 'login.php?'.$qstr.'&amp;url='.urlencode($_SERVER['SCRIPT_NAME'].'?bo_table='.$bo_table));
     }
 
-    if ($is_admin == 'super' || $group['gr_admin'] == $member['mb_id'] || $board['bo_admin'] == $member['mb_id']) {
+    if ($is_admin == 'super' || $group['gr_admin'] === $member['mb_id'] || $board['bo_admin'] === $member['mb_id']) {
         ; // 통과
     } else {
         // 그룹접근
@@ -187,26 +198,22 @@ if (!empty($group['gr_use_access'])) {
 }
 
 // 본인확인을 사용한다면
-if ($config['cf_cert_use'] && !$is_admin) {
+if ($board['bo_use_cert'] != '' && $config['cf_cert_use'] && !$is_admin) {
     // 인증된 회원만 가능
-    if ($board['bo_use_cert'] != '' && $is_guest) {
-        alert('이 게시판은 본인확인 하신 회원님만 글쓰기가 가능합니다.\\n\\n회원이시라면 로그인 후 이용해 보십시오.', 'login.php?'.$qstr.'&amp;url='.urlencode($_SERVER['SCRIPT_NAME'].'?bo_table='.$bo_table));
+    if ($is_guest) {
+        alert('이 게시판은 본인확인 하신 회원님만 글쓰기가 가능합니다.\\n\\n회원이시라면 로그인 후 이용해 보십시오.', G5_BBS_URL.'/login.php?wr_id='.$wr_id."&".$qstr.'&amp;url='.urlencode(get_pretty_url($bo_table, $wr_id, $qstr,'',G5_ADMIN_BBS_URL)));
     }
 
-    if ($board['bo_use_cert'] == 'cert' && !$member['mb_certify']) {
+    if (strlen($member['mb_dupinfo']) == 64 && $member['mb_certify']) { // 본인 인증 된 계정 중에서 di로 저장 되었을 경우에만
+        goto_url(G5_BBS_URL."/member_cert_refresh.php?url=".urlencode(get_pretty_url($bo_table, $wr_id, $qstr,'',G5_ADMIN_BBS_URL)));
+    }
+
+    if ($board['bo_use_cert'] == 'cert' && !$member['mb_certify']) {            
         alert('이 게시판은 본인확인 하신 회원님만 글쓰기가 가능합니다.\\n\\n회원정보 수정에서 본인확인을 해주시기 바랍니다.', G5_URL);
     }
 
     if ($board['bo_use_cert'] == 'adult' && !$member['mb_adult']) {
-        alert('이 게시판은 본인확인으로 성인인증 된 회원님만 글쓰기가 가능합니다.\\n\\n성인인데 글쓰기가 안된다면 회원정보 수정에서 본인확인을 다시 해주시기 바랍니다.', G5_URL);
-    }
-
-    if ($board['bo_use_cert'] == 'hp-cert' && $member['mb_certify'] != 'hp') {
-        alert('이 게시판은 휴대폰 본인확인 하신 회원님만 글읽기가 가능합니다.\\n\\n회원정보 수정에서 휴대폰 본인확인을 해주시기 바랍니다.', G5_URL);
-    }
-
-    if ($board['bo_use_cert'] == 'hp-adult' && (!$member['mb_adult'] || $member['mb_certify'] != 'hp')) {
-        alert('이 게시판은 휴대폰 본인확인으로 성인인증 된 회원님만 글읽기가 가능합니다.\\n\\n현재 성인인데 글읽기가 안된다면 회원정보 수정에서 휴대폰 본인확인을 다시 해주시기 바랍니다.', G5_URL);
+        alert('이 게시판은 본인확인으로 성인인증 된 회원님만 글읽기가 가능합니다.\\n\\n현재 성인인데 글읽기가 안된다면 회원정보 수정에서 본인확인을 다시 해주시기 바랍니다.', G5_URL);
     }
 }
 
@@ -258,7 +265,7 @@ $is_name     = false;
 $is_password = false;
 $is_email    = false;
 $is_homepage = false;
-if ($is_guest || ($is_admin && $w == 'u' && $member['mb_id'] != $write['mb_id'])) {
+if ($is_guest || ($is_admin && $w == 'u' && $member['mb_id'] !== $write['mb_id'])) {
     $is_name = true;
     $is_password = true;
     $is_email = true;
@@ -315,9 +322,10 @@ if ($w == '') {
     $password_required = '';
 
     if (!$is_admin) {
-        if (!($is_member && $member['mb_id'] == $write['mb_id'])) {
+        if (!($is_member && $member['mb_id'] === $write['mb_id'])) {
             if (!check_password($wr_password, $write['wr_password'])) {
-                alert('비밀번호가 틀립니다.');
+                $is_wrong = run_replace('invalid_password', false, 'write', $write);
+                if(!$is_wrong) alert('비밀번호가 틀립니다.');
             }
         }
     }
@@ -344,8 +352,16 @@ if ($w == '') {
     }
 
     $file = get_file($bo_table, $wr_id);
-    if($file_count < $file['count'])
+    if($file_count < $file['count']) {
         $file_count = $file['count'];
+    }
+
+    for($i=0;$i<$file_count;$i++){
+        if(! isset($file[$i])) {
+            $file[$i] = array('file'=>null, 'source'=>null, 'size'=>null);
+        }
+    }
+
 } else if ($w == 'r') {
     if (strstr($write['wr_option'], 'secret')) {
         $is_secret = true;
@@ -359,8 +375,8 @@ if ($w == '') {
     }
 }
 
-set_session('ss_bo_table', $_REQUEST['bo_table']);
-set_session('ss_wr_id', $_REQUEST['wr_id']);
+set_session('ss_bo_table', $bo_table);
+set_session('ss_wr_id', $wr_id);
 
 $subject = "";
 if (isset($write['wr_subject'])) {
@@ -369,7 +385,7 @@ if (isset($write['wr_subject'])) {
 
 $content = '';
 if ($w == '') {
-    $content = $board['bo_insert_content'];
+    $content = html_purifier($board['bo_insert_content']);
 } else if ($w == 'r') {
     if (!strstr($write['wr_option'], 'html')) {
         $content = "\n\n\n &gt; "
@@ -393,7 +409,9 @@ else
 
 $captcha_html = '';
 $captcha_js   = '';
-if ($is_guest) {
+$is_use_captcha = ((($board['bo_use_captcha'] && $w !== 'u') || $is_guest) && !$is_admin) ? 1 : 0;
+
+if ($is_use_captcha) {
     $captcha_html = captcha_html();
     $captcha_js   = chk_captcha_js();
 }
@@ -408,9 +426,15 @@ if(!is_mobile() || defined('G5_IS_MOBILE_DHTML_USE') && G5_IS_MOBILE_DHTML_USE)
 if ($config['cf_editor'] && $is_dhtml_editor_use && $board['bo_use_dhtml_editor'] && $member['mb_level'] >= $board['bo_html_level']) {
     $is_dhtml_editor = true;
 
+    if ( $w == 'u' && (! $is_member || ! $is_admin || $write['mb_id'] !== $member['mb_id']) ){
+        // kisa 취약점 제보 xss 필터 적용
+        $content = get_text(html_purifier($write['wr_content']), 0);
+    }
+
     if(is_file(G5_EDITOR_PATH.'/'.$config['cf_editor'].'/autosave.editor.js'))
         $editor_content_js = '<script src="'.G5_EDITOR_URL.'/'.$config['cf_editor'].'/autosave.editor.js"></script>'.PHP_EOL;
 }
+include_once(G5_EDITOR_LIB);
 $editor_html = editor_html('wr_content', $content, $is_dhtml_editor);
 $editor_js = '';
 $editor_js .= get_editor_js('wr_content', $is_dhtml_editor);
@@ -419,17 +443,14 @@ $editor_js .= chk_editor_js('wr_content', $is_dhtml_editor);
 // 임시 저장된 글 수
 $autosave_count = autosave_count($member['mb_id']);
 
-// include_once(G5_PATH.'/head.sub.php');
 @include_once ($board_skin_path.'/write.head.skin.php');
-// include_once('./board_head.php');
+include_once('./board_head.php');
 
-$action_url = G5_ADMIN_URL."/bbs/write_update.php";
-
+$action_url = https_url(G5_ADMIN_BBS_DIR)."/write_update.php";
 echo '<!-- skin : '.(G5_IS_MOBILE ? $board['bo_mobile_skin'] : $board['bo_skin']).' -->';
-include_once ($board_skin_path.'/write.skin.php');
 
-// include_once('./board_tail.php');
+include_once ($board_skin_path.'/write.skin.php');
+include_once('./board_tail.php');
 @include_once ($board_skin_path.'/write.tail.skin.php');
-// include_once(G5_PATH.'/tail.sub.php');
-include_once('../admin.tail.php');
-?>
+include_once ('../admin.tail.php');
+add_javascript('<script src="'.G5_JS_URL.'/common.js?ver='.G5_JS_VER.'"></script>', 0);
