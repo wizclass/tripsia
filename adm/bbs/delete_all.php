@@ -14,7 +14,7 @@ $tmp_array = array();
 if ($wr_id) // 건별삭제
     $tmp_array[0] = $wr_id;
 else // 일괄삭제
-    $tmp_array = $_POST['chk_wr_id'];
+    $tmp_array = (isset($_POST['chk_wr_id']) && is_array($_POST['chk_wr_id'])) ? $_POST['chk_wr_id'] : array();
 
 $chk_count = count($tmp_array);
 
@@ -77,9 +77,8 @@ for ($i=$chk_count-1; $i>=0; $i--)
                 and wr_num = '{$write['wr_num']}'
                 and wr_is_comment = 0 ";
     $row = sql_fetch($sql);
-    if ($row['cnt'] && $write_table != "g5_write_kyc"){
-        continue;
-    }
+    if ($row['cnt'])
+            continue;
 
     // 나라오름님 수정 : 원글과 코멘트수가 정상적으로 업데이트 되지 않는 오류를 잡아 주셨습니다.
     //$sql = " select wr_id, mb_id, wr_comment from {$write_table} where wr_parent = '{$write[wr_id]}' order by wr_id ";
@@ -99,7 +98,10 @@ for ($i=$chk_count-1; $i>=0; $i--)
             $result2 = sql_query($sql2);
             while ($row2 = sql_fetch_array($result2)) {
                 // 파일삭제
-                @unlink(G5_DATA_PATH.'/file/'.$bo_table.'/'.$row2['bf_file']);
+                $delete_file = run_replace('delete_file_path', G5_DATA_PATH.'/file/'.$bo_table.'/'.str_replace('../', '',$row2['bf_file']), $row2);
+                if( file_exists($delete_file) ){
+                    @unlink($delete_file);
+                }
 
                 // 썸네일삭제
                 if(preg_match("/\.({$config['cf_image_extension']})$/i", $row2['bf_file'])) {
@@ -157,5 +159,6 @@ if ($count_write > 0 || $count_comment > 0)
 
 delete_cache_latest($bo_table);
 
-goto_url('./board.php?bo_table='.$bo_table.'&amp;page='.$page.$qstr);
-?>
+run_event('bbs_delete_all', $tmp_array, $board);
+
+goto_url(short_url_clean(G5_ADMIN_HTTPS_BBS_URL.'/board.php?bo_table='.$bo_table.'&amp;page='.$page.$qstr));

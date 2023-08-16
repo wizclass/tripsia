@@ -1,72 +1,115 @@
-<?
+<?php
 include_once('./_common.php');
+/*
+$mb_id= 'coolrunning';
+$account= '102555';
+$amount= '600';
+$exchange= '0.00054858';
+$fee= '0.00001697';
+$exchange_total= '0.00056555';
+$cost= '10609.13';
+$source= 'v7';
+$coin= 'btc';
+$type= 'exchage';
+*/
 
-$data	= $_POST;
+$mb_id = $_POST['mb_id'];
+$account = $_POST['account'];
+$amount = $_POST['amount'];
+$exchange = $_POST['exchange']; // 변환된 btc + fee
+$exchange_total = $_POST['exchange_total']; // 변환된 btc
+$fee = $_POST['fee'];
+$cost = $_POST['coin_cost'];
+$source = $_POST['source'];
+$coin = $_POST['coin'];
+$type = $_POST['type'];
 
-$sender_info_sql  = "select * from g5_member where mb_id= '{$data['sender']}'";
-$sender_info = sql_fetch($sender_info_sql);
+$cnt = '1';
+$now_date = date('Y-m-d H:i:s');
+$orderid = date("YmdHis",time()).$cnt;
 
-$fee = 0;
+$where_calc = "mb_".$source."_calc";
+$to_calc = "mb_".$coin."_calc";
 
-$sql = "insert into sh_shop_order
-(`order_code`, 
-`mask_type`,
-`tot_state`,
-`mb_id`,
-`goods_order_total`,
-`goods_order_delivery`,
-`order_total`,
-`coupon_money`,
-`order_name`,
-`order_hp1`,
-`delivery_name`,
-`delivery_hp1`,
-`delivery_addr1`,
-`delivery_addr2`,
-`delivery_addr3`,
-`datetime`) values
-('{$data['hash']}',
-'{$data['checked_mask']}',
-'0',
-'{$sender_info['mb_id']}',
-'{$data['trade_money']}',
-'{$fee}',
-'1',
-'{$data['cell_point']}',
-'{$sender_info['mb_name']}',
-'{$sender_info['mb_hp']}',
-'{$data['name']}',
-'{$data['phone']}',
-'{$data['street']}',
-'{$data['country']}',
-'{$data['country_code']}',
-now())";
+//$amount = deposit EOS 수량 PV랑 동일 수
+//$orderid = depost id 년월일시분초01
+//$pv = deposit EOS수량 만큼 PV (수당 계산)
+//바이너리 및 바이너리 추천 계산용 기록.
 
-sql_query($sql);
-// $data['order_code'] = $data['hash']; // 거래 해쉬값
-// $data['mask_type'] = $data['checked_mask'];
-// $data['tot_state'] = 2;//처리상태
-// $data['mem_id'] = $sender_info['mb_id']; // 주문자 아이디
-// $data['goods_order_total'] = $data['trade_money']; //교환할토큰수량
-// $data['goods_order_delivery'] = $fee; // 배달수수료
-// $data['order_total'] = $data['cell_point']+$fee; //교환할토큰수량+배달수수료
-// $data['coupon_money'] = $data['cell_point']; // 교환요청한 토큰수량
+/*
+$math_sql = "select  sum(mb_save_point + mb_balance + mb_shift_amt + mb_deposit_calc) as total from g5_member where mb_id = '".$member['mb_id']."'";
+$math_total = sql_fetch($math_sql);
+$EOS_TOTAL =  number_format($math_total['total'],3);  //합계잔고  //합계잔고
+*/
 
-// $data['order_name']   = $sender_info['mb_name']; // 주문자 이름
-// $data['order_hp1'] = $sender_info['mb_hp']; // 주문자 폰번호
+$sum_deposit = "select sum(mb_v7_account + mb_v7_calc ) as hap from g5_member where mb_id='".$mb_id."'";
+$sum_deposit_result= sql_fetch($sum_deposit);
+
+$save = $sum_deposit_result['hap'];
 
 
-// $data['delivery_name']   = $data['name']; // 수령인 이름
-// $data['delivery_hp1'] = $data['phone']; // 수령인 폰번호
-// $data['delivery_addr1'] = $data['street']; // 수령인 주소
-// $data['delivery_addr2'] = $data['country']; // 수령인 국가
-// $data['delivery_addr3'] = $data['country_code'];
+if($save < $amount){
+	echo (json_encode(array("result" => "failed",  "code" => "0002", "sql" => 'not enough balance')));
+}else{
 
-// $data['mode'] = 1;//거래형태
-// $data['datetime'] = $date['totime']; // 주문 날짜
+	$sql = "insert g5_shop_change set
+		od_id				= '".$orderid."'
+		, mb_id             = '".$mb_id."'
+        , amount     = '".$amount."'
+        , account     = '".$account."'
+		, exchange     = '".$exchange."'
+		, exchange_total     = '".$exchange_total."'
+		, fee = '".$fee."'
+		, cost           = '".$cost."'
+		, source           = '".$source."'
+        , coin           = '".$coin."'
+		, od_type   = '전환'
+		, od_time    = '".$now_date."'";
+	//print_r($sql);
+	$rst = sql_query($sql, false);
 
-// $db_id	= $DB->insertTable(SHOP_ORDER_TABLE, $data);
+	if($rst){//전환 테이블 기록이 이상 없을 시에
+        /*
+		$sum_deposit = "select mb_v7_calc from g5_member where mb_id='".$mb_id."'";
+		$sum_deposit_result= sql_fetch($sum_deposit);
+        
+        
+		$save_a = ($sum_deposit_result['mb_btc_amt'] - $amount);
+		$save_p = ($sum_deposit_result['mb_deposit_point'] + $upstair);
+		
+		if($save_p>=1 && $save_p<500){
+			$grade = 0;
+		}
+		else if($save_p>=500 && $save_p<3000){
+			$grade = 1;
+		}
+		else if($save_p>=3000 && $save_p<10000){
+			$grade = 2;
+		}
+		else if($save_p>=10000){
+			$grade = 3;
+        }
+		*/
 
+        $update_point = "update g5_member set $where_calc = Round(($where_calc - $amount), 8) , $to_calc = Round(($to_calc + $exchange_total),8) ";
+        
+        /*
+		if($mb_id != 'copy5285m'){
+			$update_point .= ", grade = '".$grade."'";
+        }
+        */
 
-echo json_encode(array("result" => "success",  "code" => "0001", "sql" => $sql));
+		$update_point .= " where mb_id ='".$mb_id."'";
+		
+		//print_r($update_point);
+
+		sql_query($update_point);
+		
+		//echo "<br>";
+		echo (json_encode(array("result" => "success",  "code" => "0000", "sql" => $rst."/".$update_point)));
+	}
+	else{
+		echo (json_encode(array("result" => "failed",  "code" => "0001", "sql" => $update_point)));
+	}
+}
 ?>

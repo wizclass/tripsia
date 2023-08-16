@@ -139,8 +139,8 @@ function  od_name_return_rank($val){
 }
 
 // 주문삭제 히스토리 테이블 필드 추가
-if(!sql_query(" select mb_id from {$g5['g5_shop_order_delete_table']} limit 1 ", false)) {
-    sql_query(" ALTER TABLE `{$g5['g5_shop_order_delete_table']}`
+if(!sql_query(" select mb_id from {$g5['g5_order_delete_table']} limit 1 ", false)) {
+    sql_query(" ALTER TABLE `{$g5['g5_order_delete_table']}`
                     ADD `mb_id` varchar(20) NOT NULL DEFAULT '' AFTER `de_data`,
                     ADD `de_ip` varchar(255) NOT NULL DEFAULT '' AFTER `mb_id`,
                     ADD `de_datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `de_ip` ", true);
@@ -152,8 +152,8 @@ if(!sql_query(" select mb_id from {$g5['g5_shop_order_delete_table']} limit 1 ",
 	.local_ov .tit{color:black; font-weight:600;}
 	.local_ov a{margin-left:20px;padding-right:10px;}
 
-    .od_cancle{border:1px solid #ccc;background:white;border-radius: 0;padding:5px 10px;}
-    .od_cancle:hover{background: black;;border:1px solid black;color:white}
+    .od_cancel{border:1px solid #ccc;background:white;border-radius: 0;padding:5px 10px;}
+    .od_cancel:hover{background: black;;border:1px solid black;color:white}
     .cancle_log_btn{border-radius: 0;}
 </style>
 <link rel="stylesheet" href="/adm/css/scss/admin_custom.css">
@@ -275,7 +275,7 @@ if(!sql_query(" select mb_id from {$g5['g5_shop_order_delete_table']} limit 1 ",
     <button type="button" onclick="javascript:set_date('지난달');">지난달</button>
     <button type="button" onclick="javascript:set_date('전체');">전체</button>
     <input type="submit" style="padding: 5px; width: 100px" value="검색" class="btn_submit" style='width:100px;'> | 
-    <input type="button" style="padding: 5px" class="btn_submit excel" id="btnExport"  data-name='hwajo_order_list' value="엑셀 다운로드" />
+    <input type="button" style="padding: 5px" class="btn_submit excel" id="btnExport"  data-name='tripsia_order_list' value="엑셀 다운로드" />
     <button type='button' class="btn cancle_log_btn" style='margin-left:10px'>취소 내역보기</button>
 </div>
 
@@ -432,13 +432,13 @@ if(!sql_query(" select mb_id from {$g5['g5_shop_order_delete_table']} limit 1 ",
 		<td class="td_odrstatus" style="width:150px;">
 			<?php echo $row['od_status']; ?>
         </td>
-        <td class="td_numsum " ><span class='badge t_white color<?=od_name_return_rank($row['od_name'])?>' ><?=$row['od_name']?></span></td>
+        <td class="td_numsum" style="text-align:center !important"><span class='badge t_white color<?=od_name_return_rank($row['od_name'])?>' ><?=$row['od_name']?></span></td>
         <td class="td_numsum" style='text-align:right'> <?=$od_settle_case?></td>
         <td style="text-align:center"><?php echo $row['od_settle_case'] ?></td>
 		<td style="text-align:right;font-weight:600"> <?=$od_settle_case?></td>
 		<td style="text-align:right"><?=number_format($row['upstair'])?> </td>
         <!-- <td > <?php echo $row['pv']; ?></td> -->
-        <td style="text-align:center"><input type='button' class='btn od_cancle' value='구매취소' data-id="<?=$row['od_id']?>"></td>
+        <td style="text-align:center"><input type='button' class='btn od_cancel' value='구매취소' data-id="<?=$row['od_id']?>"></td>
        
     </tr>
 
@@ -571,7 +571,7 @@ $(function(){
 
 
     // 구매취소 추가 
-    $(".od_cancle").on('click',function(){
+    $(".od_cancel").on('click',function(){
 
         if (confirm("해당구매건을 취소하시겠습니까?\n구매시 사용되었던금액이 반환됩니다.")) {
         } else {

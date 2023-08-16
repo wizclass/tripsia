@@ -155,7 +155,7 @@ function  excute(){
         while( $center = sql_fetch_array($sql_result) ){   
             
             $recom_id = $center['mb_id'];
-            $half_bonus_sql = "SELECT SUM(pv) AS hap FROM g5_shop_order WHERE od_date BETWEEN '{$half_frdate}' AND '{$half_todate}' AND mb_id = '{$recom_id}' ";
+            $half_bonus_sql = "SELECT SUM(pv) AS hap FROM g5_order WHERE od_date BETWEEN '{$half_frdate}' AND '{$half_todate}' AND mb_id = '{$recom_id}' ";
             // if($debug){echo "<code>".$half_bonus_sql."</code>";}
             $half_bonus_result = sql_fetch($half_bonus_sql);
 

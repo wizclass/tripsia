@@ -27,7 +27,7 @@ if($debug){
 }
 
 $order_list_sql = "select s.*, m.mb_level, m.grade, m.mb_name, m.mb_balance,m.mb_balance_ignore, m.mb_deposit_point, m.mb_index
-from g5_shop_order s 
+from g5_order s 
 join g5_member m 
 on s.mb_id = m.mb_id where m.mb_save_point > 0";
 

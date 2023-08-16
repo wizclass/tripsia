@@ -97,7 +97,7 @@ add_stylesheet('<link rel="stylesheet" href="'.$qa_skin_url.'/style.css">', 0);
     <div class="bo_fx">
         <?php if ($is_checkbox) { ?>
         <ul class="btn_bo_adm">
-            <li><input type="submit" name="btn_submit" value="선택delete" onclick="document.pressed=this.value"></li>
+            <li><input type="submit" name="btn_submit" value="선택삭제" onclick="document.pressed=this.value"></li>
         </ul>
         <?php } ?>
 
@@ -111,7 +111,7 @@ add_stylesheet('<link rel="stylesheet" href="'.$qa_skin_url.'/style.css">', 0);
 
 <?php if($is_checkbox) { ?>
 <noscript>
-<p>자바스크립트를 사용하지 않는 경우<br>별도의 확인 절차 없이 바로 선택delete 처리하므로 주의하시기 바랍니다.</p>
+<p>자바스크립트를 사용하지 않는 경우<br>별도의 확인 절차 없이 바로 선택삭제 처리하므로 주의하시기 바랍니다.</p>
 </noscript>
 <?php } ?>
 
@@ -155,7 +155,7 @@ function fqalist_submit(f) {
         return false;
     }
 
-    if(document.pressed == "선택delete") {
+    if(document.pressed == "선택삭제") {
         if (!confirm("선택한 게시물을 정말 delete하시겠습니까?\n\n한번 delete한 자료는 복구할 수 없습니다"))
             return false;
     }

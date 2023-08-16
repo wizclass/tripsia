@@ -28,7 +28,6 @@ $token = get_token();
     <table >
     <caption><?php echo $g5['title']; ?> 목록</caption>
     <thead>
-	<p> 수당 설정 </p>
     <tr>
         <th scope="col" width="30px">No</th>
         <th scope="col" width="40px">사용설정</th>
@@ -49,8 +48,8 @@ $token = get_token();
     
     <tr class='<?if($i == 0){echo 'first';}?>'>
    
-    <td style=""><input type="hidden" name="idx[]" value="<?=$row['idx']?>"><?=$row['idx']?></td>
-    <td style=""><input type='checkbox' class='checkbox' name='check' <?php echo $row['used'] > 0?'checked':''; ?>>
+    <td style="text-align: center;"><input type="hidden" name="idx[]" value="<?=$row['idx']?>"><?=$row['idx']?></td>
+    <td style="text-align: center;"><input type='checkbox' class='checkbox' name='check' <?php echo $row['used'] > 0?'checked':''; ?>>
         <input type="hidden" name="used[]" class='used' value="<?=$row['used']?>">
     </td>
     <td style=""><input class='bonus_input' name="name[]"  value="<?=$row['name']?>"></input></td>
@@ -75,7 +74,7 @@ $token = get_token();
     
     <tfoot>
         <td colspan=12 height="100px" style="padding:20px 0px" class="btn_ly">
-            <input  style="align:center;padding:15px 50px;background:cornflowerblue;" type="submit" class="btn btn_confirm btn_submit" value="저장하기" id="com_send"></input>
+            <input  style="background:cornflowerblue;" type="submit" class="btn btn_confirm btn_submit" value="저장하기" id="com_send"></input>
         </td>
     </tfoot>
 </table>

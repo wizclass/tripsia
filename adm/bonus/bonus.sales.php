@@ -33,7 +33,7 @@ $bonus_limited = $bonus_row['limited'];
 $company_sales = $bonus_row['layer'];
 
 //어제 매출 합계 
-$total_order_query = "SELECT SUM(od_cash) AS hap FROM g5_shop_order WHERE od_date = '{$yesterday}'";
+$total_order_query = "SELECT SUM(od_cash) AS hap FROM g5_order WHERE od_date = '{$yesterday}'";
 $total_order_reult = sql_fetch($total_order_query);
 $total_order = $total_order_reult['hap'];
 

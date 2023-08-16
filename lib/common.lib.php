@@ -356,7 +356,7 @@ function get_dirsize($dir)
 
 
 // 게시물 정보($write_row)를 출력하기 위하여 $list로 가공된 정보를 복사 및 가공
-function get_list($write_row, $board, $skin_url, $subject_len=40)
+function get_list($write_row, $board, $skin_url, $subject_len=40, $BBS_PATH = G5_BBS_URL)
 {
     global $g5, $config, $g5_object;
     global $qstr, $page;
@@ -434,15 +434,17 @@ function get_list($write_row, $board, $skin_url, $subject_len=40)
         $list['icon_link'] = '<i class="fa fa-link" aria-hidden="true"></i> ';
 
     // 분류명 링크
-    $list['ca_name_href'] = get_pretty_url($board['bo_table'], '', 'sca='.urlencode($list['ca_name']));
+    // $list['ca_name_href'] = $BBS_PATH.'/board.php?bo_table='.$board['bo_table'].'&sca='.urlencode($list['ca_name']);
+    $list['ca_name_href'] = get_pretty_url($board['bo_table'], '', 'sca='.urlencode($list['ca_name']),'',$BBS_PATH);
 
-    $list['href'] = get_pretty_url($board['bo_table'], $list['wr_id'], $qstr);
+    // $list['href'] = $BBS_PATH.'/board.php?bo_table='.$board['bo_table'].'&wr_id='.$list['wr_id'].$qstr;
+    $list['href'] = get_pretty_url($board['bo_table'], $list['wr_id'], $qstr,'',$BBS_PATH);
+
     $list['comment_href'] = $list['href'];
 
     $list['icon_new'] = '';
     if ($board['bo_new'] && $list['wr_datetime'] >= date("Y-m-d H:i:s", G5_SERVER_TIME - ($board['bo_new'] * 3600)))
-    $list['icon_new'] = '<img src="'.G5_URL.'/skin/latest/shop_basic/img/icon_new.gif" class="title_icon" alt="새글"> ';
-        // $list['icon_new'] = '<img src="'.$skin_url.'/img/icon_new.gif" class="title_icon" alt="새글"> ';
+        $list['icon_new'] = '<img src="'.$skin_url.'/img/icon_new.gif" class="title_icon" alt="새글"> ';
 
     $list['icon_hot'] = '';
     if ($board['bo_hot'] && $list['wr_hit'] >= $board['bo_hot'])
@@ -455,7 +457,7 @@ function get_list($write_row, $board, $skin_url, $subject_len=40)
     // 링크
     for ($i=1; $i<=G5_LINK_COUNT; $i++) {
         $list['link'][$i] = set_http(get_text($list["wr_link{$i}"]));
-        $list['link_href'][$i] = G5_BBS_URL.'/link.php?bo_table='.$board['bo_table'].'&amp;wr_id='.$list['wr_id'].'&amp;no='.$i.$qstr;
+        $list['link_href'][$i] = $BBS_PATH.'/link.php?bo_table='.$board['bo_table'].'&amp;wr_id='.$list['wr_id'].'&amp;no='.$i.$qstr;
         $list['link_hit'][$i] = (int)$list["wr_link{$i}_hit"];
     }
 
@@ -468,9 +470,10 @@ function get_list($write_row, $board, $skin_url, $subject_len=40)
 
     if ($list['file']['count'])
         $list['icon_file'] = '<i class="fa fa-download" aria-hidden="true"></i> ';
-
+        
     return $list;
 }
+
 
 // get_list 의 alias
 function get_view($write_row, $board, $skin_url)
@@ -2172,7 +2175,21 @@ function sql_real_escape_string($str, $link=null)
         return mysqli_real_escape_string($link, $str);
     }
 
-    return mysql_real_escape_string($str, $link);
+    return mysqli_real_escape_string($str, $link);
+}
+
+function sql_escape($str, $link=null)
+{
+    global $g5;
+
+    if(!$link)
+        $link = $g5['connect_db'];
+    
+    if(function_exists('mysqli_connect') && G5_MYSQLI_USE) {
+        return mysqli_real_escape_string($link, htmlspecialchars(trim($str),ENT_QUOTES));
+    }
+
+    return $str;
 }
 
 function escape_trim($field)

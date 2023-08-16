@@ -73,19 +73,19 @@ function habu_sales_calc($gubun, $recom, $deep){
 
         //누적매출
         $noo_search = " and od_date <='{$bonus_day}' ";
-        $noo_sql ="select sum(od_cart_price)as hap from g5_shop_order where mb_id='{$recom}'".$noo_search;
+        $noo_sql ="select sum(od_cart_price)as hap from g5_order where mb_id='{$recom}'".$noo_search;
 		$sql1= sql_fetch($noo_sql);
         $noo+=$sql1['hap'];
         
         //지난주 주간 매출
         $week_search = " and od_date BETWEEN '{$week_frdate}' AND '{$week_todate}'";
-        $week_search_sql = "select sum(od_cart_price)as hap from g5_shop_order where mb_id='{$recom}'".$week_search;
+        $week_search_sql = "select sum(od_cart_price)as hap from g5_order where mb_id='{$recom}'".$week_search;
         $sql2= sql_fetch($week_search_sql);
         $week+=$sql2['hap'];
         
         //일일매출
         $day_search = " and od_date ='$bonus_day' ";
-        $day_search_sql = "select sum(od_cart_price)as hap from g5_shop_order where mb_id='{$recom}' ". $day_search;
+        $day_search_sql = "select sum(od_cart_price)as hap from g5_order where mb_id='{$recom}' ". $day_search;
         $sql3= sql_fetch($day_search_sql);
         $today+=$sql3['hap'];
         

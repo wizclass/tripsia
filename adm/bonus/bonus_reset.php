@@ -27,7 +27,7 @@ if($sql_member_result){
 
 if($result1){
     
-    $sql_sales_del = " TRUNCATE table g5_shop_order ; ";
+    $sql_sales_del = " TRUNCATE table g5_order ; ";
     sql_query($sql_sales_del);
     $sql_sales_del = " TRUNCATE table package_log ; ";
     $result2 = sql_query($sql_sales_del); 

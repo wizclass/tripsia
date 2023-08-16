@@ -9,7 +9,7 @@ auth_check($auth[$sub_menu], 'r');
 
 
 //회원 리스트를 읽어 온다.
-$sql_common = " FROM g5_shop_order AS o, g5_member AS m ";
+$sql_common = " FROM g5_order AS o, g5_member AS m ";
 $sql_search=" WHERE o.mb_id=m.mb_id AND od_date ='".$bonus_day."' AND LENGTH(od_name) < 4 ";
 $sql_mgroup=' GROUP BY m.mb_id ORDER BY m.mb_no asc';
 

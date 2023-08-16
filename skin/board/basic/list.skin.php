@@ -26,7 +26,7 @@ add_stylesheet('<link rel="stylesheet" href="'.$board_skin_url.'/style.css">', 0
     <?php } ?>
     <!-- } 게시판 카테고리 끝 -->
     
-    <form name="fboardlist" id="fboardlist" action="<?php echo G5_BBS_URL; ?>/board_list_update.php" onsubmit="return fboardlist_submit(this);" method="post">
+    <form name="fboardlist" id="fboardlist" action="<?php echo G5_ADMIN_BBS_URL; ?>/board_list_update.php" onsubmit="return fboardlist_submit(this);" method="post">
     
     <input type="hidden" name="bo_table" value="<?php echo $bo_table ?>">
     <input type="hidden" name="sfl" value="<?php echo $sfl ?>">
@@ -252,7 +252,7 @@ function fboardlist_submit(f) {
             return false;
 
         f.removeAttribute("target");
-        f.action = g5_bbs_url+"/board_list_update.php";
+        f.action = "<?=G5_ADMIN_BBS_URL?>/board_list_update.php";
     }
 
     return true;
@@ -271,7 +271,7 @@ function select_copy(sw) {
 
     f.sw.value = sw;
     f.target = "move";
-    f.action = g5_bbs_url+"/move.php";
+    f.action = "<?=G5_ADMIN_BBS_URL?>/move.php";
     f.submit();
 }
 
