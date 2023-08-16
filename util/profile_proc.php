@@ -71,8 +71,9 @@ if($category == 'pw'){
 
 	if( check_password($_POST['current_pw'], $member['mb_password']) ){
 
+		$get_encrypt_string = get_encrypt_string($_POST['new_pw_re']);
 
-		$pass_sql = " UPDATE g5_member set mb_password = password('".$_POST['new_pw_re']."') where mb_id = '{$member['mb_id']}' ";
+		$pass_sql = " UPDATE g5_member set mb_password = '{$get_encrypt_string}' where mb_id = '{$member['mb_id']}' ";
 		$pass_result= sql_query($pass_sql);
 
 		if( $pass_result){
@@ -94,7 +95,10 @@ if($category == 'tpw'){
 	if( check_password($_POST['auth_pwd'], $member['mb_password']) ){
 
 		if( check_password($_POST['current_tpw'], $member['reg_tr_password']) ){
-			$pass_sql = " UPDATE g5_member set reg_tr_password = password('".$_POST['new_tpw_re']."') where mb_id = '{$member['mb_id']}' ";
+
+			$get_encrypt_string = get_encrypt_string($_POST['new_tpw_re']);
+
+			$pass_sql = " UPDATE g5_member set reg_tr_password = '{$get_encrypt_string}' where mb_id = '{$member['mb_id']}' ";
 			$pass_result= sql_query($pass_sql);
 
 			if( $pass_result){
