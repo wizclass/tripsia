@@ -598,20 +598,21 @@ if(!$default['de_kakaopay_cancelpwd']){
             </td>
         </tr>
         <tr>
-            <th scope="row"><label for="de_bank_use">코인입금사용</label></th>
+            <th scope="row"><label for="de_bank_use"><?=$token_arr['vct']['symbol']?> 사용</label></th>
             <td>
                 <?php echo help("주문시 코인으로 입금을 가능하게 할것인지를 설정합니다.\n사용할 경우 지갑주소를 반드시 입력하여 주십시오.", 50); ?>
                 <select id="de_coin_use" name="de_coin_use">
                     <option value="0" <?php echo get_selected($default['de_coin_use'], 0); ?>>사용안함</option>
-                    <option value="1" <?php echo get_selected($default['de_coin_use'], 1); ?>>사용</option>
+                    <option value="1" <?php echo get_selected($default['de_coin_use'], 1); ?>><?=$token_arr['vct']['symbol']?>포인트</option>
+                    <option value="2" <?php echo get_selected($default['de_coin_use'], 2); ?>><?=$token_arr['vct']['symbol']?>지갑</option>
                 </select>
             </td>
         </tr>
 
         <tr>
-            <th scope="row"><label for="de_token_price">VCT-K 시세</label></th>
+            <th scope="row"><label for="de_token_price"><?=$token_arr['vct']['symbol']?> 시세</label></th>
             <td>
-                <input name="de_token_price" id="de_token_price" value="<?=$default['de_token_price']?>"> VCT-K</input>
+                <input name="de_token_price" id="de_token_price" value="<?=$default['de_token_price']?>"> <?=$token_arr['vct']['symbol']?></input>
             </td>
         </tr>
 

@@ -26,26 +26,24 @@ $cp_count = get_shop_member_coupon_count($member['mb_id'], true);
             <?php echo get_member_profile_img($member['mb_id']); ?> <strong><?php echo $member['mb_id'] ? $member['mb_name'] : '비회원'; ?> 님</strong>
             <ul class="smb_my_act">
                 <?php if ($is_admin == 'super') { ?><li><a href="<?php echo G5_ADMIN_URL; ?>/" class="btn_admin">관리자</a></li><?php } ?>
-                <li><a href="<?php echo G5_BBS_URL; ?>/member_confirm.php?url=register_form.php" class="btn01">정보수정</a></li>
-                <li><a href="<?php echo G5_BBS_URL; ?>/member_confirm.php?url=member_leave.php" onclick="return member_leave();" class="btn01">회원탈퇴</a></li>
+                <!-- <li><a href="<?php echo G5_BBS_URL; ?>/member_confirm.php?url=register_form.php" class="btn01">정보수정</a></li>
+                <li><a href="<?php echo G5_BBS_URL; ?>/member_confirm.php?url=member_leave.php" onclick="return member_leave();" class="btn01">회원탈퇴</a></li> -->
             </ul>
         </div>
-        <ul class="my_pocou">
+        <!-- <ul class="my_pocou">
             <li  class="my_cou">
                 보유쿠폰
-                <!-- class="win_coupon" -->
                 <a href="<?php echo G5_SHOP_URL; ?>/coupon.php"><?php echo number_format($cp_count); ?></a>
             </li>
             <li class="my_point">
                 보유포인트
-                <!-- class="win_point" -->
                 <a href="<?php echo G5_BBS_URL; ?>/point.php"><?php echo number_format($member['mb_point']); ?>점</a>
             </li>
-        </ul>
+        </ul> -->
         <div class="my_info">
             <div class="my_info_wr">
                 <strong>연락처</strong>
-                <span><?php echo ($member['mb_tel'] ? $member['mb_tel'] : '미등록'); ?></span>
+                <span><?php echo ($member['mb_hp'] ? $member['mb_hp'] : '미등록'); ?></span>
             </div>
             <div class="my_info_wr">
                 <strong>E-Mail</strong>
@@ -90,9 +88,9 @@ $cp_count = get_shop_member_coupon_count($member['mb_id'], true);
     </section>
 
     <section id="smb_my_wish" class="wishlist">
-        <h2><a href="<?php echo G5_SHOP_URL; ?>/wishlist.php">최근 위시리스트</a></h2>
+        <h2 style="text-align:center;"><a href="<?php echo G5_SHOP_URL; ?>/wishlist.php">최근 위시리스트</a></h2>
 
-        <ul>
+        <ul style="display: flex;justify-content: center;">
             <?php
             $sql = " select *
                        from {$g5['g5_shop_wish_table']} a,

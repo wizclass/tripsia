@@ -11,7 +11,8 @@ if(defined('G5_THEME_PATH')) {
     require_once(G5_THEME_MSHOP_PATH.'/shop.head.php');
     return;
 }
-
+include_once(G5_PATH."/theme/{$config['cf_theme']}/_include/wallet.php");
+include_once(G5_PATH."/util/coin_config.php");
 include_once(G5_PATH.'/head.sub.php');
 include_once(G5_LIB_PATH.'/outlogin.lib.php');
 include_once(G5_LIB_PATH.'/visit.lib.php');
@@ -19,8 +20,9 @@ include_once(G5_LIB_PATH.'/connect.lib.php');
 include_once(G5_LIB_PATH.'/popular.lib.php');
 include_once(G5_LIB_PATH.'/latest.lib.php');
 
-include_once(G5_PATH."/util/coin_config.php");
-include_once(G5_PATH."/util/callOneCoin.php");
+if($default['de_coin_use'] > 1){
+    include_once(G5_PATH."/util/callOneCoin.php");
+}
 ?>
 
 <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.35/dist/web3.min.js"></script>

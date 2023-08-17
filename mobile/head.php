@@ -23,7 +23,9 @@ include_once(G5_LIB_PATH.'/popular.lib.php');
 
 if($is_member){
 include_once(G5_PATH.'/util/coin_config.php');
-include_once(G5_PATH."/util/callOneCoin.php");
+if($default['de_coin_use'] > 1){
+    include_once(G5_PATH."/util/callOneCoin.php");
+}
 }
 ?>
 
