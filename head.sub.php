@@ -99,7 +99,8 @@ var g5_admin_url = "<?php echo G5_ADMIN_URL; ?>";
 <?php } ?>
 </script>
 
-<script src="<?php echo G5_JS_URL ?>/jquery-1.8.3.min.js"></script>
+<!-- <script src="<?php echo G5_JS_URL ?>/jquery-1.8.3.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-latest.min.js">
 <script src="<?php echo G5_JS_URL ?>/jquery.shop.menu.js?ver=<?php echo G5_JS_VER; ?>"></script>
 <?php
 if (defined('_SHOP_')) {

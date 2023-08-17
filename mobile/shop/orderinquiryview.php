@@ -168,8 +168,8 @@ if($od['od_pg'] == 'lg') {
             <dl id="m_sod_bsk_tot">
                 <dt class="sod_bsk_dvr">주문총액</dt>
                 <dd class="sod_bsk_dvr"><strong><?php echo number_format($od['od_cart_price']); ?> 원 
-                <?php if($od['od_settle_case'] == "코인"){?>
-                (<?php echo number_format($od['od_token_price']); ?> <?=$token_symbol?>)
+                <?php if($default['de_coin_use'] > 0){?>
+                (<?php echo _clean_number_format($od['od_token_price']); ?> <?=$token_symbol?>)
                 <?php } ?>
             </strong>
         </dd>
@@ -209,8 +209,8 @@ if($od['od_pg'] == 'lg') {
 
                 <dt class="sod_bsk_cnt">총계</dt>
                 <dd class="sod_bsk_cnt"><strong><?php echo number_format($tot_price); ?> 원 
-                <?php if($od['od_settle_case'] == "코인"){?>
-                (<?php echo number_format($od['od_token_price']); ?> <?=$token_symbol?>)
+                <?php if($default['de_coin_use'] > 0){?>
+                (<?php echo _clean_number_format($od['od_token_price']); ?> <?=$token_symbol?>)
                 <?php } ?>
             </strong></dd>
 
@@ -237,7 +237,7 @@ if($od['od_pg'] == 'lg') {
         {
 
         
-            if($od['od_settle_case'] == "코인"){ 
+            if($default['de_coin_use'] > 0){ 
                 $wanbul = display_price($receipt_price,false);
             }else{
                 $wanbul  = $receipt_price." 원";
@@ -290,7 +290,7 @@ if($od['od_pg'] == 'lg') {
                     <td><?php echo $od_id; ?></td>
                 </tr>
 
-            <?php if($od['od_settle_case'] == "코인"){?>
+            <?php if($default['de_coin_use'] > 1){?>
                 <tr>
                     <?php if(NETWORK == "mainnet"){
                            $NETWORK = "";
@@ -310,7 +310,7 @@ if($od['od_pg'] == 'lg') {
                     </a></td>
                   </tr>
 
-                        <?php } ?>
+            <?php } ?>
 
                 <tr>
                     <th scope="row">주문일시</th>
@@ -324,7 +324,7 @@ if($od['od_pg'] == 'lg') {
 
                 <tr>
                     <th scope="row">결제금액</th>
-                    <?php if($od['od_settle_case'] == "코인"){ ?>
+                    <?php if($default['de_coin_use'] > 0){ ?>
                      <td><?php echo display_price_2($od['od_cart_price'],false,$od['od_token_price']); ?></td>
                     <?php }else{?>
                     <td><?php echo $od_receipt_price; ?></td>
@@ -360,16 +360,17 @@ if($od['od_pg'] == 'lg') {
                     <th scope="row">입금자명</th>
                     <td><?php echo get_text($od['od_deposit_name']); ?></td>
                 </tr>
+                <?php if($default['de_coin_use'] != 1) {?>
                 <tr>
                     <th scope="row">입금계좌</th>  
-
-                    <?php if($od['od_settle_case'] == "코인"){?>
-                    <td><?php echo substr($od['od_bank_account'],0,12)." ... ".substr($od['od_bank_account'],strlen($od['od_bank_account'])-12,12) ?></td>
-                    <?php }else{?>
+                    <?php if($default['de_coin_use'] > 1){?>
+                        <td><?php echo substr($od['od_bank_account'],0,12)." ... ".substr($od['od_bank_account'],strlen($od['od_bank_account'])-12,12) ?></td>
+                    <?php }else{ ?>
                         <td><?php echo $od['od_bank_account'] ?></td>
                     <?php } ?>
                 </tr>
                 <?php
+                    }
                 }
 
                 if($disp_receipt) {
@@ -632,7 +633,7 @@ if($od['od_pg'] == 'lg') {
             <li>
                 총 구매액
                 <?php 
-                 if($od['od_settle_case'] == "코인"){ ?>
+                 if($default['de_coin_use'] > 0){ ?>
                      <strong><?php echo display_price_2($tot_price,false,$od['od_token_price']); ?></strong>
                 <?php }else{ ?>
                     <strong><?php echo $tot_price ?> 원</strong>
@@ -643,7 +644,7 @@ if($od['od_pg'] == 'lg') {
             if ($misu_price > 0) {
             echo '<li>';
 
-            if($od['od_settle_case'] == "코인"){
+            if($default['de_coin_use'] > 0){
                 echo '결제액(관리자 확인예정)'.PHP_EOL;
                 echo '<strong>'.display_price_2($misu_price,false,$od['od_token_price']).'</strong>';
             }else{
@@ -656,7 +657,7 @@ if($od['od_pg'] == 'lg') {
             ?>
             <li id="alrdy">
                 <?php 
-                 if($od['od_settle_case'] == "코인"){ ?>
+                 if($default['de_coin_use'] > 0){ ?>
                       미결제액
                 <?php }else{ ?>
                     결제액

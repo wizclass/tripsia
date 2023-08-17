@@ -159,7 +159,7 @@ jQuery(function($){
                         }
                     });
             
-                    
+                    $(".sit_opt_prc").empty().html("<strong>"+number_format(String(total))+"</strong>원")
                     $("#sit_tot_price").empty().html("<span>총 금액 </span><strong>"+number_format(String(total))+"</strong>원 ("+number_format(total/$('#exchange_rate').val())+" "+$('#token_symbol').val()+")")
                     
                     $("#sit_tot_price").trigger("price_calculate", [total]);

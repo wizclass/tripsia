@@ -18,6 +18,7 @@ if (is_array($files)) {
 }
 
 include_once(G5_PATH.'/head.sub.php');
+include_once(G5_PATH.'/util/coin_config.php');
 
 function print_menu1($key, $no='')
 {
