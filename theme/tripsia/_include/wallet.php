@@ -822,3 +822,29 @@ if( !function_exists( 'array_column' ) ):
         return $result;
     }
 endif;
+
+
+// 트립시아 P2P 입출금 대응
+function array_bank_account($category = null, $idx = null){
+	$sql = "SELECT * FROM wallet_account ";
+	$array = [];
+
+	if($category != null){
+		$where  = " WHERE category = '{$category}'";
+
+		if($idx != null){
+			$where  .= " AND idx = {$idx}";
+		}
+	}else{
+		$where  = " ";
+	}
+	$order = " ORDER BY sequence ASC ";
+
+	$sql_result = sql_query($sql.$where.$order);
+
+	while($row = sql_fetch_array($sql_result)){
+		array_push($array,$row);
+	}
+	
+	return $array;
+}

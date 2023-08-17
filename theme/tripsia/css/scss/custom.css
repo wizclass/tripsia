@@ -250,7 +250,7 @@ header .top_title #mode_select {
 
 /*인트로*/
 #myBar {
-  background-color: #6214ab;
+  background-color: #3b86ff;
 }
 
 .b_main {
@@ -258,7 +258,7 @@ header .top_title #mode_select {
   color: #fff !important;
 }
 .b_main:hover {
-  background: #6214ab !important;
+  background: #3b86ff !important;
 }
 
 .b_sub {
@@ -467,6 +467,11 @@ a.btn_cancle,
 
 .red {
   color: red;
+}
+
+.transparent {
+  background: transparent !important;
+  box-shadow: none;
 }
 
 .adm_btn {

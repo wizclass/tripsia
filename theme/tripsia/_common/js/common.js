@@ -50,6 +50,13 @@ $(document).on('keyup', 'input[inputmode=person_key]', function (event) {
 	// this.value = this.value.replace(/(?<=.{1})./gi, "*")   
 });
 
+// 콤마제거
+function uncomma(str) {
+	str = String(str);
+	return str.replace(/[^\d]+/g, '');
+}
+
+
 
 // 개인정보 마스킹 처리 
 let maskingFunc = {
@@ -223,6 +230,12 @@ function onlyNumber(id) {
 		let isNum = this.value[this.value.length - 1].match(/[0-9.]/g);
 		if (!isNum) this.value = this.value.substring(0, this.value.length - 1);
 	}
+}
+
+// 기호제거 숫자만 입력
+function onlyNumberReturn(val) {
+	var regex = /[^0-9]/g;
+	return val.replace(regex,'');
 }
 
 // 코인 숫자 8자리
