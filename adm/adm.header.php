@@ -39,10 +39,10 @@ $query_string = $qstr ? '?'.$qstr : '';
 
 <div class="sch_last">
     <strong> 기간별검색</strong>
-    <input type="text" name="fr_date" value="<?php echo $fr_date ?>" id="fr_date" class="frm_input" size="15" style="width:120px" maxlength="10">
+    <input type="date" name="fr_date" value="<?php echo $fr_date ?>" id="fr_date" class="frm_input" size="15" style="width:120px" maxlength="10">
     <label for="fr_date" class="sound_only">시작일</label>
     ~
-    <input type="text" name="to_date" value="<?php echo $to_date ?>" id="to_date" class="frm_input" size="15" style="width:120px" maxlength="10">
+    <input type="date" name="to_date" value="<?php echo $to_date ?>" id="to_date" class="frm_input" size="15" style="width:120px" maxlength="10">
     <label for="to_date" class="sound_only">종료일</label>
 </div>
 

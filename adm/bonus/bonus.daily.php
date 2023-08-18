@@ -85,7 +85,7 @@ if(!$get_today){
 		
 		if( $total_benefit > $mb_index ){
 			$remaining_benefit = $total_benefit - $mb_index;
-			$cut_benefit = $mb_index - $mb_balance;
+			$cut_benefit = $mb_index - $mb_balance <= 0 ? 0 : clean_coin_format($mb_index-$mb_balance);
 			
 			$origin_benefit = $benefit;
 			if($benefit - $remaining_benefit > 0) {

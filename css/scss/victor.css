@@ -22,6 +22,8 @@
   background: #f6bd14;
   border-radius: 0 !important;
   border: 1px solid #bc8d00;
+  width: 75px;
+  height: 30px;
 }
 
 #mb_login .frm_input {

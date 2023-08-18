@@ -36,7 +36,7 @@ if($coin_cnt > 9){
     .main{padding:15px;background: ghostwhite;}
     .empty{line-height:24px;width:600px; padding:30px;text-align: center;border:1px dashed #ccc;}
     .btn_layer{width:100%;margin:20px auto;text-align:center;}
-    .btn_layer button{padding:15px 30px;font-size: 1em;border-radius:5px !important;height:44px;font-weight:500;border:none;}
+    .btn_layer button{ /*padding:15px 30px;*/font-size: 1em;border-radius:5px !important;height:44px;font-weight:500;border:none;}
 
     
     .checkbox{width:160px;}
