@@ -807,9 +807,9 @@ if ($is_kakaopay_use) {
         ?>
     </form>
 
-    <div id="order_modal" style="display:none; position:fixed; background-color: #000; opacity: 0.7; z-index: 99999; top:0; width:100%; height:100%">
-        <div id="show_progress" style="position: absolute; top:50%">
-        <img src="<?php echo G5_MOBILE_URL; ?>/shop/img/loading.gif" alt="">
+    <div id="order_modal" style="display: none; align-items:center; justify-content: center; position:fixed; background-color: #000; opacity: 0.7; z-index: 99999; top:0; width:100%; height:100%">
+        <div id="show_progress" style="display: flex; flex-direction: column; align-items: center">
+        <img src="<?php echo G5_MOBILE_URL; ?>/shop/img/loading.gif" alt="" style="margin-bottom: 12px">
         <span style="color: #fff;">주문완료 중입니다. 잠시만 기다려 주십시오.</span>
         </div>
     </div>
@@ -1544,8 +1544,8 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
             return false;
         }
 
-        document.getElementById("order_modal").style.display = "block";
-        document.getElementById("show_progress").style.display = "block";
+        document.getElementById("order_modal").style.display = "flex";
+        document.getElementById("show_progress").style.display = "flex";
 
         if (settle_method == "코인") {
 
