@@ -309,7 +309,7 @@ if ($w == '') {
 				set mb_id = '{$mb_id}',
 					 mb_password = '".get_encrypt_string($mb_password)."',
 					 mb_name = '{$mb_name}',
-					 mb_nick = '',
+					 mb_nick = '{$mb_name}',
 					 mb_nick_date = '".G5_TIME_YMD."',
 					 mb_email = '{$mb_email}',
 					 mb_homepage = '{$mb_homepage}',

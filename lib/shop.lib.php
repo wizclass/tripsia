@@ -599,26 +599,39 @@ function get_large_image($img, $it_id, $btn_image=true)
     return $str;
 }
 
+function _clean_coin_format($val, $decimal = 2){
+	$_num = (int)str_pad("1",$decimal+1,"0",STR_PAD_RIGHT);
+	return floor($val*$_num)/$_num;
+}
+
+function _clean_number_format($val, $decimal = 2){
+	$_decimal = $decimal <= 0 ? 1 : $decimal;
+	$_num = number_format(_clean_coin_format($val,$decimal), $_decimal);
+    $_num = rtrim($_num, 0);
+    $_num= rtrim($_num, '.');
+
+    return $_num;
+}
 
 // 금액 표시
 function display_price($price, $tel_inq=false)
 {
+    global $_token;
     global $exchange_rate;
     if ($tel_inq)
         $price = '전화문의';
     else
-        $price = number_format($price, 0)." 원 (".number_format($price/$exchange_rate,0)." VCT-K)";
-
+        $price = number_format($price, 0)." 원 ("._clean_number_format($price/$exchange_rate)." {$_token['symbol']})";
     return $price;
 }
 
-function display_price_2($price, $tel_inq=false, $coin_price)
+function display_price_2($price, $tel_inq, $coin_price)
 {
+    global $_token;
     if ($tel_inq)
         $price = '전화문의';
     else
-        $price = number_format($price, 0)." 원 (".number_format($coin_price)." VCT-K)";
-
+        $price = number_format($price, 0)." 원 ("._clean_number_format($coin_price)." {$_token['symbol']})";
     return $price;
 }
 
@@ -1047,17 +1060,17 @@ function get_item_options($it_id, $subject, $is_div='', $is_first_option_title='
         $select = '<select id="it_option_1" class="it_option">'.PHP_EOL;
         $select .= '<option value="">선택</option>'.PHP_EOL;
         for($i=0; $row=sql_fetch_array($result); $i++) {
-            if($row['io_price'] >= 0)
-                $price = '&nbsp;&nbsp;+ '.number_format($row['io_price']).'원';
+            if($row['ct_price'] >= 0)
+                $price = '&nbsp;&nbsp;+ '.number_format($row['ct_price']).'원';
             else
-                $price = '&nbsp;&nbsp; '.number_format($row['io_price']).'원';
+                $price = '&nbsp;&nbsp; '.number_format($row['ct_price']).'원';
 
             if($row['io_stock_qty'] < 1)
                 $soldout = '&nbsp;&nbsp;[품절]';
             else
                 $soldout = '';
 
-            $select .= '<option value="'.$row['io_id'].','.$row['io_price'].','.$row['io_stock_qty'].'">'.$row['io_id'].$price.$soldout.'</option>'.PHP_EOL;
+            $select .= '<option value="'.$row['io_id'].','.$row['ct_price'].','.$row['io_stock_qty'].'">'.$row['io_id'].$price.$soldout.'</option>'.PHP_EOL;
         }
         $select .= '</select>'.PHP_EOL;
         
@@ -1101,10 +1114,10 @@ function get_item_supply($it_id, $subject, $is_div='', $is_first_option_title=''
             $options[$opt_id[0]] = array();
 
         if(strlen($opt_id[1])) {
-            if($row['io_price'] >= 0)
-                $price = '&nbsp;&nbsp;+ '.number_format($row['io_price']).'원';
+            if($row['ct_price'] >= 0)
+                $price = '&nbsp;&nbsp;+ '.number_format($row['ct_price']).'원';
             else
-                $price = '&nbsp;&nbsp; '.number_format($row['io_price']).'원';
+                $price = '&nbsp;&nbsp; '.number_format($row['ct_price']).'원';
             $io_stock_qty = get_option_stock_qty($it_id, $row['io_id'], $row['io_type']);
 
             if($io_stock_qty < 1)
@@ -1112,7 +1125,7 @@ function get_item_supply($it_id, $subject, $is_div='', $is_first_option_title=''
             else
                 $soldout = '';
 
-            $options[$opt_id[0]][] = '<option value="'.$opt_id[1].','.$row['io_price'].','.$io_stock_qty.'">'.$opt_id[1].$price.$soldout.'</option>';
+            $options[$opt_id[0]][] = '<option value="'.$opt_id[1].','.$row['ct_price'].','.$io_stock_qty.'">'.$opt_id[1].$price.$soldout.'</option>';
         }
     }
 
@@ -1159,7 +1172,7 @@ function print_item_options($it_id, $cart_id)
 {
     global $g5;
 
-    $sql = " select ct_option, ct_qty, io_price
+    $sql = " select ct_option, ct_qty, ct_price
                 from {$g5['g5_shop_cart_table']} where it_id = '$it_id' and od_id = '$cart_id' order by io_type asc, ct_id asc ";
     $result = sql_query($sql);
 
@@ -1168,9 +1181,9 @@ function print_item_options($it_id, $cart_id)
         if($i == 0)
             $str .= '<ul>'.PHP_EOL;
         $price_plus = '';
-        if($row['io_price'] >= 0)
+        if($row['ct_price'] >= 0)
             $price_plus = '+';
-        $str .= '<li>'.get_text($row['ct_option']).' '.$row['ct_qty'].'개 ('.$price_plus.display_price($row['io_price'],false).')</li>'.PHP_EOL;
+        $str .= '<li>'.get_text($row['ct_option']).' '.$row['ct_qty'].'개</li>'.PHP_EOL;
     }
 
     if($i > 0)
@@ -1602,10 +1615,10 @@ function get_order_info($od_id)
     $info = array();
 
     // 장바구니 주문금액정보
-    $sql = " select SUM(IF(io_type = 1, (io_price * ct_qty), ((ct_price + io_price) * ct_qty))) as price,
+    $sql = " select SUM(IF(io_type = 1, (ct_price * ct_qty), ((ct_price + ct_price) * ct_qty))) as price,
                     SUM(cp_price) as coupon,
-                    SUM( IF( ct_notax = 0, ( IF(io_type = 1, (io_price * ct_qty), ( (ct_price + io_price) * ct_qty) ) - cp_price ), 0 ) ) as tax_mny,
-                    SUM( IF( ct_notax = 1, ( IF(io_type = 1, (io_price * ct_qty), ( (ct_price + io_price) * ct_qty) ) - cp_price ), 0 ) ) as free_mny
+                    SUM( IF( ct_notax = 0, ( IF(io_type = 1, (ct_price * ct_qty), ( (ct_price + ct_price) * ct_qty) ) - cp_price ), 0 ) ) as tax_mny,
+                    SUM( IF( ct_notax = 1, ( IF(io_type = 1, (ct_price * ct_qty), ( (ct_price + ct_price) * ct_qty) ) - cp_price ), 0 ) ) as free_mny
                 from {$g5['g5_shop_cart_table']}
                 where od_id = '$od_id'
                   and ct_status IN ( '주문', '입금', '준비', '배송', '완료' ) ";
@@ -1701,7 +1714,7 @@ function get_order_info($od_id)
     $od_free_mny = $free_mny;
 
     // 장바구니 취소금액 정보
-    $sql = " select SUM(IF(io_type = 1, (io_price * ct_qty), ((ct_price + io_price) * ct_qty))) as price
+    $sql = " select SUM(IF(io_type = 1, (ct_price * ct_qty), ((ct_price + ct_price) * ct_qty))) as price
                 from {$g5['g5_shop_cart_table']}
                 where od_id = '$od_id'
                   and ct_status IN ( '취소', '반품', '품절' ) ";
@@ -1743,7 +1756,7 @@ function get_item_point($it, $io_id='', $trunc=10)
         $it_price = $it['it_price'];
 
         if($it['it_point_type'] == 2 && $io_id) {
-            $sql = " select io_id, io_price
+            $sql = " select io_id, ct_price
                         from {$g5['g5_shop_item_option_table']}
                         where it_id = '{$it['it_id']}'
                           and io_id = '$io_id'
@@ -1752,7 +1765,7 @@ function get_item_point($it, $io_id='', $trunc=10)
             $opt = sql_fetch($sql);
 
             if($opt['io_id'])
-                $it_price += $opt['io_price'];
+                $it_price += $opt['ct_price'];
         }
 
         $it_point = floor(($it_price * ($it['it_point'] / 100) / $trunc)) * $trunc;
@@ -1784,7 +1797,7 @@ function get_sendcost($cart_id, $selected=1)
     $result = sql_query($sql);
     for($i=0; $sc=sql_fetch_array($result); $i++) {
         // 합계
-        $sql = " select SUM(IF(io_type = 1, (io_price * ct_qty), ((ct_price + io_price) * ct_qty))) as price,
+        $sql = " select SUM(IF(io_type = 1, (ct_price * ct_qty), ((ct_price + ct_price) * ct_qty))) as price,
                         SUM(ct_qty) as qty
                     from {$g5['g5_shop_cart_table']}
                     where it_id = '{$sc['it_id']}'
@@ -2527,9 +2540,9 @@ function before_check_cart_price($s_cart_id, $is_ct_select_condition=false, $is_
             if( $io_infos['io_type'] ){
                 $this_io_type = $io_infos['io_type'];
             }
-            if( $io_infos['io_id'] && $io_infos['io_price'] !== $row['io_price'] ){
+            if( $io_infos['io_id'] && $io_infos['ct_price'] !== $row['ct_price'] ){
                 // 장바구니 테이블 옵션 가격과 상품 옵션테이블의 옵션 가격이 다를경우
-                $update_querys['io_price'] = $io_infos['io_price'];
+                $update_querys['ct_price'] = $io_infos['ct_price'];
             }
         }
 

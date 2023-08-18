@@ -314,7 +314,7 @@ include_once(G5_LIB_PATH."/bootbox/bootbox.php");
                        <button type="button" class="sit_qty_minus"><i class="fa fa-minus" aria-hidden="true"></i><span class="sound_only">감소</span></button>
                         <input type="text" name="ct_qty[<?php echo $it_id; ?>][]" value="<?php echo $it['it_buy_min_qty']; ?>" id="ct_qty_<?php echo $i; ?>" class="num_input" size="5">
                         <button type="button" class="sit_qty_plus"><i class="fa fa-plus" aria-hidden="true"></i><span class="sound_only">증가</span></button>
-                        <span class="sit_opt_prc">+0원</span>
+                        <span class="sit_opt_prc"><?=number_format(get_price($it))?>원</span>
                     </div>
                 </li>
             </ul>

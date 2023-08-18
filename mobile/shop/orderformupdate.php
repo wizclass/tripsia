@@ -606,6 +606,12 @@ $od_memo          = clean_xss_tags($od_memo);
 $od_deposit_name  = clean_xss_tags($od_deposit_name);
 $od_tax_flag      = $default['de_tax_flag_use'];
 
+if($default['de_coin_use'] == 1 && $od_settle_case == "코인"){
+    include_once(G5_PATH.'/util/coin_config.php');
+    $od_settle_case =  $token_arr['vct']['symbol'];
+    $update_point_sql = "update g5_member set mb_fee =  mb_fee + {$_POST['od_token_price']} where mb_id = '{$member['mb_id']}'";
+}
+
 // 주문서에 입력
 $sql = " insert {$g5['g5_shop_order_table']}
             set od_id             = '$od_id',
@@ -666,6 +672,10 @@ $sql = " insert {$g5['g5_shop_order_table']}
                 ";
 
 $result = sql_query($sql, false);
+
+if($result){
+    sql_query($update_point_sql);
+}
 
 // 정말로 insert 가 되었는지 한번더 체크한다.
 $exists_sql = "select od_id, od_tno, od_ip from {$g5['g5_shop_order_table']} where od_id = '$od_id'";

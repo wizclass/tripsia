@@ -735,7 +735,7 @@ hr {
 
 .hr_dash {
   border: 0;
-  border-bottom: 2px dashed rgba(0, 0, 0, 0.2) !important;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.1) !important;
 }
 
 .dark .hr_dash {

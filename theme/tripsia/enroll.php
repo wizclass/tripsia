@@ -336,7 +336,7 @@ if ($_GET['recom_referral']){
 		//var eng_large = pw.search(/[A-Z]/ig);
 		var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
-		var pattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*=+])(?=.*[0-9]).{4,12}/;
+		var pattern = /^((?=.*[a-zA-Z])|(?=.*[!@#$%^&*=+]))(?=.*[0-9]).{4,8}/;
 
 		if (pw.length < 4) {
 			$("#pm_1").attr('class', 'x_li');
@@ -726,8 +726,8 @@ if ($_GET['recom_referral']){
 
 					<strong><span class='mb10' style='display:block;font-size:13px;'>비밀번호 설정 조건</span></strong>
 					<ul>
-						<li class="x_li" id="pm_1" >4자 이상 12자 이하</li>
-						<li class="x_li" id="pm_3" >숫자+영문+특수문자</li>
+						<li class="x_li" id="pm_1" >4자 이상 8자 이하</li>
+						<li class="x_li" id="pm_3" >숫자+영문 혹은 특수문자</li>
 						<li class="x_li" id="pm_5" >비밀번호 비교</li>
 					</ul>
 				</li>

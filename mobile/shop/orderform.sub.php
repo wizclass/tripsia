@@ -227,14 +227,17 @@ set_session('ss_personalpay_hash', '');
         ?>
     </ul>
 
-    <?php if ($goods_count) $goods .= ' 외 ' . $goods_count . '건'; ?>
+    <?php if ($goods_count) $goods .= ' 외 ' . $goods_count . '건'; 
+    
+    $coin_point = _clean_number_format($tot_sell_price / $exchange_rate);
+    ?>
 
 
     <!-- 주문상품 합계 시작 { -->
     <div class="sod_ta_wr">
         <dl id="m_sod_bsk_tot">
             <dt class="sod_bsk_sell">주문</dt>
-            <dd class="sod_bsk_sell"><strong><?php echo number_format($tot_sell_price); ?> 원 (<?php echo number_format($tot_sell_price / $exchange_rate); ?> <?= $token_symbol ?>)</strong></dd>
+            <dd class="sod_bsk_sell"><strong><?php echo number_format($tot_sell_price); ?> 원 (<?php echo $coin_point; ?> <?= $token_symbol ?>)</strong></dd>
             <?php if ($it_cp_count > 0) { ?>
                 <dt class="sod_bsk_coupon">쿠폰</dt>
                 <dd class="sod_bsk_coupon"><strong id="ct_tot_coupon">0 <?= $token_symbol ?></strong></dd>
@@ -248,7 +251,7 @@ set_session('ss_personalpay_hash', '');
             <dd class="sod_bsk_cnt">
                 <?php $tot_price = $tot_sell_price + $send_cost; // 총계 = 주문상품금액합계 + 배송비 
                 ?>
-                <strong id="ct_tot_price"><?php echo number_format($tot_price); ?></strong> 원 </strong>(<strong id="ct_tot_price"><?php echo number_format($tot_price / $exchange_rate); ?></strong> <?= $token_symbol ?>)
+                <strong id="ct_tot_price"><?php echo number_format($tot_price); ?></strong> 원 </strong>(<strong id="ct_tot_price"><?php echo $coin_point; ?></strong> <?= $token_symbol ?>)
         </dl>
     </div>
 
@@ -536,22 +539,26 @@ if ($is_kakaopay_use) {
                                 <td><span id="sc_cp_price">0</span>원</td>
                             </tr>
                         <?php } ?>
-                        <input type="hidden" id="balData">
-                        <tr>
-                            <th>내 <?= $token_symbol ?> 잔고</th>
-                            <td>
-                                <div class="token_balance" style="font-size:13px;font-weight:bold;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>내 ETH 잔고</th>
-                            <td>
-                                <div class="eth_balance" style="color:black;font-size:13px;font-weight:bold;"></div>
-                            </td>
-                        </tr>
+                        <?php  if($default['de_coin_use'] > 0){?>
+                                <input type="hidden" id="balData" value="<?=$default['de_coin_use'] == 1 ? $total_withraw : 0?>">
+                                <tr>
+                                    <th>내 잔고</th>
+                                    <td>
+                                        <div class="token_balance" style="font-size:13px;font-weight:bold;"><?=$default['de_coin_use'] == 1 ?  shift_auto($total_withraw,"usdt") : 0?> <?= $token_symbol ?></div>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        <?php  if($default['de_coin_use'] > 1){?>
+                            <tr>
+                                <th>내 ETH 잔고</th>
+                                <td>
+                                    <div class="eth_balance" style="color:black;font-size:13px;font-weight:bold;"></div>
+                                </td>
+                            </tr>
+                        <?php } ?>
                         <tr>
                             <th>총 주문금액</th>
-                            <td><span id="od_tot_price"><?php echo number_format($tot_price); ?></span>원 <span id="od_tot_price">(<?php echo number_format($tot_price / $exchange_rate); ?></span> <?= $token_symbol ?>)</td>
+                            <td><span id="od_tot_price"><?php echo number_format($tot_price); ?></span>원 <span id="od_tot_price">(<?php echo $coin_point; ?></span> <?= $token_symbol ?>)</td>
                         </tr>
                         <tr>
                             <th>추가배송비</th>
@@ -706,7 +713,7 @@ if ($is_kakaopay_use) {
                     $temp_point = (int)((int)($temp_point / $point_unit) * $point_unit);
 
                     echo '<div class="sod_frm_point">';
-                    echo '<div><input type="hidden" name="max_temp_point" value="' . $temp_point . '"><label for="od_temp_point">사용 포인트(' . $point_unit . '점 단위)</label> <input type="text" id="od_temp_point" name="od_temp_point" value="0" size="10"> 점</div>';
+                    echo '<div><input type="hidden" name="max_temp_point" value="' . $temp_point . '"><label for="od_temp_point">사용 포인트(' . $point_unit . '포인트 단위)</label> <input type="text" id="od_temp_point" name="od_temp_point" value="0" size="10"> 포인트</div>';
                     echo '<div id="sod_frm_pt_info"><span><strong>보유포인트</strong>' . display_point($member['mb_point']) . '</span><span class="max_point_box"><strong>최대사용가능포인트</strong><em id="use_max_point">' . display_point($temp_point) . '</em></span></div>';
                     echo '</div>';
                     $multi_settle++;
@@ -736,7 +743,7 @@ if ($is_kakaopay_use) {
                 echo '</div>';
             }
 
-            if ($default['de_coin_use']) {
+            if ($default['de_coin_use'] > 1) {
                 // 코인계좌를 배열로 만든후
                 $str_2 = explode("\n", trim(VCT_COMPANY_ADDR));
                 if (count($str_2) <= 1) {
@@ -757,6 +764,12 @@ if ($is_kakaopay_use) {
                 echo '<br><label for="od_coin_deposit_name">입금자명</label> ';
                 echo '<input type="text" name="od_coin_deposit_name" id="od_coin_deposit_name" size="10" maxlength="20">';
                 echo '</div>';
+            }else{
+                echo '<div id="settle_coin" style="display:none"><div class="wallet_address_title">총 주문금액</div>';
+                echo "<div class='wallet_address'>{$coin_point} {$token_symbol}</div>";
+                echo '<br><label for="od_coin_deposit_name">입금자명</label> ';
+                echo "<input type='text' name='od_coin_deposit_name' id='od_coin_deposit_name' size='10' maxlength='20'>";
+                echo '</input>';
             }
      
             if ($default['de_bank_use'] || $default['de_coin_use'] || $default['de_vbank_use'] || $default['de_iche_use'] || $default['de_card_use'] || $default['de_hp_use'] || $default['de_easy_pay_use'] || is_inicis_simple_pay()) {
@@ -1490,23 +1503,26 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
         return false;
     }
 
-    initial_web3();
+    if(<?=$default['de_coin_use']?> > 1){
+        initial_web3();
+    
+        var gas = ""
+        $.ajax({
+            type: "GET",
+            url: "https://<?= ETHERSCAN_ENDPOINT ?>.etherscan.io/api?module=gastracker&action=gasoracle",
+            cache: false,
+            dataType: "json",
+            data: {
+                apikey: "<?= $Ether_API_KEY ?>"
+            },
+            success: function(res) {
+    
+                gas = res.result.FastGasPrice
+    
+            }
+        });
+    }
 
-    var gas = ""
-    $.ajax({
-        type: "GET",
-        url: "https://<?= ETHERSCAN_ENDPOINT ?>.etherscan.io/api?module=gastracker&action=gasoracle",
-        cache: false,
-        dataType: "json",
-        data: {
-            apikey: "<?= $Ether_API_KEY ?>"
-        },
-        success: function(res) {
-
-            gas = res.result.FastGasPrice
-
-        }
-    });
 
     function forderform_check() {
         var f = document.forderform;
@@ -1519,7 +1535,7 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
         if (!payment_check(f))
             return false;
 
-        if (settle_method != "무통장" && settle_method != "코인" && f.res_cd.value != "0000") {
+        if (<?=$default['de_coin_use']?> <= 0 && <?=$default['de_bank_use']?> <= 0 && f.res_cd.value != "0000") {
             alert("결제등록요청 후 주문해 주십시오.");
             return false;
         }
@@ -1529,74 +1545,108 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
 
         if (settle_method == "코인") {
 
-            if ('<?= $wallet_addr ?>' == "") {
-                alert("입금페이지에서 VCT-K 지갑을 생성해주세요.")
-                return false
+            let coin_point = Number('<?= $coin_point ?>'.replace(/,/g, ""));
+
+            if (coin_point > Number($('#balData').val())) {
+                    alert("보유하신 <?=$token_symbol?> (이)가 부족합니다.")
+                    return false;
             }
 
+            if(<?=$default['de_coin_use']?> > 1){
 
-            if (Number('<?= $sell_price ?>') > Number($('#balData').val())) {
-                alert("보유하신 VCT-K (이)가 부족합니다.")
-                return false;
-            }
-
-
-
-            estimate_gas('<?= $wallet_addr ?>', '<?= VCT_COMPANY_ADDR ?>', '<?= VCT_CONTRACT ?>', '<?= $token_decimal_numeric ?>', '<?= $sell_price ?>' / '<?= $exchange_rate ?>', (estimateGas, estimateData) => { // 추가
-
-                var cal_gas = estimateGas * web3.utils.toWei(gas.toString(), 'gwei') / 1000000000000000000
-                var user_eth = $(".eth_balance").text().split(" ")
-
-                if (cal_gas > Number(user_eth[0])) {
-                    alert("수수료(ETH) 가 부족합니다.")
+                if ('<?= $wallet_addr ?>' == "") {
+                    alert("입금페이지에서 <?=$token_symbol?> 지갑을 생성해주세요.")
                     return false
                 }
-
+        
+                estimate_gas('<?= $wallet_addr ?>', '<?= VCT_COMPANY_ADDR ?>', '<?= VCT_CONTRACT ?>', '<?= $token_decimal_numeric ?>', coin_point, (estimateGas, estimateData) => { // 추가
+    
+                    var cal_gas = estimateGas * web3.utils.toWei(gas.toString(), 'gwei') / 1000000000000000000
+                    var user_eth = $(".eth_balance").text().split(" ")
+    
+                    if (cal_gas > Number(user_eth[0])) {
+                        alert("수수료(ETH) 가 부족합니다.")
+                        return false
+                    }
+    
+    
+                    var dialog = bootbox.dialog({
+                        message: "<img src='<?php echo G5_MOBILE_URL; ?>/shop/img/loading.gif'><span>주문완료 중입니다. 잠시만 기다려 주십시오.</span>",
+                        closeButton: false
+                    });
+    
+                    $('.modal-dialog').addClass('pay-dialog')
+                    $('.bootbox-body').addClass('pay-loading')
+    
+                    $('.pay-dialog').css({
+                        'display': 'flex',
+                        'justify-content': 'center',
+                        'align-items': 'center',
+                        'height': '100%',
+                        'margin': '0px'
+                    })
+                    $('.pay-loading').css({
+                        'justify-content': 'space-between',
+                        'align-items': 'center',
+                        'height': '100px',
+                        'flex-flow': 'column',
+                        'display': 'flex'
+                    })
+    
+    
+                    send_token_for_pay('<?= $wallet_addr ?>', '<?= VCT_COMPANY_ADDR ?>', '<?= VCT_CONTRACT ?>', '<?= $token_decimal_numeric ?>', coin_point, '<?= $wallet_key_decrypt ?>', gas, estimateGas, (error, res) => {
+    
+                        var after_res = res.split(':');
+                        dialog.modal('hide');
+                        if (after_res[0] == 'success') {
+                            alert("마스크 주문건이 정상 처리되었습니다. \n처리결과 반영은 일정시간이 소요될수있습니다.");
+                            $('#od_hash').val(after_res[1]);
+                            $('#od_token_price').val(coin_point);
+                            setTimeout(function() {
+                                f.submit();
+                            }, 1000);
+    
+                        } else {
+                            alert("문제가 발생하였습니다. 나중에 다시 시도해주세요.");
+                        }
+    
+                    });
+    
+    
+                });
+            }else{
 
                 var dialog = bootbox.dialog({
-                    message: "<img src='<?php echo G5_MOBILE_URL; ?>/shop/img/loading.gif'><span>주문완료 중입니다. 잠시만 기다려 주십시오.</span>",
-                    closeButton: false
-                });
+                        message: "<img src='<?php echo G5_MOBILE_URL; ?>/shop/img/loading.gif'><span>주문완료 중입니다. 잠시만 기다려 주십시오.</span>",
+                        closeButton: false
+                    });
+    
+                    $('.modal-dialog').addClass('pay-dialog')
+                    $('.bootbox-body').addClass('pay-loading')
+    
+                    $('.pay-dialog').css({
+                        'display': 'flex',
+                        'justify-content': 'center',
+                        'align-items': 'center',
+                        'height': '100%',
+                        'margin': '0px'
+                    })
+                    $('.pay-loading').css({
+                        'justify-content': 'space-between',
+                        'align-items': 'center',
+                        'height': '100px',
+                        'flex-flow': 'column',
+                        'display': 'flex'
+                    })
 
-                $('.modal-dialog').addClass('pay-dialog')
-                $('.bootbox-body').addClass('pay-loading')
+                $('#od_hash').val('<?=$token_symbol?> 구매');
+                $('#od_token_price').val(coin_point);
+                // dialog.modal('hide');
+                setTimeout(function() {
+                        f.submit();
+                }, 1000);
+            }
 
-                $('.pay-dialog').css({
-                    'display': 'flex',
-                    'justify-content': 'center',
-                    'align-items': 'center',
-                    'height': '100%',
-                    'margin': '0px'
-                })
-                $('.pay-loading').css({
-                    'justify-content': 'space-between',
-                    'align-items': 'center',
-                    'height': '100px',
-                    'flex-flow': 'column',
-                    'display': 'flex'
-                })
-
-
-                send_token_for_pay('<?= $wallet_addr ?>', '<?= VCT_COMPANY_ADDR ?>', '<?= VCT_CONTRACT ?>', '<?= $token_decimal_numeric ?>', '<?= $sell_price ?>' / '<?= $exchange_rate ?>', '<?= $wallet_key_decrypt ?>', gas, estimateGas, (error, res) => {
-
-                    var after_res = res.split(':');
-                    dialog.modal('hide')
-                    if (after_res[0] == 'success') {
-                        alert("마스크 주문건이 정상 처리되었습니다. \n처리결과 반영은 일정시간이 소요될수있습니다.");
-                        $('#od_hash').val(after_res[1])
-                    $('#od_token_price').val('<?= $tot_sell_price / $exchange_rate ?>')
-                        setTimeout(function() {
-                            f.submit();
-                        }, 1000);
-
-                    } else {
-                        alert("문제가 발생하였습니다. 나중에 다시 시도해주세요.");
-                    }
-
-                });
-
-
-            });
 
         }else{
 
@@ -1695,7 +1745,7 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
                 break;
             }
         }
-        if (!settle_check) {
+        if (!settle_check && ('<?=$defalut['de_coin_use'] > 0?>' || '<?=$default['de_bank_use'] > 0?>')) {
             alert("결제방식을 선택하십시오.");
             return false;
         }
