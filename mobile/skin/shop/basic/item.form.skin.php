@@ -341,7 +341,7 @@ include_once(G5_LIB_PATH."/bootbox/bootbox.php");
             <?php if(!$is_orderable && $it['it_soldout'] && $it['it_stock_sms']) { ?>
             <a href="javascript:popup_stocksms('<?php echo $it['it_id']; ?>');" id="sit_btn_phone">재입고알림</a>
             <?php } ?>
-            <a href="javascript:item_wish(document.fitem, '<?php echo $it['it_id']; ?>');" id="sit_btn_wish"><span class="sound_only">위시리스트</span><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+            <a href="javascript:item_wish(document.fitem, '<?php echo $it['it_id']; ?>');" id="sit_btn_wish" style="height: 52px;display: flex;align-items: center;justify-content: center;"><span class="sound_only">위시리스트</span><i class="fa fa-heart-o" aria-hidden="true"></i></a>
             <?php if ($naverpay_button_js) { ?>
             <div class="naverpay-item"><?php echo $naverpay_request_js.$naverpay_button_js; ?></div>
             <?php } ?>

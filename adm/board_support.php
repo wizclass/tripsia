@@ -60,9 +60,10 @@ $colspan = 15;
 	 body{background:#fff !important}
      iframe html body{background:#fff !important}
      .board_menu{color:blue;font-weight: 600}
+     .flex_center{display: flex;align-items: center;}
 </style>
 
-<div class="local_ov01 local_ov">
+<div class="local_ov01 local_ov flex_center">
     <?php echo $listall ?>
     생성된 게시판수 <?php echo number_format($total_count) ?>개
 

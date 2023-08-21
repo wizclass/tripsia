@@ -531,7 +531,7 @@ $stats_result = sql_fetch($stats_sql); */
 
 	<label for="stx" class="sound_only">검색어<strong class="sound_only"> 필수</strong></label>
 	<input type="text" name="stx" value="<?= $stx ?>" id="stx" required class="required frm_input" style="height: 40px">
-	<input type="submit" class="btn_submit" value="검색">
+	<input type="submit" class="btn_submit" value="검색" style="width:60px;height: 40px;">
 </form>
 
 

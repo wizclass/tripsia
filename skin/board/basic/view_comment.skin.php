@@ -157,7 +157,7 @@ var char_max = parseInt(<?php echo $comment_max ?>); // 최대
                 <?php echo $captcha_html; ?>
             <?php } ?>
         </div>
-        <div class="btn_confirm">
+        <div class="btn_confirm" style="display: flex;align-items: center;">
         	<span class="secret_cm chk_box">
 	            <input type="checkbox" name="wr_secret" value="secret" id="wr_secret" class="selec_chk">
 	            <label for="wr_secret"><span></span>비밀글</label>

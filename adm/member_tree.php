@@ -339,7 +339,7 @@ $max_depth = ($my_depth+($max_org_num*2));
 
 <div id="div_right" style="width:85%;float:left;min-height:500px">
 		<div class="zTreeDemoBackground left" style="min-height:573px;margin:0px 10px 0px 10px;border:1px solid #d9d9d9;">
-			<ul id="treeDemo" class="ztree"></ul>
+			<ul id="treeDemo" class="ztree" style="padding:20px;"></ul>
 		</div>
 		
 		<SCRIPT type="text/javascript">

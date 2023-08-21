@@ -494,6 +494,7 @@ $result = sql_query($sql);
 					},
 					function(data) {
 						res = JSON.parse(data);
+						console.log(res);
 						if (res.result == 'success') {
 							$('.change_title').text('PACKAGE 업그레이드');
 							$('#trade_total').val(res.it_cust_price + ' <?= $curencys[1] ?>')
@@ -502,7 +503,13 @@ $result = sql_query($sql);
 							$('#upgrade').show().attr("disabled", false);
 							$('#purchase').hide().attr("disabled", true);
 							$('#total_coin_val').val(upgrade_price_calc);
-							it_price = res.it_cust_price
+							it_price = res.it_cust_price;
+
+							var scrollPosition = $('#pakage_sale').offset().top;
+							window.scrollTo({
+								top: scrollPosition,
+								behavior: 'smooth'
+							});
 						} else {
 							dialogModal('Package 업그레이드 확인', res.message, 'warning');
 							return false;
@@ -510,11 +517,7 @@ $result = sql_query($sql);
 
 					}
 				);
-				var scrollPosition = $('#pakage_sale').offset().top;
-				window.scrollTo({
-					top: scrollPosition,
-					behavior: 'smooth'
-				});
+				
 			});
 		});
 

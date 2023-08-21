@@ -88,7 +88,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 
 <script src="<?=G5_THEME_URL?>/_common/js/common.js" crossorigin="anonymous"></script>
 
-<form name="flist" class="local_sch01 local_sch">
+<!-- <form name="flist" class="local_sch01 local_sch">
 <input type="hidden" name="page" value="<?php echo $page; ?>">
 <input type="hidden" name="save_stx" value="<?php echo $stx; ?>">
 
@@ -121,12 +121,12 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 <input type="text" name="stx" value="<?php echo $stx; ?>" id="stx" class="frm_input">
 <input type="submit" value="검색" class="btn_submit">
 
-</form>
+</form> -->
 
-<div class="btn_add01 btn_add">
+<!-- <div class="btn_add01 btn_add">
     <a href="./itemform.php">상품등록</a>
     <a href="./itemexcel.php" onclick="return excelform(this.href);" target="_blank">상품일괄등록</a>
-</div>
+</div> -->
 
 <form name="fitemlistupdate" method="post" action="./itemlistupdate.php" onsubmit="return fitemlist_submit(this);" autocomplete="off">
 <input type="hidden" name="sca" value="<?php echo $sca; ?>">
@@ -285,9 +285,9 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 
 <div class="btn_list01 btn_list">
     <input type="submit" name="act_button" value="선택수정" onclick="document.pressed=this.value">
-    <?php if ($is_admin == 'super') { ?>
+    <!-- <?php if ($is_admin == 'super') { ?>
     <input type="submit" name="act_button" value="선택삭제" onclick="document.pressed=this.value">
-    <?php } ?>
+    <?php } ?> -->
 </div>
 <!-- <div class="btn_confirm01 btn_confirm">
     <input type="submit" value="일괄수정" class="btn_submit" accesskey="s">

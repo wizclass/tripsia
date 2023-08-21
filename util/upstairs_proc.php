@@ -75,7 +75,7 @@ if($debug){
 	$deposit = floor($member_bucks_check_row['deposit']);
 	$balance = floor($member_bucks_check_row['balance']);
 
-	if($deposit + $balance < $it_point){
+	if($deposit < $it_point){
 		echo json_encode(array("result" => "failed",  "code" => "0001", "sql" => "잔고가 부족합니다."));
 		return false;
 	}

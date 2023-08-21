@@ -8,6 +8,12 @@ $g5['title'] = '매출현황';
 include_once (G5_ADMIN_PATH.'/admin.head.php');
 include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 ?>
+<style>
+    .btn_submit_size{
+        width:60px;
+        height: 28px;
+    }
+</style>
 
 <div class="local_sch02 local_sch">
 
@@ -16,7 +22,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
         <strong>일일 매출</strong>
         <input type="text" name="date" value="<?php echo date("Ymd", G5_SERVER_TIME); ?>" id="date" required class="required frm_input" size="8" maxlength="8">
         <label for="date">일 하루</label>
-        <input type="submit" value="확인" class="btn_submit">
+        <input type="submit" value="확인" class="btn_submit btn_submit_size">
         </form>
     </div>
 
@@ -27,7 +33,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
         <label for="fr_date">일 ~</label>
         <input type="text" name="to_date" value="<?php echo date("Ymd", G5_SERVER_TIME); ?>" id="to_date" required class="required frm_input" size="8" maxlength="8">
         <label for="to_date">일</label>
-        <input type="submit" value="확인" class="btn_submit">
+        <input type="submit" value="확인" class="btn_submit btn_submit_size">
         </form>
     </div>
 
@@ -38,7 +44,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
         <label for="fr_month">월 ~</label>
         <input type="text" name="to_month" value="<?php echo date("Ym", G5_SERVER_TIME); ?>" id="to_month" required class="required frm_input" size="6" maxlength="6">
         <label for="to_month">월</label>
-        <input type="submit" value="확인" class="btn_submit">
+        <input type="submit" value="확인" class="btn_submit btn_submit_size">
         </form>
     </div>
 
@@ -49,7 +55,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
         <label for="fr_year">년 ~</label>
         <input type="text" name="to_year" value="<?php echo date("Y", G5_SERVER_TIME); ?>" id="to_year" required class="required frm_input" size="4" maxlength="4">
         <label for="to_year">년</label>
-        <input type="submit" value="확인" class="btn_submit">
+        <input type="submit" value="확인" class="btn_submit btn_submit_size">
         </form>
     </div>
 
