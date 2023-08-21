@@ -13,6 +13,7 @@
   text-align: center;
   line-height: 60px;
 }
+
 #hd_wrapper .back_btn i {
   font-size: 16px;
 }
@@ -20,10 +21,7 @@
 /* 회원가입 */
 .mbskin .btn_submit, .btn_submit {
   background: #f6bd14;
-  border-radius: 0 !important;
   border: 1px solid #bc8d00;
-  width: 75px;
-  height: 30px;
 }
 
 #mb_login .frm_input {
@@ -62,19 +60,23 @@
   color: white;
   padding: 20px 30px;
 }
+
 .breadcomp .greeting {
   font-size: 15px;
   font-weight: 500;
   margin-bottom: 15px;
 }
+
 .breadcomp .greeting span {
   font-weight: 900;
   font-size: 16px;
 }
+
 .breadcomp .balance {
   text-align: right;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
+
 .breadcomp .coin_img img {
   width: 60px;
   height: 60px;
@@ -86,7 +88,7 @@
 
 .eth_balance {
   font-size: 14px;
-  color: rgb(158, 159, 179);
+  color: #9e9fb3;
 }
 
 main {
@@ -103,6 +105,7 @@ main {
   margin-top: -20px;
   padding: 10px 0;
 }
+
 #main_card .dual {
   width: 49.9%;
   height: 100%;
@@ -111,10 +114,12 @@ main {
   padding: 10px 15px;
   font-size: 14px;
 }
+
 #main_card .dual img {
   width: 34px;
   height: 34px;
 }
+
 #main_card .right {
   border-left: 1px solid #ccc;
 }
@@ -157,25 +162,34 @@ main {
   background: white;
   margin: 0 2px;
 }
+
 .menu_card:hover {
   background: #222436;
   color: white;
 }
 
 .menu_box {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
-  box-sizing: border-box;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
+
 .menu_box a {
   width: 25%;
 }
+
 .menu_box a div {
   height: 6vh;
   margin: 0 auto;
   text-align: center;
   background-size: contain;
 }
+
 .menu_box a p {
   font-size: 14px;
   line-height: 0.75em;
@@ -211,24 +225,31 @@ main {
 .sysbtnset {
   width: 100%;
   margin: 10px auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   position: relative;
   padding: 2vh 0;
   background: #fff;
   font-size: 14px;
 }
+
 .sysbtnset a {
   width: initial;
   margin: 0 auto;
   text-align: center;
 }
+
 .sysbtnset a p {
   margin: 0;
   line-height: 19px;
   float: left;
   margin-left: 6px;
 }
+
 .sysbtnset a div {
   float: left;
   width: 19px;
@@ -238,6 +259,7 @@ main {
   text-align: center;
   background-size: contain;
 }
+
 .sysbtnset .sysbtnset_bar {
   width: 1px;
   height: 70%;
@@ -245,4 +267,90 @@ main {
   position: absolute;
   left: 50%;
   top: 10px;
+}
+
+/* 공통 */
+.coin_p {
+  font-size: 10px;
+}
+
+/* index gnb 메뉴 추가 */
+#gnb {
+  border-top: 1px solid #f1f1f1;
+}
+
+#gnb .menu_icon {
+  display: inline-block;
+  width: 60px;
+  height: 59px;
+  line-height: 59px;
+  color: black;
+  font-size: 20px;
+  text-align: center;
+  padding: 0;
+  border: 0;
+  vertical-align: bottom;
+  border-right: 1px solid #f1f1f1;
+}
+
+#gnb .menu_icon:hover {
+  background: gold;
+}
+
+#gnb .cate li {
+  display: inline-block;
+}
+
+#gnb .cate li a {
+  font-weight: 600;
+  height: 60px;
+  line-height: 60px;
+  font-size: 14px;
+  border: none;
+}
+
+#gnb .cate li a:after {
+  position: absolute;
+  content: "";
+  top: 25px;
+  right: 0;
+  width: 1px;
+  height: 10px;
+  background-color: #999;
+}
+
+#gnb .cate li a:hover {
+  background: gold;
+}
+
+/*상품카드*/
+.sct_li {
+  background: white;
+  _padding: 5px;
+  _-webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+  _        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.sct_li:hover {
+  background: ghostwhite;
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+          box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+  _border: 2px solid #fff;
+  outline: 1px solid black;
+  -webkit-animation: all 1s;
+          animation: all 1s;
+}
+
+.sct_li .sct_txt {
+  font-weight: 600;
+}
+
+.sct_li.sct_clear {
+  margin-left: -2px;
+  margin-right: 2px;
+}
+
+.price_val {
+  font-weight: 600;
+  color: black;
 }

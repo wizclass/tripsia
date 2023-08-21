@@ -155,6 +155,10 @@ if(!sql_query(" select mb_id from {$g5['g5_order_delete_table']} limit 1 ", fals
     .od_cancel{border:1px solid #ccc;background:white;border-radius: 0;padding:5px 10px;}
     .od_cancel:hover{background: black;;border:1px solid black;color:white}
     .cancle_log_btn{border-radius: 0;}
+    .btn_submit_size{
+        width:60px;
+        height: 28px;
+    }
 </style>
 <link rel="stylesheet" href="/adm/css/scss/admin_custom.css">
 <script src="../../excel/tabletoexcel/xlsx.core.min.js"></script>
@@ -188,7 +192,7 @@ if(!sql_query(" select mb_id from {$g5['g5_order_delete_table']} limit 1 ", fals
 <input type="text" name="search" value="<?php echo $search; ?>" id="search" required class="required frm_input" autocomplete="off">
 <!-- 구매상품 : 
 <input type="text" name="od_name" value="<?php echo $od_name; ?>" id="od_name" class="required frm_input"> -->
-<input type="submit" value="검색" class="btn_submit">
+<input type="submit" value="검색" class="btn_submit btn_submit_size">
 
 
 </form>

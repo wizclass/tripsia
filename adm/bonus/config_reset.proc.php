@@ -50,8 +50,8 @@ if($_POST['nw_order_reset'] == 'on'){
     $trunc5 = sql_query(" TRUNCATE TABLE `g5_order` ");
     $trunc6 = sql_query(" TRUNCATE TABLE `package_log`; ");
     
-    $pack_cnt = sql_fetch("SELECT count(it_id) as cnt from g5_shop_item WHERE it_use > 0")['cnt'];
-    $pack_name_sql = sql_fetch("SELECT it_maker from g5_shop_item WHERE it_use > 0 limit 0,1 ")['it_maker'];
+    $pack_cnt = sql_fetch("SELECT count(it_id) as cnt from g5_item WHERE it_use > 0")['cnt'];
+    $pack_name_sql = sql_fetch("SELECT it_maker from g5_item WHERE it_use > 0 limit 0,1 ")['it_maker'];
     $pack_name = substr($pack_name_sql,0,1);
     
     for($i=0;$i<=$pack_cnt;$i++){
