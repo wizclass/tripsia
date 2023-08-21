@@ -9,6 +9,7 @@ include_once('./bonus_inc.php');
 auth_check($auth[$sub_menu], 'r');
 $token = get_token();
 
+
 ?>
 
 <link href="<?=G5_ADMIN_URL?>/css/scss/bonus/bonus_config2.css" rel="stylesheet">
@@ -93,15 +94,26 @@ $token = get_token();
     #mining_log dd{border-left:1px solid #eee;}
 </style>
 
+<?php
+    $sql = "select `day`,sum(benefit) as benefit from soodang_pay WHERE `day` > date_add(curdate(),interval -10 day) and allowance_name = 'daily' group by `day` order by `day` desc";
+    $result = sql_query($sql);
+?>
+
 <div id='mining_log'>
     데일리 지급량 기록 (최근 10일)
     <div class='head'>
-        <dt>지급일</dt>
-        <dd>데일리보너스지급량</dd>
-        <dd class="blue" style='color:white'>데일리보너스지급총량<br>(<?=$minings[$now_mining_coin]?>)</dd>
+        <dt style='color:white'>지급일</dt>
+        <dd style='color:white'>데일리보너스지급량 (<?=$minings[$now_mining_coin]?>)</dd>
     </div>
-
-    
+    <?php if(sql_num_rows($result) <= 0){ ?>
+        <dt>자료가 없습니다.</dt>
+    <?php } ?>
+    <?php for($i = 0; $i < $row = sql_fetch_array($result); $i++){?>
+        <div class='body'>     
+            <dt><?=$row['day']?></dt>
+            <dd><?=$row['benefit']?></dd>
+        </div>
+    <?php } ?>
 </div>
 
 <script>

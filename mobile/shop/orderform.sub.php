@@ -1609,7 +1609,7 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
                         var after_res = res.split(':');
                         dialog.modal('hide');
                         if (after_res[0] == 'success') {
-                            alert("마스크 주문건이 정상 처리되었습니다. \n처리결과 반영은 일정시간이 소요될수있습니다.");
+                            alert("주문건이 정상 처리되었습니다. \n처리결과 반영은 일정시간이 소요될수있습니다.");
                             $('#od_hash').val(after_res[1]);
                             $('#od_token_price').val(coin_point);
                             setTimeout(function() {
@@ -1627,7 +1627,7 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
     
                 });
             }else{
-
+          
                 var dialog = bootbox.dialog({
                         message: "<img src='<?php echo G5_MOBILE_URL; ?>/shop/img/loading.gif'><span>주문완료 중입니다. 잠시만 기다려 주십시오.</span>",
                         closeButton: false

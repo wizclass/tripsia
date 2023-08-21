@@ -155,10 +155,6 @@ if(!sql_query(" select mb_id from {$g5['g5_order_delete_table']} limit 1 ", fals
     .od_cancel{border:1px solid #ccc;background:white;border-radius: 0;padding:5px 10px;}
     .od_cancel:hover{background: black;;border:1px solid black;color:white}
     .cancle_log_btn{border-radius: 0;}
-    .btn_submit_size{
-        width:60px;
-        height: 28px;
-    }
 </style>
 <link rel="stylesheet" href="/adm/css/scss/admin_custom.css">
 <script src="../../excel/tabletoexcel/xlsx.core.min.js"></script>
@@ -192,7 +188,7 @@ if(!sql_query(" select mb_id from {$g5['g5_order_delete_table']} limit 1 ", fals
 <input type="text" name="search" value="<?php echo $search; ?>" id="search" required class="required frm_input" autocomplete="off">
 <!-- 구매상품 : 
 <input type="text" name="od_name" value="<?php echo $od_name; ?>" id="od_name" class="required frm_input"> -->
-<input type="submit" value="검색" class="btn_submit btn_submit_size">
+<input type="submit" value="검색" class="btn_submit">
 
 
 </form>
@@ -278,8 +274,8 @@ if(!sql_query(" select mb_id from {$g5['g5_order_delete_table']} limit 1 ", fals
     <button type="button" onclick="javascript:set_date('지난주');">지난주</button>
     <button type="button" onclick="javascript:set_date('지난달');">지난달</button>
     <button type="button" onclick="javascript:set_date('전체');">전체</button>
-    <input type="submit" style="padding: 5px; width: 90px" value="검색" class="btn_submit"> | 
-    <input type="button" style="padding: 5px; width:90px;" class="btn_submit excel" id="btnExport"  data-name='tripsia_order_list' value="엑셀 다운로드"/>
+    <input type="submit" value="검색" class="btn_submit"> | 
+    <input type="button" style="width:auto;" class="btn_submit excel" id="btnExport"  data-name='tripsia_order_list' value="엑셀 다운로드"/>
     <button type='button' class="btn cancle_log_btn" style='margin-left:10px'>취소 내역보기</button>
 </div>
 

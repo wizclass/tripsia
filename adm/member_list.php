@@ -506,7 +506,6 @@ $stats_result = sql_fetch($stats_sql); */
     }
     .local_ov01 {
         position: relative; 
-        margin: -10px 0 10px;
         padding: 10px 20px;
         border-bottom: 1px solid #e9e9e9;
         background: #f2f5f9;

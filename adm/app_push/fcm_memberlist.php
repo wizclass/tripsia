@@ -233,10 +233,6 @@ $stats_result = sql_fetch($stats_sql); */
 		text-align: center !important;
 	}
 
-	select#sfl {
-		padding: 9px 10px;
-	}
-
 	#stx {
 		padding: 5px;
 	}
@@ -496,7 +492,7 @@ $stats_result = sql_fetch($stats_sql); */
 
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 
-<div class="local_ov01 local_ov">
+<div class="local_ov">
 	<?= $listall ?>
 	<? if ($viewmode == 'all') {
 		echo '전체회원 : ';
@@ -519,7 +515,7 @@ $stats_result = sql_fetch($stats_sql); */
 
 <form id="fsearch" name="fsearch" class="local_sch01 local_sch" method="get">
 	<label for="sfl" class="sound_only">검색대상</label>
-	<select name="sfl" id="sfl" style="height: 40px">
+	<select name="sfl" id="sfl">
 		<option value="mb_id" <?= get_selected($_GET['sfl'], "mb_id"); ?>>회원아이디</option>
 		<option value="mb_nick" <?= get_selected($_GET['sfl'], "mb_nick"); ?>>닉네임</option>
 		<option value="mb_name" <?= get_selected($_GET['sfl'], "mb_name"); ?>>이름</option>
@@ -530,8 +526,8 @@ $stats_result = sql_fetch($stats_sql); */
 	</select>
 
 	<label for="stx" class="sound_only">검색어<strong class="sound_only"> 필수</strong></label>
-	<input type="text" name="stx" value="<?= $stx ?>" id="stx" required class="required frm_input" style="height: 40px">
-	<input type="submit" class="btn_submit" value="검색" style="width:60px;height: 40px;">
+	<input type="text" name="stx" value="<?= $stx ?>" id="stx" required class="required frm_input">
+	<input type="submit" class="btn_submit" value="검색">
 </form>
 
 
