@@ -252,7 +252,7 @@ if (!$to_date) $to_date = Date("Y-m-d", time());
 
 			<tr>
 				<td bgcolor="#f2f5f9" height="30" align="center">
-				<input type="submit"  class="btn_submit" style="padding:5px" value="적 용">
+				<input type="submit"  class="btn_submit" value="적 용">
 				</td>
 			</tr>
 		</table>
@@ -280,7 +280,7 @@ if (!$to_date) $to_date = Date("Y-m-d", time());
 			</tr>
 			<tr>
 				<td bgcolor="#f2f5f9" height="30" align="center">
-				<input type="button" onclick="btn_search();" class="btn_submit" style="padding:5px" value="검 색">
+				<input type="button" onclick="btn_search();" class="btn_submit" value="검 색">
 				</td>
 			</tr>
 		</table>

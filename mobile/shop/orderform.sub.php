@@ -1552,14 +1552,18 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
             let coin_point = Number('<?= $coin_point ?>'.replace(/,/g, ""));
 
             if (coin_point > Number($('#balData').val())) {
-                    alert("보유하신 <?=$token_symbol?> (이)가 부족합니다.")
+                    alert("보유하신 <?=$token_symbol?> (이)가 부족합니다.");
+                    document.getElementById("order_modal").style.display = "none";
+                    document.getElementById("show_progress").style.display = "none";
                     return false;
             }
 
             if(<?=$default['de_coin_use']?> > 1){
 
                 if ('<?= $wallet_addr ?>' == "") {
-                    alert("입금페이지에서 <?=$token_symbol?> 지갑을 생성해주세요.")
+                    alert("입금페이지에서 <?=$token_symbol?> 지갑을 생성해주세요.");
+                    document.getElementById("order_modal").style.display = "none";
+                    document.getElementById("show_progress").style.display = "none";
                     return false
                 }
         
@@ -1569,8 +1573,10 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
                     var user_eth = $(".eth_balance").text().split(" ")
     
                     if (cal_gas > Number(user_eth[0])) {
-                        alert("수수료(ETH) 가 부족합니다.")
-                        return false
+                        alert("수수료(ETH) 가 부족합니다.");
+                        document.getElementById("order_modal").style.display = "none";
+                        document.getElementById("show_progress").style.display = "none";
+                        return false;
                     }
     
     
@@ -1603,7 +1609,7 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
                         var after_res = res.split(':');
                         dialog.modal('hide');
                         if (after_res[0] == 'success') {
-                            alert("마스크 주문건이 정상 처리되었습니다. \n처리결과 반영은 일정시간이 소요될수있습니다.");
+                            alert("주문건이 정상 처리되었습니다. \n처리결과 반영은 일정시간이 소요될수있습니다.");
                             $('#od_hash').val(after_res[1]);
                             $('#od_token_price').val(coin_point);
                             setTimeout(function() {
@@ -1611,6 +1617,8 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
                             }, 1000);
     
                         } else {
+                            document.getElementById("order_modal").style.display = "none";
+                            document.getElementById("show_progress").style.display = "none";
                             alert("문제가 발생하였습니다. 나중에 다시 시도해주세요.");
                         }
     
@@ -1619,7 +1627,7 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
     
                 });
             }else{
-
+          
                 var dialog = bootbox.dialog({
                         message: "<img src='<?php echo G5_MOBILE_URL; ?>/shop/img/loading.gif'><span>주문완료 중입니다. 잠시만 기다려 주십시오.</span>",
                         closeButton: false

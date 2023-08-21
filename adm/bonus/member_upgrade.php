@@ -58,7 +58,7 @@ function fvisit_submit(act)
     </div>
 
     
-    <input type="submit" value="검색" class="btn_submit">
+    <input type="submit" value="검색" class="btn_submit" style="height:28px;">
 </form>
 
 

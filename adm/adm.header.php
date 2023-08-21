@@ -70,7 +70,11 @@ $query_string = $qstr ? '?'.$qstr : '';
         </select>
     </div>
 
-    <input type="submit" value="검색" class="btn_submit" style="padding: 5px">
+<input type="submit" value="검색" class="btn_submit">
+<? if($g5['title'] == "입금 요청 내역"){ ?>
+     <input type="button" class="btn_submit excel" value="엑셀 다운로드" onclick="window.location.href='../excel/deposit_request_excel_down.php?fr_date=<?=$_GET['fr_date']?>&to_date=<?=$_GET['to_date']?>&fr_id=<?=$_GET['fr_id']?>&update_dt=<?=$_GET['update_dt']?>&status=<?=$_GET['status']?>'" />	  
+<? } ?>
+</form>
 
     <?if($excel_down){?>
         <input type="button" class="btn_submit excel" id="btnExport"  data-name='account_deposit' value="엑셀 다운로드" />

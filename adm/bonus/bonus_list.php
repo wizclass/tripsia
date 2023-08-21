@@ -268,7 +268,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 <input type="hidden" name="stx" value="<?php echo $stx ?>">
 <input type="hidden" name="page" value="<?php echo $page ?>">
 <input type="hidden" name="token" value="<?php echo $token ?>">
-<div class="local_ov01 ">
+<div class="local_ov01">
     <?php echo $listall ?>
     <span class="ov_listall">전체 <?php echo number_format($total_count) ?> 건 </span>
 	<strong><?=$max_day_row['last_day']?> </strong>

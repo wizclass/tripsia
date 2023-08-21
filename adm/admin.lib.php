@@ -203,12 +203,13 @@ function get_theme_config_value($dir, $key='*')
 function get_member_level_select($name, $start_id=0, $end_id=4, $selected="", $event="")
 {
     global $g5;
-	$level_name=array("일반회원","정회원","센터회원",'지사','지점','본사','','','','관리자',"슈퍼관리자");
+	$level_name=array("일반회원","정회원","센터회원",'지사','지점','본사');
 	//$level_name=array("Black","Red","Yellow","Green");
     $str = "\n<select id=\"{$name}\" name=\"{$name}\"";
     if ($event) $str .= " $event";
     $str .= ">\n";
-    for ($i=$start_id; $i<=$end_id; $i++) {
+    $level_cnt = count($level_name);
+    for ($i=$start_id; $i<$level_cnt; $i++) {
         $str .= '<option value="'.$i.'"';
         if ($i == $selected)
             $str .= ' selected="selected"';

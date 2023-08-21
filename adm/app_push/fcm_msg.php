@@ -77,9 +77,9 @@ $list = sql_query("SELECT * from app_msg");
 </table>
 
     <div style='margin-top:20px;'>
-        <input style="align:center;padding:15px 30px;background:cornflowerblue;height:44px" type="submit" name='func' class="btn btn_confirm btn_submit" value="저장하기" id="com_send"></input>
-        <input style="align:center;padding:15px 30px;height:44px" type="submit" name='func' class="btn btn_confirm btn_submit" value="삭제하기" id="com_send"></input>
-        <input style="align:center;padding:15px 30px;background:#FECE00;color:black;height:44px;margin-bottom:0" type="button" class="btn btn_confirm" value="새 템플릿 등록" id="msg_regist"></input>
+        <input style="align:center;background:cornflowerblue;height:44px" type="submit" name='func' class="btn btn_confirm btn_submit" value="저장하기" id="com_send"></input>
+        <input style="align:center;height:44px" type="submit" name='func' class="btn btn_confirm btn_submit" value="삭제하기" id="com_send"></input>
+        <input style="align:center;background:#FECE00;color:black;height:44px;margin-bottom:0" type="button" class="btn btn_confirm" value="새 템플릿 등록" id="msg_regist"></input>
     </div>
 </form>
 </div>
