@@ -74,7 +74,8 @@ h2{font-size: 1.083em;font-weight: bold;margin:10px 0}
 #gnb .gnb_li .btn_op.menu-900{background:url(../img/menu-4-1.png) 50% 50% no-repeat #ebebeb }
 #gnb .on .btn_op.menu-900{background:url(../img/menu-4.png) 50% 50% no-repeat #fff}
 
-#gnb .gnb_li .btn_op.menu-600{background:url(../img/menu-600-1.png) 50% 50% no-repeat #ebebeb }
+/*메뉴아이콘 커스텀*/
+#gnb .gnb_li .btn_op.menu-600{background:url(../img/menu-600-1.png) 50% 50% no-repeat #ebebeb}
 #gnb .on .btn_op.menu-600{background:url(../img/menu-600.png) 50% 50% no-repeat #fff}
 #gnb .gnb_li .btn_op.menu-650{background:url(../img/menu-650-1.png) 50% 50% no-repeat #ebebeb }
 #gnb .on .btn_op.menu-650{background:url(../img/menu-650.png) 50% 50% no-repeat #fff}
@@ -86,6 +87,10 @@ h2{font-size: 1.083em;font-weight: bold;margin:10px 0}
 #gnb .on .btn_op.menu-800{background:url(../img/menu-800.png) 50% 50% no-repeat #fff}
 #gnb .gnb_li .btn_op.menu-850{background:url(../img/menu-850-1.png) 50% 50% no-repeat #ebebeb }
 #gnb .on .btn_op.menu-850{background:url(../img/menu-850.png) 50% 50% no-repeat #fff}
+
+#gnb .gnb_li:nth-child(n+6):nth-child(-n+11) .btn_op {
+  background-size:20px 20px;
+}
 
 #gnb .gnb_li button:hover{background-color:#f3f3f3}
 #gnb .gnb_oparea{display:none;position:absolute;top:0;left:50px;background:#fff;height:100%;width:170px;padding:20px;border-right:1px solid #dbdbdb;
@@ -228,7 +233,7 @@ a.btn_frmline{display:inline-block;background:#9eacc6;color:#fff;height:35px;lin
 .btn_ov01:after{display:block;visibility:hidden;clear :both;content:""}
 .btn_ov01 .ov_txt{float:left;background:#9eacc6;color:#fff;border-radius:5px 0 0 5px;padding:0 5px}
 .btn_ov01 .ov_num{float:left;background:#ededed;color:#666;border-radius:0 5px 5px 0;padding:0 5px}
-a.btn_ov02,a.ov_listall{display:inline-block;line-height:30px;height:30px;font-size:0.92em;background:silver;color:#fff;vertical-align:top;border-radius:5px;padding:0 7px }
+a.btn_ov02,a.ov_listall{display:inline-block;line-height:30px;height:30px;font-size:0.92em;background:#6f809a;color:#fff;vertical-align:top;border-radius:5px;padding:0 7px }
 a.btn_ov02:hover,a.ov_listall:hover{background:darkgrey}
 
 /*form*/
@@ -1230,3 +1235,11 @@ i{font-style:italic; vertical-align: middle;} /*아이콘*/
       background: papayawhip;
   }
 
+  .copybutton{
+    cursor: pointer;
+  }
+  .td_id{
+    font-weight: 600;
+    font-size:14px;
+    font-family: Montserrat, Arial, sans-serif;;
+  }

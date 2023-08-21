@@ -26,6 +26,7 @@ $query_string = $qstr ? '?'.$qstr : '';
 
 <link type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css" rel="stylesheet" />
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script type="text/javascript" src="<?=G5_THEME_URL?>/_common/js/common.js"></script>
 
 <?if($excel_down){?>

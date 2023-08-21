@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-input[type="radio"] {}
+	input[type="radio"] {}
 	input[type="radio"] + label{color:#999;}
 	input[type="radio"]:checked + label {color:#e50000;font-weight:bold;font-size:14px;}
 

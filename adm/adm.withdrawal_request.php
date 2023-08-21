@@ -2,9 +2,13 @@
 $sub_menu = "700400";
 include_once('./_common.php');
 include_once(G5_THEME_PATH . '/_include/wallet.php');
-include_once(G5_PLUGIN_PATH.'/Encrypt/rule.php');
+// include_once(G5_PLUGIN_PATH.'/Encrypt/rule.php');
 
-$g5['title'] = "수당 출금 요청 내역";
+auth_check($auth[$sub_menu], 'r');
+
+$g5['title'] = "출금 요청 내역";
+$excel_down = true;
+
 include_once('./adm.header.php');
 
 function short_code($string, $char = 8)
@@ -108,17 +112,14 @@ function return_status_tx($val)
 	}
 }
 ?>
+
 <style>
 	strong.red{color:magenta !important}
 	.user_ip{width:130px;height:20px;text-overflow: ellipsis;text-align:left;padding-left:5px;margin-top:-5px;}
 </style>
 
-<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
-<link href="<?= G5_ADMIN_URL ?>/css/scss/adm.withdrawal_request.css" rel="stylesheet">
-
-<script src="../excel/tabletoexcel/xlsx.core.min.js"></script>
-<script src="../excel/tabletoexcel/FileSaver.min.js"></script>
-<script src="../excel/tabletoexcel/tableExport.js"></script>
+<!-- <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet"> -->
+<!-- <link href="<?= G5_ADMIN_URL ?>/css/scss/adm.withdrawal_request.css" rel="stylesheet"> -->
 
 
 <script>
@@ -230,7 +231,7 @@ function return_status_tx($val)
 </form>
 <br><br> -->
 
-<input type="button" class="btn_submit excel" id="btnExport"  data-name='hwajo_bonus_withdrawal' value="엑셀 다운로드" />
+<!-- <input type="button" class="btn_submit excel" id="btnExport"  data-name='hwajo_bonus_withdrawal' value="엑셀 다운로드" /> -->
 
 <div class="local_ov01 local_ov" style="display:flex; align-items:center">
 	<a href="./adm.withdrawal_request.php?<?= $qstr ?>" class="ov_listall"> 결과통계 <?= $total_count ?> 건 = <?= shift_auto($total_out,2)?><?=$curencys[0]?> / <?=shift_auto($total_amt,0)?><?=$curencys[1]?>  </a>
@@ -250,7 +251,8 @@ function return_status_tx($val)
 <div class="local_desc01 local_desc">
 	<p>
 		- 결과통계값 : 원코인 / 수수료뺀 출금액총합<br>
-		- 기본값 : 요청 | <strong>승인 : </strong> 수동송금처리후 변경 | <strong>취소 : </strong> 취소시 반환처리하면 차감금액 반환
+		- 기본값 : 요청 | <strong>승인 : </strong> 수동송금처리후 변경 | <strong>취소 : </strong> 취소시 반환처리하면 차감금액 반환<br>
+		- 아이디클릭 > 회원수정 | 출금정보클릭 > 계좌번호 복사
 		<!-- <i class="ri-checkbox-blank-fill" style="color:green;border:1px solid #ccc;font-size:20px;"></i> : 마이닝출금 <i class="ri-checkbox-blank-fill" style="color:#4556ff;border:1px solid #ccc;font-size:20px;"></i> : 수당출금<br> -->
 	</p>
 </div>
@@ -264,9 +266,9 @@ $ord_rev = $ord_array[($ord_key + 1) % 2]; // 내림차순→오름차순, 오�
 ?>
 
 <form name="site" method="post" action="" enctype="multipart/form-data" style="margin:0px;" id="form">
-	<div class="adminWrp">
-		<!--<button type="button" class="total_right btn_submit btn2" style="padding:5px 15px; margin-left:20px; " onclick="location.href='./delete_db_sol.php?id=with'">초기화</button>-->
-		<table cellspacing="0" cellpadding="0" border="0" class="regTb" id='table'>
+<div class="tbl_head01 tbl_wrap">
+    <table class='regTb' id='table'>
+		
 			<thead>
 				<!-- <th style="width:3%;">선택</th> -->
 				<th style="width:4%;"><a href="?ord=<?php echo $ord_rev; ?>&ord_word=uid">No <?php echo $ord_arrow[$ord_key]; ?></a></th>
@@ -315,10 +317,10 @@ $ord_rev = $ord_array[($ord_key + 1) % 2]; // 내림차순→오름차순, 오�
 						<td style='color:#777'><?= $mb['mb_name'] ?></td>
 						<!-- <td><?=kyc_cert($row['kyc'])?></td> -->
 
-						<td style="text-align:left;padding-left:7px;">
+						<td style="text-align:left;padding-left:7px;" class="copybutton">
 							<?php if ($row['addr'] == '') { ?>
 								<?= $row['bank_name'] ?> | <span id="bank_account" style='font-weight:600;font-size:13px;'><?= $row['bank_account'] ?></span>(<?= $row['account_name'] ?>)
-								<button type="button" class="btn inline_btn copybutton f_right" style='margin-right:10px;vertical-align:top;'>계좌복사</button>
+								<!-- <button type="button" class="btn inline_btn copybutton f_right" style='margin-right:10px;vertical-align:top;'>계좌복사</button> -->
 							<?php } else { 
 
 								$wallet_addr = "";
