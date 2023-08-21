@@ -620,13 +620,13 @@ function string_explode($val,$dived_value = 'member'){
 function string_shift_code($val){
 	switch ($val) {
 		case "0" :
-			echo "요청처리 대기중";
+			echo "처리진행중";
 			break;
 		case "1" :
 			echo "<p class='font_green bold'>처리완료</p>";
 			break;
 		case "2" :
-			echo "요청처리 진행중";
+			echo "처리진행중";
 			break;
 		case "3" :
 			echo "<p class='font_red bold'>승인거절</p>";
@@ -825,22 +825,34 @@ endif;
 
 
 // 트립시아 P2P 입출금 대응
-function array_bank_account($category = null, $idx = null){
+function array_bank_account($category = null, $used = null, $idx = null){
 	$sql = "SELECT * FROM wallet_account ";
 	$array = [];
 
-	if($category != null){
-		$where  = " WHERE category = '{$category}'";
+	// 사용중인것만
+	if($used != null){
+		$account_use_sql = " AND used = 1 ";
+	}else{
+		$account_use_sql = " ";
+	}
 
-		if($idx != null){
-			$where  .= " AND idx = {$idx}";
-		}
+	// 입금, 출금 분리
+	if($category != null){
+		$where  = " WHERE category_no = '{$category}'";
+		$order = " ORDER BY sequence ASC ";
 	}else{
 		$where  = " ";
+		$order = " ORDER BY category_no,sequence ASC ";
 	}
-	$order = " ORDER BY sequence ASC ";
 
-	$sql_result = sql_query($sql.$where.$order);
+	// 특정 ID
+	if($idx != null){
+		$where  .= " AND idx = {$idx} ";
+	}
+
+	
+
+	$sql_result = sql_query($sql.$where.$account_use_sql.$order);
 
 	while($row = sql_fetch_array($sql_result)){
 		array_push($array,$row);

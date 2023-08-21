@@ -622,6 +622,8 @@ a.btn_cancle,
     box-shadow: none;
 }
 
+
+
 .adm_btn {
     background: #FECE00;
     font-size: 13px !important;
@@ -1151,9 +1153,6 @@ a.btn_cancle,
     background: #073a69 !important
 }
 
-.hist_value {
-    color: #073a69
-}
 
 .btn.more_record i {
     font-size: 18px;
@@ -1504,6 +1503,8 @@ a.btn_cancle,
 
         #max_value {
             margin-top: -12px;
+            background: ghostwhite;
+            &:hover{background:#d7e2f1}
         }
     }
 }
@@ -1750,6 +1751,44 @@ a.btn_cancle,
         }
     }
 }
+
+
+
+
+
+// 추가
+
+.curency_value{
+    width:100%;
+    text-align:right;
+    font-size:14px;
+    line-height:20px;
+    font-weight:bold;
+}
+.hist_name{
+    font-weight:bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2654,11 +2693,16 @@ a.btn_cancle,
             }
 
             .line_btn {
-                background: none !important;
-                border: 1px solid $main-colors;
-
+                background: none;
+                border: 2px solid $main-colors;
+                
+                &:hover{
+                    background: rgba(255,255,255,0.2);
+                    // border: 2px solid white;
+                    box-shadow: 0 0 0 2px #ccad00;
+                }
                 span {
-                    color: #fff;
+                    color: #000;
                 }
             }
 
@@ -2686,6 +2730,10 @@ a.btn_cancle,
                             color: $main-colors;
                         }
 
+                        .curency_value{
+                            color:white;
+                        }
+
                         .hist_name {
                             color: #fff;
                         }
@@ -2694,7 +2742,8 @@ a.btn_cancle,
             }
 
             .deposit_request {
-                background: #1f9df5;
+                background: $main-button2;
+                span{color:black;}
             }
 
 
@@ -3289,10 +3338,6 @@ a.btn_cancle,
             color: #fff;
         }
 
-        .hist_value {
-            color: $main-colors;
-        }
-
         .hist_td {
             color: #fff;
         }
@@ -3388,9 +3433,6 @@ a.btn_cancle,
         background: #073a69 !important
     }
 
-    .hist_value {
-        color: #073a69
-    }
 
     .btn.more_record i {
         font-size: 18px;

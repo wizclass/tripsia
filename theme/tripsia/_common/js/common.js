@@ -209,6 +209,12 @@ function Price(x) {
 	return x.toLocaleString('ko-KR', { maximumFractionDigits: 8 });
 }
 
+// 숫자에 콤마 찍기 2
+function Comma_Number(x){
+	return x.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
 // 숫자에 콤마 제거
 function conv_number(val) {
 	let reg = /,/g;

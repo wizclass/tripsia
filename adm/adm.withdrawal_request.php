@@ -44,11 +44,15 @@ $sql = " select coin,count(*) as cnt, sum(amt) as hap, sum(amt_total) as amt_tot
 $sql .= $sql_condition;
 $sql .= $sql_ord . " group by coin";
 $result = sql_query($sql);
+
 $total_arr = array();
 $total_count = 0;
 $total_out = 0;
+
 for($i = 0; $i < $row = sql_fetch_array($result); $i++){
 	$total_count += $row['cnt'];
+	$total_amt += $row['hap'];
+	$total_amttotal += $row['amt_total'];
 	$total_out += $row['outamt'];
 	array_push($total_arr,$row);
 }
@@ -229,7 +233,7 @@ function return_status_tx($val)
 <input type="button" class="btn_submit excel" id="btnExport"  data-name='hwajo_bonus_withdrawal' value="엑셀 다운로드" />
 
 <div class="local_ov01 local_ov" style="display:flex; align-items:center">
-	<a href="./adm.withdrawal_request.php?<?= $qstr ?>" class="ov_listall"> 결과통계 <?= $total_count ?> 건 = <strong><?= shift_auto($total_out,$curencys[1]) ?> <?= $curencys[1] ?> </strong></a>
+	<a href="./adm.withdrawal_request.php?<?= $qstr ?>" class="ov_listall"> 결과통계 <?= $total_count ?> 건 = <?= shift_auto($total_out,2)?><?=$curencys[0]?> / <?=shift_auto($total_amt,0)?><?=$curencys[1]?>  </a>
 	<?
 	// 현재 통계치
 	$stats_sql = "SELECT status, sum(out_amt)  as hap, count(out_amt) as cnt from {$g5['withdrawal']} as A WHERE 1=1 " . $sql_condition . " GROUP BY status";
@@ -238,13 +242,14 @@ function return_status_tx($val)
 		echo "<a href='./adm.withdrawal_request.php?" . $qstr . "&status=" . $stats['status'] . "'><span class='tit'>";
 		echo return_status_tx($stats['status']);
 		echo "</span> : " . $stats['cnt'];
-		echo "건 = <strong>" . shift_auto($stats['hap'],$curencys[1]) . ' ' . $curencys[1] . "</strong></a>";
+		echo "건 = <strong>" . shift_auto($stats['hap'],$curencys[0]) . ' ' . $curencys[0] . "</strong></a>";
 	}
 	?>
 </div>
 
 <div class="local_desc01 local_desc">
 	<p>
+		- 결과통계값 : 원코인 / 수수료뺀 출금액총합<br>
 		- 기본값 : 요청 | <strong>승인 : </strong> 수동송금처리후 변경 | <strong>취소 : </strong> 취소시 반환처리하면 차감금액 반환
 		<!-- <i class="ri-checkbox-blank-fill" style="color:green;border:1px solid #ccc;font-size:20px;"></i> : 마이닝출금 <i class="ri-checkbox-blank-fill" style="color:#4556ff;border:1px solid #ccc;font-size:20px;"></i> : 수당출금<br> -->
 	</p>
@@ -265,25 +270,25 @@ $ord_rev = $ord_array[($ord_key + 1) % 2]; // 내림차순→오름차순, 오�
 			<thead>
 				<!-- <th style="width:3%;">선택</th> -->
 				<th style="width:4%;"><a href="?ord=<?php echo $ord_rev; ?>&ord_word=uid">No <?php echo $ord_arrow[$ord_key]; ?></a></th>
-				<th style="width:8%;">아이디 </th>
+				<th style="width:7%;">아이디 </th>
 				<th style="width:4%;">이름</th>
-				<th style="width:4%;">KYC인증 </th>
+				<!-- <th style="width:4%;">KYC인증 </th> -->
 				<th style="width:auto">출금정보</th>
-
-				<th style="width:5%;">출금전잔고</th>
+				<th style="width:5%;">출금전잔고<br>( <?=$curencys[0]?> )</th>
+				<th style="width:5%;">출금요청액<br>( <?=$curencys[0]?> )</th>
+				<th style="width:7%;">출금변환액</th>
 				<th style="width:4%;">출금단위</th>
-				<th style="width:7%;">출금요청액</th>
-				<th style="width:7%;">출금수수료</th>
+				<th style="width:5%;">출금수수료</th>
 
 				<th style="width:7%;">출금액</th>
-				<!-- <th style="width:7%;">출금시세<br>(1<?=$curencys[1]?> 당 수량)</th> -->
+				<th style="width:5%;">출금시세<br>( <?=$curencys[0]?> )</th>
 
 				<!-- <th style="width:5%;">적용코인시세</th> -->
 
 				<th style="width:5%;">요청일시</th>
-				<th style="width:6%;">승인여부</th>
+				<th style="width:9%;">승인여부</th>
 				<th style="width:5%;">상태변경일</th>
-				<th style="width:10%;">관리자메모</th>
+				<th style="width:8%;">관리자메모</th>
 			</thead>
 
 			<tbody>
@@ -308,7 +313,7 @@ $ord_rev = $ord_array[($ord_key + 1) % 2]; // 내림차순→오름차순, 오�
 						
 						<input type="hidden" value="<?= $row['mb_id'] ?>" name="mb_id[]">
 						<td style='color:#777'><?= $mb['mb_name'] ?></td>
-						<td><?=kyc_cert($row['kyc'])?></td>
+						<!-- <td><?=kyc_cert($row['kyc'])?></td> -->
 
 						<td style="text-align:left;padding-left:7px;">
 							<?php if ($row['addr'] == '') { ?>
@@ -342,33 +347,31 @@ $ord_rev = $ord_array[($ord_key + 1) % 2]; // 내림차순→오름차순, 오�
 
 						<!-- 출금전잔고 -->
 						<td class="gray" style='font-size:11px;'><?= shift_auto($row['account'], $row['coin']) ?></td>
-
+						
+						<!-- 출금요청원화-->
+						<td><?=shift_auto($row['out_amt'],$curencys[1])?></td>
+						
+						<!-- 출금변환액 -->
+						<td class="td_amt <?= $coin_class ?>"><?= shift_auto($row['amt_total'], $row['coin']) ?></td>
+						
+						<!-- 출금단위 -->
 						<input type="hidden" value="<?= $row['addr'] ?>" name="addr[]">
 						<td class="td_amt">
 							<!-- <input type="hidden" value="<?= $row['coin'] ?>" name="coin[]" class='coin'> -->
 							<?= $row['coin'] ?> 
 						</td>
 
-					
-						<!-- 출금요청액 -->
-						<td class="td_amt <?= $coin_class ?>"><?= shift_auto($row['amt_total'], $row['coin']) ?> <?="<br>(".shift_auto($row['out_amt'],$curencys[1]) ." ".$curencys[1].")" ?></td>
-
-						<!-- 출금계산 -->
-						<!-- <td class="gray" style='line-height:18px;'>
-							<?= shift_auto($row['amt'], $row['coin']) ?>
-						</td> -->
-
 						<!-- 수수료 -->
-						<td><span style='display:block;font-size:11px;'><?= shift_auto($row['fee'], $row['coin']) . ' ' . $row['coin']?></span></td>
+						<td><span style='display:block;font-size:11px;'><?= shift_auto($row['fee'], $row['coin'])?></span></td>
 
 
 						<td class="td_amt" style="color:red">
 							<!-- <input type="hidden" value="<?= shift_auto($row['out_amt']) ?>" name="out_amt[]"> -->
-							<?= shift_auto($row['amt'], $row['coin']) . ' ' . $row['coin']?> 
+							<?= shift_auto($row['amt'], $row['coin'])?> 
 						</td>
 
 						<!-- 출금시세 -->
-						<!-- <td class="gray" style='font-size:11px;'><span><?= shift_auto($row['cost'], $curencys[2]) ?></span></td> -->
+						<td class="gray" style='font-size:11px;'><span><?= shift_auto($row['cost'], $curencys[0]) ?></span></td>
 						<!-- <td class="gray" style='font-size:11px;'><span><?= $row['cost'] . ' ' . $row['coin']?></span></td> -->
 
 						<td style="font-size:11px;"><?= timeshift($row['create_dt']) ?></td>
@@ -407,11 +410,11 @@ $total_fee = $row['feehap']; -->
 				<td>합계:</td>
 				<td><?= $total_count ?></td>
 				<td colspan=4></td>
-				<td><?=$total_arr[0]['coin']?> <br><?=$total_arr[1]['coin']?></td>
-				<td colspan=1><?= shift_auto($total_arr[0]['amt_total'],$curencys[0]) ?><br><?= shift_auto($total_arr[1]['amt_total'],$curencys[3]) ?></td>
-				<td><?= shift_auto($total_arr[0]['feehap'],$curencys[0]) ?><br><?= shift_auto($total_arr[1]['feehap'],$curencys[3]) ?></td>
-				<td colspan=1><?= shift_auto($total_arr[0]['hap'],$curencys[0]) ?><br><?= shift_auto($total_arr[1]['hap'],$curencys[3]) ?></td>
-				<td colspan=4></td>
+				<td colspan=1><?= shift_auto($total_arr[0]['amt_total'],0) ?></td>
+				<td></td>
+				<td><?= shift_auto($total_arr[0]['feehap'],0) ?></td>
+				<td colspan=1><?= shift_auto($total_arr[0]['hap'],0) ?></td>
+				<td colspan=5></td>
 			</tfoot>
 		</table>
 	</div>
@@ -422,6 +425,7 @@ $total_fee = $row['feehap']; -->
 <input type="button" value="전체선택" onclick="javascript:select_all_check()" class="transfer">
 <input type="button" value="보내기" onclick="javascript:start_transfer()" class="transfer"> -->
 <!-- // adminWrp // -->
+
 <?php
 $pagelist = get_paging($config['cf_write_pages'], $page, $total_page, $_SERVER['SCRIPT_NAME'] . '?' . $qstr . '&amp;domain=' . $domain . '&amp;page=');
 if ($pagelist) {

@@ -1,11 +1,12 @@
 <?php
-$sub_menu = "700600";
+$sub_menu = "700300";
 include_once('./_common.php');
 include_once(G5_THEME_PATH.'/_include/wallet.php');
 
 auth_check($auth[$sub_menu], 'r');
 
-$g5['title'] = "입금 처리 내역";
+$g5['title'] = "입금 요청 내역";
+$excel_down = true;
 
 include_once('./adm.header.php');
 
@@ -50,7 +51,7 @@ if($_GET['ord']!=null && $_GET['ord_word']!=null){
 }
 
 
-$colspan = 11;
+$colspan = 12;
 // $to_date = date("Y-m-d", strtotime(date("Y-m-d")."+1 day"));
 
 $sql_common = " from {$g5['deposit']} as A";
@@ -77,41 +78,6 @@ $result = sql_query($sql);
 ?>
 
 
-<style>
-    .red{color:red}
-    .text-center{text-align:center}
-    .hash{min-width:120px;height:auto;display:block;}
-    .reg_text{border:1px solid #ccc;padding:5px 10px;}
-    table tr td{text-align:center}
-    .row_dup td{background:rgba(253,240,220,0.8)}
-    .btn_submit.excel {
-    background: green;
-    position: absolute;
-    top: 4.4em;
-    left: 98em;
-    height: 24px;
-    font-size: 0.95em;
-}
-
-    
-	.local_ov strong{color:red; font-weight:600;}
-	.local_ov .tit{color:black; font-weight:600;}
-	.local_ov a{margin-left:20px;}
-
-    .btn1{background:#e4f1ff}
-    .btn2{background:#f9f1d3}
-    .btn3{background:#fd9898}
-
-    .time{font-size:11px;letter-spacing: -0.5px;}
-
-    .regTb tr:hover td {
-        background: papayawhip;
-    }
-
-</style>
-<script src="../excel/tabletoexcel/xlsx.core.min.js"></script>
-<script src="../excel/tabletoexcel/FileSaver.min.js"></script>
-<script src="../excel/tabletoexcel/tableExport.js"></script>
 
 <script>
 	$(function(){
@@ -144,7 +110,7 @@ $result = sql_query($sql);
         });
 
         // 바이너리 추가
-        $('.add_binary').on('click',function(){
+        /* $('.add_binary').on('click',function(){
             var mb_id = $(this).data('id');
             var func = $(this).data('func');
 
@@ -170,7 +136,7 @@ $result = sql_query($sql);
                 
             });
 
-        });
+        }); */
 
 		$('.regTb [name=status]').on('change',function(e){
             var refund = 'N';
@@ -264,10 +230,11 @@ $result = sql_query($sql);
 		$("#create_dt_fr,#create_dt_to, #update_dt").datepicker({ changeMonth: true, changeYear: true, dateFormat: "yy-mm-dd", showButtonPanel: true, yearRange: "c-99:c+99", maxDate: "+0d" });
     });
 </script>
-<input type="button" class="btn_submit excel" id="btnExport"  data-name='hwajo_deposit' value="엑셀 다운로드" />
+
+
 
 <div class="local_ov01 local_ov" style="display: flex; align-items: center">
-	<a href="./adm.deposit_request.php?<?=$qstr?>" class="ov_listall"> 결과통계 <?=$total_count?> 건 = <strong><?=shift_auto($total_hap,$curencys[1])?></strong></a> 
+	<a href="./adm.deposit_request.php?<?=$qstr?>" class="ov_listall"> 결과통계 <?=$total_count?> 건 = <?=shift_auto($total_hap,$curencys[1])?></a> 
 	<?
 		// 현재 통계치
 		$stats_sql = "SELECT status, sum(in_amt) as hap, count(in_amt) as cnt from {$g5['deposit']} as A WHERE 1=1 ".$sql_condition. " GROUP BY status";
@@ -288,7 +255,7 @@ $result = sql_query($sql);
 <div class="local_desc01 local_desc">
     <p>
         <strong>- 요청확인중 :</strong> 기본값 | <strong>승인 :</strong> 입금금액 포인트 반영 | <strong>대기 :</strong> 확인처리중 | <strong>불가 :</strong> 입금자, 입금액 불일치 - 입금액변경하여 처리가능 | <strong>취소 :</strong> 미승인처리<br>
-        <strong>- 후원레그2 추가 : </strong> 기존회원중 후원레그2 수동 추가 (신규입금자는 입금승인시 자동처리)
+        <!-- <strong>- 후원레그2 추가 : </strong> 기존회원중 후원레그2 수동 추가 (신규입금자는 입금승인시 자동처리) -->
 	</p>
 </div>
 
@@ -298,19 +265,20 @@ $result = sql_query($sql);
     <thead>
     <tr>
         <th scope="col" width='5%'>no</th>
-        <th scope="col" width='8%'>아이디</th>
-        <th scope="col" width='8%'>추천인</th>
+        <th scope="col" width='7%'>아이디</th>
+        <th scope="col" width='7%'>추천인</th>
         <!-- <th scope="col" width='5%'>센터</th> -->
-        <th scope="col" width='12%'>TX ID</th>
+        <th scope="col" width='15%'>입금정보</th>
         <th scope="col" width='5%'>입금요청금액</th>
         <th scope="col" width='4%'>입금종류</th>
-        <th scope="col" width='8%'>입금처리금액(<?=$curencys[1]?>)</th>
+        <th scope="col" width='5%'>입금처리금액(<?=$curencys[0]?>)</th>
+        <th scope="col" width='5%'>시세(<?=$curencys[0]?>)</th>
         <th scope="col" width='10%'>승인여부</th>
         <th scope="col" width='8%'>요청시간</th>
         <th scope="col" width='8%'>상태변경일</th>
         <!-- <th scope="col" width='6%'>조직도등록</th> -->
         <!-- <th scope="col" width='10%'>추가항목2</th> -->
-        <th scope="col" style="width:14%;">관리자메모</th>
+        <th scope="col" style="width:10%;">관리자메모</th>
     </tr>
     </thead>
     <tbody>
@@ -329,6 +297,8 @@ $result = sql_query($sql);
         $member_binary = $member_binary_sql['mb_brecommend'];
         $member_binary2 = $member_binary_sql['mb_id'];
         $in_amt = shift_auto($row['in_amt']);
+
+        
     ?>
    
     <tr class="bg0">
@@ -344,7 +314,7 @@ $result = sql_query($sql);
         <td><?=shift_auto($row['amt'])?></td>
         <td class='coin'><?=$row['coin']?></td>
         <td><input type='text' class='reg_text input_amt_val' style='font-weight:600;color:blue;text-align:right' value='<?=shift_auto($row['in_amt'],$curencys[1])?>'></td>
-        
+        <td><?=$row['cost']?></td>
         <td>
             <!-- <?=status($row['status'])?> -->
             <select name="status" uid="<?=$row['uid']?>" class='sel_<?=$row['status']?>'>
@@ -378,10 +348,22 @@ $result = sql_query($sql);
     </tr>
 
     <?php
+    $total_amt += $row['amt'];
+    $total_inamt += $row['in_amt'];
     }
     if ($i == 0)
         echo '<tr><td colspan="'.$colspan.'" class="empty_table">자료가 없거나 관리자에 의해 삭제되었습니다.</td></tr>';
     ?>
+    <tfoot>
+    <tr>
+        <td>합계</td>
+        <td colspan="3"></td>
+        <td class="text-right"><?=shift_auto($total_amt)?></td>
+        <td></td>
+        <td class="text-right"><?=shift_auto($total_inamt,2)?></td>
+        <td colspan="5"></td>
+    </tr>
+    </tfoot>
     </tbody>
     </table>
 </div>

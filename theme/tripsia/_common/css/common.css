@@ -2582,7 +2582,6 @@ input:checked + .slider:before {
 .hist_value.status {
   width: 50%;
   font-size: 14px;
-  color: #29386b;
 }
 
 .hist_th {

@@ -14,48 +14,57 @@ $now_date = date('Y-m-d');
 /* 메일인증 - 사용안함 */
 //include_once('../lib/otphp/lib/otphp.php');
 //include_once(G5_LIB_PATH.'/mailer.lib.php');
+
 /* 코인출금시 */
 /* $wallet_addr	= trim($_POST['wallet_addr']);
 $select_coin    = trim($_POST['select_coin']);  */
-$func				= trim($_POST['func']);
+
+$func			= trim($_POST['func']);
 $mb_id			= trim($_POST['mb_id']);
+$mb_name 		= $member['mb_name'];
 $total_amt		= trim($_POST['total_amt']);
-$select_coin 		= $_POST['select_coin'];
-$fixed_amt = $_POST['fixed_amt'];
-$fixed_fee = $_POST['fixed_fee'];
+$select_coin 	= $_POST['select_coin'];
+$fixed_amt 		= $_POST['fixed_amt'];
+$fixed_fee 		= $_POST['fixed_fee'];
+
 $coin = get_coins_price();
-if($select_coin == 'hja') {
-	$result = sql_fetch("SELECT current_cost, used FROM wallet_coin_price WHERE idx = '1'");
-  $market_price = $total_amt * ($result['used'] == '1' ? $result['current_cost'] : 1);
-} else if ($select_coin == 'etc') {
-	$market_price = shift_auto($coin['usdt_krw'] / $coin['etc_krw']);
-} else if ($select_coin == 'usdt') {
-	$market_price = 1;
-} else {
-	$market_price = shift_auto($coin['eth_usdt'] / $coin['eth_krw']);
-}
-/* $cost = str_replace(',','',shift_auto($_POST['cost'],$curencys[2])); */
+
+/* 멀티코인 
+	if($select_coin == 'hja') {
+		$result = sql_fetch("SELECT current_cost, used FROM wallet_coin_price WHERE idx = '1'");
+	$market_price = $total_amt * ($result['used'] == '1' ? $result['current_cost'] : 1);
+	} else if ($select_coin == 'etc') {
+		$market_price = shift_auto($coin['usdt_krw'] / $coin['etc_krw']);
+	} else if ($select_coin == 'usdt') {
+		$market_price = 1;
+	} else {
+		$market_price = shift_auto($coin['eth_usdt'] / $coin['eth_krw']);
+	} 
+*/
+
+$market_price = $coin['usdt_krw'];
+
+
+
 
 /* 원화계좌출금*/
 $bank_name = trim($_POST['bank_name']);
 $bank_account = trim($_POST['bank_account']);
 $account_name = trim($_POST['account_name']);
 
-
-$mb_name = $member['mb_name'];
-
 // $debug = 1;
 
-// if($debug){
-// 	$mb_id = 'arcthan';
-// 	$func = 'withdraw';
-// 	$total_amt = 100000;
-// 	$select_coin = '원';
-// 	$bank_name = '농협';
-// 	$account_name = '로그컴퍼니';
-// 	$bank_account = '123-456789-012';
-// }
-
+if($debug){
+	$mb_id = 'test1';
+	$func = 'withdraw';
+	$total_amt = 100;
+	$select_coin = '원';
+	$fixed_amt = 1294423;
+	$fixed_fee = 6813;
+	$bank_name = '국민은행';
+	$account_name = '한은수';
+	$bank_account = '123-456789-012';
+}
 
 // 출금 설정 
 $withdrwal_setting = wallet_config('withdrawal');
@@ -110,27 +119,28 @@ if($fund_check_val < $total_amt){
 
 
 /* 
-if($is_debug) {echo "수수료 ".$calc_fee." /   토탈 :".$total_balance_usd." /  출금요청 : ".$amt_haz_cal."<br>" ;}
+	if($is_debug) {echo "수수료 ".$calc_fee." /   토탈 :".$total_balance_usd." /  출금요청 : ".$amt_haz_cal."<br>" ;}
 
-$check_total_sql = "SELECT SUM(amt_total) as total_sum FROM wallet_withdrawal_request WHERE mb_id ='{$mb_id}' and coin = '{$select_coin}' AND STATUS = 0 ";
-$total_row = sql_fetch($check_total_sql);
+	$check_total_sql = "SELECT SUM(amt_total) as total_sum FROM wallet_withdrawal_request WHERE mb_id ='{$mb_id}' and coin = '{$select_coin}' AND STATUS = 0 ";
+	$total_row = sql_fetch($check_total_sql);
 
-if($total_row['total_sum'] != ""){
+	if($total_row['total_sum'] != ""){
 
-	if($amt_eth_cal > $total_bal - $total_row['total_sum']){
-		echo (json_encode(array("result" => "Failed", "code" => "0002","sql"=>"Not enough balance of ".strtoupper($select_coin). " because of unconfirmed withdrawal")));
-		return false;
+		if($amt_eth_cal > $total_bal - $total_row['total_sum']){
+			echo (json_encode(array("result" => "Failed", "code" => "0002","sql"=>"Not enough balance of ".strtoupper($select_coin). " because of unconfirmed withdrawal")));
+			return false;
+		}
+
+	}else{
+
+		// 잔고 초과
+		if($amt_eth_cal > $total_bal){
+			echo (json_encode(array("result" => "Failed", "code" => "0002","sql"=>"Not enough balance of ".strtoupper($select_coin))));
+			return false;
+		}
+
 	}
-
-}else{
-
-	// 잔고 초과
-	if($amt_eth_cal > $total_bal){
-		echo (json_encode(array("result" => "Failed", "code" => "0002","sql"=>"Not enough balance of ".strtoupper($select_coin))));
-		return false;
-	}
-
-} */
+ */
 
 
 // 출금주소 확인
@@ -141,14 +151,18 @@ if($total_row['total_sum'] != ""){
 
 
 $amt_total = $fixed_amt+$fixed_fee;
-$Enc_wallet_addr = Encrypt($bank_account,$secret_key,$secret_iv);
+
+if($select_coin != '원'){
+	$Enc_wallet_addr = Encrypt($bank_account,$secret_key,$secret_iv);
+}
+
 //출금 처리
 $proc_receipt = "insert {$g5['withdrawal']} set
 mb_id ='{$mb_id}'
 , addr = '{$Enc_wallet_addr}'
-, bank_name = ''
-, bank_account = ''
-, account_name = ''
+, bank_name = '{$bank_name}'
+, bank_account = '{$bank_account}'
+, account_name = '{$account_name}'
 , account = '{$fund_check_val}'
 , amt ={$fixed_amt}
 , fee = {$fixed_fee}
@@ -175,6 +189,7 @@ if($debug){
 // 출금시 선차감
 if($rst){
 
+	/* 멀티코인
 	$Enc_wallet_addr2 = Encrypt($bank_account,$mb_id,'x');
 
 	if($select_coin == 'hja') {
@@ -185,11 +200,12 @@ if($rst){
 		$column = "usdt_my_wallet = '{$Enc_wallet_addr2}'";
 	} else {
 		$column = "eth_my_wallet = '{$Enc_wallet_addr2}'";
-	}
+	} */
+
+	$column = " bank_name = '{$bank_name}', bank_account = '{$bank_account}', account_name = '{$account_name}' ";
 
 	$amt_query = "UPDATE g5_member set 
 	mb_shift_amt = mb_shift_amt + {$total_amt}
-	, otp_key = ''
 	, {$column}
 	where mb_id = '{$mb_id}' ";
 }

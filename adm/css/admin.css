@@ -223,7 +223,7 @@ a.btn_ov02:hover,a.ov_listall:hover{background:#3f51b5}
 .frm_input_full{width:100%}
 .required{background:url('../img/wrest.gif') top right no-repeat #fff !important}
 select{height:35px;line-height:32px;border:1px solid #d5d5d5;}
-textarea{width:100%;border:1px solid #d5d5d5;min-height:80px}
+textarea{width:100%;border:1px solid #d5d5d5;min-height:50px}
 legend {position:absolute;width:0;height:0;font-size:0;line-height:0;text-indent:-9999em;border:0;overflow:hidden}
 .code_input{font:bold 15px Consolas}
 
@@ -1177,3 +1177,42 @@ i{font-style:italic; vertical-align: middle;} /*아이콘*/
   margin-left: 5px;
   color: #333;
 }
+
+.text-right{
+  text-align:right !important;
+}
+
+.text-center{
+  text-align:center !important;
+}
+
+
+.btn_submit.excel {
+  background: green;
+  border:1px solid rgb(3, 94, 3);
+  height: 28px;
+  font-size: 0.95em;
+}
+
+
+  .red{color:red}
+  .text-center{text-align:center}
+  .hash{min-width:120px;height:auto;display:block;}
+  .reg_text{border:1px solid #ccc;padding:5px 10px;}
+  table tr td{text-align:center}
+  .row_dup td{background:rgba(253,240,220,0.8)}
+
+	.local_ov strong{color:red; font-weight:600;}
+	.local_ov .tit{color:black; font-weight:600;}
+	.local_ov a{margin-left:20px;}
+
+  .btn1{background:#e4f1ff}
+  .btn2{background:#f9f1d3}
+  .btn3{background:#fd9898}
+
+  .time{font-size:11px;letter-spacing: -0.5px;}
+
+  .regTb tr:hover td {
+      background: papayawhip;
+  }
+

@@ -13,7 +13,7 @@ $now_date = date('Y-m-d');
 
 if($debug ==1){
   $mb_id = 'test1';
-  $txhash = '';
+  $txhash = 3;
   $coin = '원';
   $d_price = 300000;
   $mb_name = '테스터1';
@@ -24,6 +24,11 @@ if($debug ==1){
   $d_price = $_POST['d_price'];
   $mb_name = $member['mb_name'];
 }
+
+// 입금계좌정보
+$deposit_array = array_bank_account(1);
+$deposit_info = $deposit_array[$txhash];
+$deposit_infomation = $deposit_info['account_name'].' : '.$deposit_info['bank_name']." ".$deposit_info['bank_account'];
 
 /*기존건 확인*/
 $pre_result = sql_fetch("SELECT count(*) as cnt from wallet_deposit_request 
@@ -53,8 +58,8 @@ if($pre_result['cnt'] < 1){
     $point = $usdt * $d_price;
   }
 
-  $sql = "INSERT INTO wallet_deposit_request(mb_id, txhash, create_dt,create_d,status,coin,cost,amt,in_amt) 
-  VALUES('$mb_id','$txhash','$now_datetime','$now_date',0,'$coin', {$usdt},{$d_price},{$point})";
+  $sql = "INSERT INTO wallet_deposit_request(mb_id,od_id, txhash, create_dt,create_d,status,coin,cost,amt,in_amt) 
+  VALUES('$mb_id',{$txhash},'$deposit_infomation','$now_datetime','$now_date',0,'$coin', {$usdt},{$d_price},{$point})";
   
   if($debug){
     print_R($sql);
@@ -64,8 +69,14 @@ if($pre_result['cnt'] < 1){
   }
 
   // 입금알림 텔레그램 API
-  if(TELEGRAM_ALERT_USE){
-    curl_tele_sent('[HWAJO][입금요청] '.$mb_id.'('.$mb_name.') 님의 '.shift_auto($point, $curencys[1]).' '.$curencys[1].'입금요청이 있습니다.');
+  $msg = '[TRIPSIA][입금요청] '.$mb_id.'('.$mb_name.') 님의 '.shift_auto($d_price, $curencys[1]).' '.$curencys[1].' 입금요청이 있습니다.';
+
+  if(TELEGRAM_ALERT_USE){  
+    curl_tele_sent($msg);
+  }else{
+    if($debug ==1){
+      echo "<br><code>".$msg."</code><br>";
+    }
   }
   
   if($result){

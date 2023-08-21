@@ -28,47 +28,55 @@ $query_string = $qstr ? '?'.$qstr : '';
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?=G5_THEME_URL?>/_common/js/common.js"></script>
 
+<?if($excel_down){?>
+    <script src="../excel/tabletoexcel/xlsx.core.min.js"></script>
+    <script src="../excel/tabletoexcel/FileSaver.min.js"></script>
+    <script src="../excel/tabletoexcel/tableExport.js"></script>
+<?}?>
 
-<form name="fvisit" id="fvisit" class="local_sch02 local_sch" method="get">
+<?if(!$searchbar){?>
+    <form name="fvisit" id="fvisit" class="local_sch02 local_sch" method="get">
 
-<div class="sch_last" style="margin-left:20px">
-    <strong>멤버아이디</strong>
-    <input type="text" name="fr_id" value="<?php echo $fr_id ?>" id="fr_id" class="frm_input" style="width:140px" maxlength="30">
-    <label for="fr_id" class="sound_only">회원아이디</label>
-</div>
+    <div class="sch_last" style="margin-left:20px">
+        <strong>멤버아이디</strong>
+        <input type="text" name="fr_id" value="<?php echo $fr_id ?>" id="fr_id" class="frm_input" style="width:140px" maxlength="30">
+        <label for="fr_id" class="sound_only">회원아이디</label>
+    </div>
 
-<div class="sch_last">
-    <strong> 기간별검색</strong>
-    <input type="text" name="fr_date" value="<?php echo $fr_date ?>" id="fr_date" class="frm_input" size="15" style="width:120px" maxlength="10">
-    <label for="fr_date" class="sound_only">시작일</label>
-    ~
-    <input type="text" name="to_date" value="<?php echo $to_date ?>" id="to_date" class="frm_input" size="15" style="width:120px" maxlength="10">
-    <label for="to_date" class="sound_only">종료일</label>
-</div>
+    <div class="sch_last">
+        <strong> 기간별검색</strong>
+        <input type="text" name="fr_date" value="<?php echo $fr_date ?>" id="fr_date" class="frm_input" size="15" style="width:120px" maxlength="10">
+        <label for="fr_date" class="sound_only">시작일</label>
+        ~
+        <input type="text" name="to_date" value="<?php echo $to_date ?>" id="to_date" class="frm_input" size="15" style="width:120px" maxlength="10">
+        <label for="to_date" class="sound_only">종료일</label>
+    </div>
 
-<div class="sch_last">
-    <strong> 승인일시 :</strong>
-    <input type="text" name="update_dt" id="update_dt" placeholder="승인일시" class="frm_input" value="<?=$_GET['update_dt']?>" />
-</div>
+    <div class="sch_last">
+        <strong> 승인일시 :</strong>
+        <input type="text" name="update_dt" id="update_dt" placeholder="승인일시" class="frm_input" value="<?=$_GET['update_dt']?>" />
+    </div>
 
-<div class="sch_last">
-    <strong> 상태값 :</strong>
-	<select name="status" id="status" style="width:100px;">
-		<option value="">전체</option>
-		<option <?=$_GET['status'] == '0' ? 'selected':'';?> value="0">요청</option>
-		<option <?=$_GET['status'] == '1'? 'selected':'';?> value="1">승인</option>
-		<option <?=$_GET['status'] == '2'? 'selected':'';?> value="2">대기</option>
-		<option <?=$_GET['status'] == '3'? 'selected':'';?> value="3">불가</option>
-		<option <?=$_GET['status'] == '4'? 'selected':'';?> value="4">취소</option>
-	</select>
-</div>
+    <div class="sch_last">
+        <strong> 상태값 :</strong>
+        <select name="status" id="status" style="width:100px;">
+            <option value="">전체</option>
+            <option <?=$_GET['status'] == '0' ? 'selected':'';?> value="0">요청</option>
+            <option <?=$_GET['status'] == '1'? 'selected':'';?> value="1">승인</option>
+            <option <?=$_GET['status'] == '2'? 'selected':'';?> value="2">대기</option>
+            <option <?=$_GET['status'] == '3'? 'selected':'';?> value="3">불가</option>
+            <option <?=$_GET['status'] == '4'? 'selected':'';?> value="4">취소</option>
+        </select>
+    </div>
 
-<input type="submit" value="검색" class="btn_submit" style="padding: 5px">
-<? if($g5['title'] == "입금 요청 내역"){ ?>
-     <input type="button" class="btn_submit excel" value="엑셀 다운로드" onclick="window.location.href='../excel/deposit_request_excel_down.php?fr_date=<?=$_GET['fr_date']?>&to_date=<?=$_GET['to_date']?>&fr_id=<?=$_GET['fr_id']?>&update_dt=<?=$_GET['update_dt']?>&status=<?=$_GET['status']?>'" />	  
-<? } ?>
-</form>
+    <input type="submit" value="검색" class="btn_submit" style="padding: 5px">
 
+    <?if($excel_down){?>
+        <input type="button" class="btn_submit excel" id="btnExport"  data-name='account_deposit' value="엑셀 다운로드" />
+    <?}?>
+
+    </form>
+<?}?>
 
 
 <!--
