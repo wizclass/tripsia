@@ -6,6 +6,7 @@ include_once(G5_PATH.'/util/purchase_proc.php');
 // $debug = 1;
 $now_datetime = date('Y-m-d H:i:s');
 $now_date = date('Y-m-d');
+$soodang_date = date('Y-m-d', strtotime("+3 day"));
 
 $mb_id = $member['mb_id'];
 $mb_no = $member['mb_no'];
@@ -58,6 +59,7 @@ $sql = "insert g5_order set
 	, od_receipt_time   = '".$now_datetime."'
 	, od_time           = '".$now_datetime."'
 	, od_date           = '".$now_date."'
+	, od_soodang_date   = '".$soodang_date."'
 	, od_settle_case    = '".$coin_val."'
 	, od_status         = '패키지구매'
 	, upstair    		= ".$it_point."
