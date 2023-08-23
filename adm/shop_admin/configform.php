@@ -613,6 +613,7 @@ if(!$default['de_kakaopay_cancelpwd']){
             <th scope="row"><label for="de_token_price"><?=$token_arr['vct']['symbol']?> 시세</label></th>
             <td>
                 <input name="de_token_price" id="de_token_price" value="<?=$default['de_token_price']?>"> <?=$token_arr['vct']['symbol']?></input>
+                <span>( 자동시세: <input name="de_coin_auto" type="checkbox" id="de_coin_auto" <?=$default['de_coin_auto'] ? "checked" : ""?>/> )</span>
             </td>
         </tr>
 

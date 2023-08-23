@@ -259,6 +259,8 @@ if( $de_kakaopay_enckey && ($de_pg_service === 'inicis' || $de_inicis_lpay_use |
 //
 // 영카트 default
 //
+$de_coin_auto = isset($_POST['de_coin_auto']) ? 1 : 0;
+
 $sql = " update {$g5['g5_shop_default_table']}
             set de_admin_company_owner        = '{$de_admin_company_owner}',
                 de_admin_company_name         = '{$de_admin_company_name}',
@@ -439,9 +441,10 @@ $sql = " update {$g5['g5_shop_default_table']}
                 de_member_reg_coupon_minimum  = '{$de_member_reg_coupon_minimum}',
                 de_token_price                = '{$_POST['de_token_price']}',
                 de_coin_use                   = '{$_POST['de_coin_use']}',
+                de_coin_auto                  =  {$de_coin_auto},
                 de_coin_account               = '{$_POST['de_coin_account']}'
                 ";
-        
+            
 sql_query($sql);
 
 // 환경설정 > 포인트 사용

@@ -38,6 +38,54 @@ if (G5_HTTPS_DOMAIN) {
 // 쇼핑몰 설정값 배열변수
 $default = sql_fetch(" select * from {$g5['g5_shop_default_table']} ");
 
+if($default['de_coin_auto']){
+    
+    function _get_coins_price(){
+        $result = array();
+        $url_list = array(
+            'https://api.upbit.com/v1/ticker?markets=KRW-ETH&markets=USDT-ETH'
+            );
+    
+        $data = _multi_curl($url_list);
+        
+        $eth_krw = $data[0][0]['trade_price'];
+        $usdt_eth = $data[0][1]['trade_price'];
+    
+        $result['usdt_krw'] = $eth_krw / $usdt_eth;
+
+        return $result;
+    }  
+
+    function _multi_curl($url){
+        $ch = array();
+        $response = array();
+        $curl_init = curl_multi_init();
+        foreach($url as $key => $value){
+            $ch[$key] = curl_init($value);
+            curl_setopt($ch[$key], CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch[$key], CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch[$key], CURLOPT_SSL_VERIFYHOST, false);
+            curl_multi_add_handle($curl_init,$ch[$key]);
+        }
+        
+        do {
+            curl_multi_exec($curl_init, $running);
+            curl_multi_select($curl_init);
+        } while ($running > 0);
+        
+        foreach(array_keys($ch) as $key){
+            $response[$key] = json_decode(curl_multi_getcontent($ch[$key]),true); 
+            curl_multi_remove_handle($curl_init, $ch[$key]);
+        }
+        
+        curl_multi_close($curl_init);
+        return $response;
+    }
+    
+    $default['de_token_price'] = _get_coins_price()['usdt_krw'];
+    
+}
+
 if(!defined('_THEME_PREVIEW_')) {
     // 테마 경로 설정
     if(defined('G5_THEME_PATH')) {
