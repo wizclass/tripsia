@@ -7,7 +7,7 @@ include_once('./bonus_inc.php');
 auth_check($auth[$sub_menu], 'r');
 
 
-// $debug = 1;
+$debug = 1;
 
 
 // $month = date('m', $timestr);
@@ -81,6 +81,9 @@ $total_order = $total_order_reult['hap'];
 $grade_order = ($total_order * ($company_sales * 0.01));
 // $_order = ($total_order * 0.01);
 
+
+// 수당제한 제외 
+$balanace_ignore = false;
 
 // 디버그 로그 
 if($debug){
@@ -279,7 +282,13 @@ function  excute(){
     
                     if($record_result){
                         
-                        $balance_up = "update g5_member set mb_balance = mb_balance + {$benefit_limit}, mb_balance_ignore = mb_balance_ignore + {$benefit_limit}  where mb_id = '".$mb_id."'";
+                        if($balanace_ignore){
+                            $balance_ignore_sql = ", mb_balance_ignore = mb_balance_ignore + {$benefit_limit} ";
+                        }else{
+                            $balance_ignore_sql = "";
+                        }
+
+                        $balance_up = "update g5_member set mb_balance = mb_balance + {$benefit_limit} {$balance_ignore_sql}  where mb_id = '".$mb_id."'";
 
                         // 디버그 로그
                         if($debug){
