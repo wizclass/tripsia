@@ -116,13 +116,13 @@ if($_POST['nw_data_test'] == 'on'){
     
    if($update_member){
 
-    $insert_order_sql = " INSERT INTO `g5_order` (od_id, mb_id, mb_no, od_cart_price, upstair, od_cash, od_name, od_tno, pv, od_time, od_date, od_settle_case, od_email, od_tel, od_hp, od_zip1, od_zip2, od_addr1, od_addr2, od_addr3, od_addr_jibeon, od_b_name, od_b_tel, od_b_hp, od_b_zip1, od_b_zip2, od_b_addr1, od_b_addr2, od_b_addr3, od_b_addr_jibeon, od_memo, od_cart_count, od_cart_coupon, od_send_cost, od_send_coupon, od_receipt_price, od_cancel_price, od_receipt_point, od_receipt_cash, od_refund_price, od_bank_account, od_receipt_time, od_coupon, od_misu, od_shop_memo, od_mod_history, od_status, od_hope_date, od_test, od_mobile, od_pg, od_app_no, od_escrow, od_casseqno, od_tax_flag, od_tax_mny, od_vat_mny, od_free_mny, od_delivery_company, od_invoice, od_invoice_time, od_cash_no, od_cash_info, od_pwd, od_ip) VALUE " ;
+    $insert_order_sql = " INSERT INTO `g5_order` (od_id, mb_id, mb_no, od_cart_price, upstair, od_cash, od_name, od_tno, pv, od_time, od_date, od_settle_case, od_email, od_tel, od_hp, od_zip1, od_zip2, od_addr1, od_addr2, od_addr3, od_addr_jibeon, od_b_name, od_b_tel, od_b_hp, od_b_zip1, od_b_zip2, od_b_addr1, od_b_addr2, od_b_addr3, od_b_addr_jibeon, od_memo, od_cart_count, od_cart_coupon, od_send_cost, od_send_coupon, od_receipt_price, od_cancel_price, od_receipt_point, od_receipt_cash, od_refund_price, od_bank_account, od_receipt_time, od_coupon, od_misu, od_shop_memo, od_mod_history, od_status, od_hope_date, od_test, od_mobile, od_pg, od_app_no, od_escrow, od_casseqno, od_tax_flag, od_tax_mny, od_vat_mny, od_free_mny, od_delivery_company, od_invoice, od_invoice_time, od_cash_no, od_cash_info, od_pwd, od_ip,od_soodang_date) VALUE " ;
 
     for($i=5; $i <= 30 ; $i++){
         $orderid = date("YmdHis",time()).mt_rand(0000,9999);
         $member_id = 'test'.($i);
         $logic = purchase_package($member_id,2023040403,1);
-        $insert_order_sql_arry .= " ({$orderid}, '{$member_id}', 0, 1000, 1000, 1000, 'P3', 2023040403, 6, '{$today}', '{$todate}', 'usdt', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '{$today}', 0, 0, NULL, NULL, '패키지구매', '0000-00-00', 0, 0, '', '', 0, '', 0, 0, 0, 0, '0', '', '0000-00-00 00:00:00', NULL, NULL, '', ''),";
+        $insert_order_sql_arry .= " ({$orderid}, '{$member_id}', 0, 1000, 1000, 1000, 'P3', 2023040403, 6, '{$today}', '{$todate}', 'usdt', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '{$today}', 0, 0, NULL, NULL, '패키지구매', '0000-00-00', 0, 0, '', '', 0, '', 0, 0, 0, 0, '0', '', '0000-00-00 00:00:00', NULL, NULL, '', '',curdate()),";
         sql_query("update g5_member set mb_index = 3000 where mb_id = '{$member_id}'");
     }
 

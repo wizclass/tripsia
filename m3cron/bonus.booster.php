@@ -27,10 +27,11 @@ function clean_number_format($val, $decimal = 2){
 $code = "booster";
 $bonus_day = date('Y-m-d');
 
-$host_name = 'localhost';
+$host_name = '127.0.0.1';
 $user_name = 'root';
 $user_pwd = 'wizclass.inc@gmail.com';
-$database = 'hwajo';
+// $user_pwd = 'wizclass235689!@';
+$database = 'tripsia';
 $conn = mysqli_connect($host_name,$user_name,$user_pwd,$database);
 
 $check_bonus_day_sql = "select count(day) as cnt from soodang_pay where day = '{$bonus_day}' and allowance_name = 'daily'";
@@ -124,14 +125,14 @@ for($i = 0; $i < $row = mysqli_fetch_array($member_for_paying_result); $i++){
     $mb_id = $row['id'];
     $recommended_cnt = $row['cnt'];
 
-    if($recommended_cnt >= 12){$recommended_cnt = $bonus_rate[11];}
-    if($recommended_cnt == 11){$recommended_cnt = $bonus_rate[$recommended_cnt-1];}
+    if($recommended_cnt <= 1){$recommended_cnt = $bonus_rate[0];}
+    if($recommended_cnt > 5){$recommended_cnt = 5;}
+    if($recommended_cnt >= 2){$recommended_cnt = $bonus_rate[$recommended_cnt];}
 
     $booster_member = return_down_manager($row['mb_no'],$recommended_cnt);
 
     $recom_member = return_down_manager($row['mb_no'],20);
     
-
     $recom_sales = array_int_sum($recom_member, 'mb_save_point', 'int');
     
     
@@ -237,9 +238,8 @@ for($i = 0; $i < $row = mysqli_fetch_array($member_for_paying_result); $i++){
 function get_bonus_rate($depth){
     global $booster_bonus_rate;
 
-    if($depth <= 10){$bonus_benefit_rate = $depth > 0 ? $booster_bonus_rate[$depth-1] : 0;}
-    else if($depth >= 11 && $depth <= 15){$bonus_benefit_rate = $booster_bonus_rate[10];}
-    else if($depth >= 16){$bonus_benefit_rate = $booster_bonus_rate[11];}
+    if($depth <= 3){$bonus_benefit_rate = $depth > 0 ? $booster_bonus_rate[$depth-1] : 0;}
+    else if($depth >= 4){$bonus_benefit_rate = $booster_bonus_rate[3];}
 
     return $bonus_benefit_rate;
 }

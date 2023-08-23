@@ -29,7 +29,7 @@ if($debug){
 $order_list_sql = "select s.*, m.mb_level, m.grade, m.mb_name, m.mb_balance,m.mb_balance_ignore, m.mb_deposit_point, m.mb_index
 from g5_order s 
 join g5_member m 
-on s.mb_id = m.mb_id where m.mb_save_point > 0";
+on s.mb_id = m.mb_id where m.mb_save_point > 0 and s.od_soodang_date <= curdate()";
 
 $order_list_result = sql_query($order_list_sql);
 
@@ -70,7 +70,7 @@ if(!$get_today){
 		$mb_balance = $order_list_row['mb_balance'];
 		$mb_balance_ignore = $order_list_row['mb_balance_ignore'];
 		$mb_index = $order_list_row['mb_index'];
-		$benefit = $goods_price *((($order_list_row['pv'] * 0.01)/30) * $daily_bonus_rate);
+		$benefit = clean_coin_format($goods_price *((($order_list_row['pv'] * 0.01)/30) * $daily_bonus_rate),2);
 
 		$total_benefit = $mb_balance + $benefit + $total_paid_list[$order_list_row['mb_id']]['total_benefit'];
 
@@ -85,7 +85,7 @@ if(!$get_today){
 		
 		if( $total_benefit > $mb_index ){
 			$remaining_benefit = $total_benefit - $mb_index;
-			$cut_benefit = $mb_index - $mb_balance <= 0 ? 0 : clean_coin_format($mb_index-$mb_balance);
+			$cut_benefit = $mb_index - $mb_balance <= 0 ? 0 : clean_coin_format($mb_index-$mb_balance,2);
 			
 			$origin_benefit = $benefit;
 			if($benefit - $remaining_benefit > 0) {
@@ -103,7 +103,7 @@ if(!$get_today){
 
 		$clean_number_benefit = clean_number_format($benefit);
 		$rec = "Daily bonus {$order_list_row['pv']}% : {$clean_number_benefit} usdt payment{$over_benefit_log}";
-		$benefit_log = "{$clean_number_goods_price}(상품가격) * ( ( {$order_list_row['pv']}% [상품지급률]) / 30 ){$over_benefit_log}";
+		$benefit_log = "{$clean_number_goods_price}(상품가격) * ( ( {$order_list_row['pv']}% [상품지급률]) / 30 ) * {$daily_bonus_rate} ){$over_benefit_log}";
 		
 		$total_paid_list[$order_list_row['mb_id']]['log'] .= "<br><span>{$benefit_log} = </span><span class='blue'>{$clean_number_benefit}</span>";
 		$total_paid_list[$order_list_row['mb_id']]['sub_log'] = "<span>현재총수당 : {$clean_number_mb_balance}, 수당한계점 : {$clean_number_mb_index} </span>";
