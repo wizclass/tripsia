@@ -642,7 +642,8 @@ function curency_txt($value, $kind = 'deposit')
             <input type="text" id="withdrawal_account_name" class="b_ghostwhite " placeholder="예금주" value="<?= $member['account_name'] ?>">
           </div>
           <div class='col-12'>
-            <input type="text" id="withdrawal_bank_account" class="b_ghostwhite " placeholder="출금 계좌번호를 입력해주세요" value="<?= Decrypt($member['eth_my_wallet'], $member['mb_id'], 'x'); ?>">
+            <!-- <input type="text" id="withdrawal_bank_account" class="b_ghostwhite " placeholder="출금 계좌번호를 입력해주세요" value="<?= Decrypt($member['eth_my_wallet'], $member['mb_id'], 'x'); ?>"> -->
+            <input type="text" id="withdrawal_bank_account" class="b_ghostwhite " placeholder="출금 계좌번호를 입력해주세요" value="<?= $member['bank_account'] ?>">
           </div>
         </div>
 
