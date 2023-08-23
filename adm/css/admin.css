@@ -165,7 +165,7 @@ box-shadow: 2px 0 2px rgba(150,150,150,0.1);}
 a.btn_submit{background:#ff4081;color:#fff}
 
 
-.btn_confirm .btn_submit {padding:0 15px;border:0;height:30px;color:#fff}
+.btn_confirm .btn_submit {padding:0 15px;border:0;height:30px;width:auto;color:#fff}
 .btn_frmline {display:inline-block;padding:0 7px;height:24px;border:0;background:#444;color:#fff !important;letter-spacing:-0.1em;text-decoration:none;vertical-align:middle;line-height:2em} /* 우편번호검색버튼 등 */
 .btn_frmline:focus, .btn_frmline:hover, .btn_frmline:active {text-decoration:none}
 
