@@ -46,7 +46,7 @@ $bonus_row = bonus_pick($code);
 $bonus_limit = $bonus_row['limited']/100;
 
 // 직급 사용 단계
-$bonus_rate_array_cnt = 7;
+$bonus_rate_array_cnt = 4;
 
 // 수당 배열인경우
 /* $bonus_rate_array_cnt = mb_substr_count($bonus_row['rate'],',');
@@ -127,8 +127,8 @@ ob_start();
 echo "<strong>직급(등급) 지급비율 : ";
 print_R(rate_txt($bonus_row['rate']));
 echo "   </strong> |    지급조건 :".$pre_condition.' | '.$bonus_condition_tx." | ".$bonus_layer_tx."<br>";
-echo "<br><strong> 현재일 : ".$bonus_day." |  ".$half."(매출산정기준) : <span class='red'>".$month_frdate."~".$month_todate."</span> | ".$half." PV 합계 : <span class='blue big'>".Number_format($total_order).' '.$curencys[1]."</span>  </strong><br>";
-echo "<br> 직급수당 대상금액 : <span class='blue big'>".$company_sales."% = ".Number_format($grade_order).' '.$curencys[1]."</span>";
+echo "<br><strong> 현재일 : ".$bonus_day." |  ".$half."(매출산정기준) : <span class='red'>".$month_frdate."~".$month_todate."</span> | ".$half." PV 합계 : <span class='blue big'>".Number_format($total_order).' '.$curencys[0]."</span>  </strong><br>";
+echo "<br> 직급수당 대상금액 : <span class='blue big'>".$company_sales."% = ".Number_format($grade_order).' '.$curencys[0]."</span>";
 echo "<br><br>기준대상자(직급 0 이상) : ";
 
 while( $cnt_row = sql_fetch_array($pre_result) ){
@@ -182,7 +182,7 @@ function  excute(){
         $star_rate_tx = $bonus_rate[$i -1]."%";
 
 
-        echo "<br><br><span class='title block'>".$grade_name." (".$member_count.") - ".$star_rate_tx."</span><br>";
+        echo "<br><br><span class='title block'>".$grade_name." (".$member_count.") - ".$star_rate_tx." (".($grade_order*$star_rate)." usdt)"."</span><br>";
 
         // 디버그 로그 
         if($debug){
