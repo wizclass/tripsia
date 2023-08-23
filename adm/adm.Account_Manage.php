@@ -18,7 +18,7 @@ $account_list = array_bank_account();
     .reg_text.border_blue{border:1px solid blue !important;}
     .reg_text.border_red{border:1px solid red !important;}
 </style>
-<form name="allowance" id="allowance" method="post" action="./bonus_config_update.php" onsubmit="return frmconfig_check(this);" >
+<form name="allowance" id="allowance" method="post" action="./adm.Account_proc.php" onsubmit="return frmconfig_check(this);" >
 
 <div class="local_desc01 local_desc">
     <p>
@@ -49,6 +49,7 @@ $account_list = array_bank_account();
         $row = $account_list[$i];
     ?>
         <tr class=''>
+            <input type="hidden" name="type" value="update">
             <td style="text-align: center;"><input type="hidden" name="no[]" value="<?=$row['no']?>"><?=$row['no']?></td>
             <td style="text-align: center;"><input type='checkbox' class='checkbox' name='check' <?php echo $row['used'] > 0?'checked':''; ?>>
                 <input type="hidden" name="used[]" class='used' value="<?=$row['used']?>">
@@ -58,7 +59,7 @@ $account_list = array_bank_account();
             <td style=""><input class='reg_text' name="account_name[]"  value="<?=$row['account_name']?>"></input></td>
             <td style=""><input class='reg_text' name="bank_name[]"  value="<?=$row['bank_name']?>"></input></td>
             <td style=""><input class='reg_text' name="bank_account[]"  value="<?=$row['bank_account']?>"></input></td>
-            <td style=""><input class='reg_text' name="ban_account_name[]"  value="<?=$row['bank_account_name']?>"></input></td>
+            <td style=""><input class='reg_text' name="bank_account_name[]"  value="<?=$row['bank_account_name']?>"></input></td>
             <td style=""><?=$row['create_dt']?></td>
         </tr>
     <?}?>
@@ -68,7 +69,7 @@ $account_list = array_bank_account();
     <tfoot>
         <td colspan=12 height="100px" style="padding:20px 0px" class="btn_ly">
             <input style="background:#ff4081;" type="button" class="btn btn_confirm btn_submit" value="추가하기" id="con_add"></input>
-            <input style="background:cornflowerblue;" type="button" class="btn btn_confirm btn_submit" value="수정하기" id="con_update"></input>
+            <input  style="background:cornflowerblue;" type="submit" class="btn btn_confirm btn_submit" value="저장하기" id="com_send"></input>
         </td>
     </tfoot>
 </table>
@@ -79,13 +80,13 @@ $account_list = array_bank_account();
 <script>
 
     function frmconfig_check(f){
-        
+       
     }
 
     $(document).ready(function(){
 
         $(".checkbox" ).on( "click",function(){
-            if($("input:checkbox[name='check']").is(":checked") == true){
+            if($(this).is(":checked") == true){
                 console.log( $(this).next().val() );
                 $(this).next().val(1);
             }else{
@@ -93,6 +94,26 @@ $account_list = array_bank_account();
             }
         });
         
+    });
+
+    document.querySelector('#con_add').addEventListener('click',()=>{
+       $.ajax({
+        url: "./adm.Account_proc.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+            type: "create"
+        },  
+        async: false,
+        cache: false,
+        success : (res) => {
+            if(res.code == '200'){
+                window.location.reload();
+            }else{
+                alert("문제가 발생하였습니다. 나중에 다시 시도해주세요.");
+            }
+        }
+       })
     });
 
 </script>
