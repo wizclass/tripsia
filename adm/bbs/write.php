@@ -1,9 +1,12 @@
 <?php
-$sub_menu = "750250";
 
 include_once('./_common.php');
 
 auth_check($auth[$sub_menu], 'r');
+if($bo_table == "news")  $sub_menu = "750200";
+if($bo_table == "notice")  $sub_menu = "750250";
+if($bo_table == "kyc")  $sub_menu = "750400";
+if($bo_table == "agreement")  $sub_menu = "750500";
 
 // $token = get_token();
 
