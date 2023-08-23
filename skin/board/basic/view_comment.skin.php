@@ -157,12 +157,21 @@ var char_max = parseInt(<?php echo $comment_max ?>); // 최대
                 <?php echo $captcha_html; ?>
             <?php } ?>
         </div>
-        <div class="btn_confirm" style="display: flex;align-items: center;">
+        <?php 
+        $style = "";
+        if($bo_table == "kyc"){
+            $style = "justify-content:space-evenly;width:20%";
+        }?>
+        <div class="btn_confirm" style="display: flex;align-items: center;<?=$style?>">
         	<span class="secret_cm chk_box">
 	            <input type="checkbox" name="wr_secret" value="secret" id="wr_secret" class="selec_chk">
 	            <label for="wr_secret"><span></span>비밀글</label>
             </span>
             <button type="submit" id="btn_submit" class="btn_submit" style="width:auto;">댓글등록</button>
+            <?php if($bo_table == "kyc"){?>
+            <button type="button" class="btn_submit kyc_result_btn" style="width:auto;background:cadetblue" data-val="1" data-id="<?=$wr_id?>">승인</button>
+            <button type="button" class="btn_submit kyc_result_btn" style="width:auto;background:coral;" data-val="2" data-id="<?=$wr_id?>">재요청</button>
+            <?php }?>
         </div>
     </div>
     </form>
@@ -171,6 +180,33 @@ var char_max = parseInt(<?php echo $comment_max ?>); // 최대
 <script>
 var save_before = '';
 var save_html = document.getElementById('bo_vc_w').innerHTML;
+
+document.querySelectorAll('.kyc_result_btn').forEach(el => el.addEventListener('click', (e)=> {
+    let data = e.target.dataset;
+
+    $.ajax({
+            type: "POST",
+            url: "/util/kyc_result.php",
+            cache: false,
+            async: false,
+            dataType: "json",
+            data: {
+                "id" : data.id,
+                "value" : data.val
+            },
+            success: function(res) {
+                if (res.result == "success") {
+                    location.reload();
+                } else {
+                    alert("처리되지 않았습니다.\n문제가 지속되면 관리자에게 연락주세요");
+                }
+
+            },
+            error: function(e) {
+                console.log(e)
+            }
+        });
+}))
 
 function good_and_write()
 {
