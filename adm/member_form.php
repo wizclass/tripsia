@@ -559,7 +559,7 @@ $rank_result = sql_fetch($rank_sql);
 			<?php $sql = "SELECT SUM(in_amt) as amt FROM {$g5['deposit']} WHERE mb_id = '{$mb['mb_id']}'";
 			$deposit_sum = sql_fetch($sql);
 			?>
-			<strong><?= shift_auto($mb['mb_deposit_point'] + $mb['mb_deposit_calc'] + $mb['mb_balance'] - $mb['mb_shift_amt'],$curencys[1]) ?></strong> <?=$curencys[1]?> &nbsp&nbsp (총 입금액 : <?= shift_auto($deposit_sum['amt']) ?> <?=$curencys[1]?>)
+			<strong><?= shift_auto($mb['mb_deposit_point'] + $mb['mb_deposit_calc'] + $mb['mb_balance'] - $mb['mb_shift_amt'] - $mb['mb_fee'],$curencys[0]) ?></strong> <?=$curencys[0]?> &nbsp&nbsp (총 입금액 : <?= shift_auto($deposit_sum['amt']) ?> <?=$curencys[0]?>)
 		</td>
 		<th></th>
 		<!-- <td>
@@ -588,28 +588,35 @@ $rank_result = sql_fetch($rank_sql);
 		<td></td>
 	</tr>
 
-
 	<tr class="ly_up padding-box fund">
-
-		<th scope="row">누적 매출 합계 (PV)</th>
-		<td colspan="1"><span class='strong soodang'><?= number_format($mb['mb_save_point']) ?> </span><?=$curencys[1]?></td>
-
 		<th scope="row">총 받은보너스(수당)</th>
 		<td colspan="1"><span class='strong bonus'>
-				<input type="hidden" class='no-input' name="mb_balance" value="<?= shift_auto($mb['mb_balance'],$curencys[1]) ?>" readonly> <?= shift_auto($mb['mb_balance'],$curencys[1]) ?> </span><?=$curencys[1]?> <span style="color:red;">(남은 수당: <?=shift_auto($mb['mb_balance'] - $mb['mb_fee'],$curencys[1])?> [패키지 차감: <?=number_format($mb['mb_fee'])?>])</span></td>
+		<input type="hidden" class='no-input' name="mb_balance" value="<?= shift_auto($mb['mb_balance'],$curencys[0]) ?>" readonly> <?= shift_auto($mb['mb_balance'],$curencys[0]) ?> </span><?=$curencys[0]?></td>
+		
+		<th scope="row">남은 수당</th>
+		<td colspan="1"><span class='strong amt'><?=shift_auto($mb['mb_balance'] - $mb['mb_shift_amt'] - $mb['mb_fee'],$curencys[0])?></span> <?=$curencys[0]?></td>
 
 	</tr>
 
 	<tr class="ly_up padding-box fund">
-		<th scope="row">출금총액</th>
-		<td colspan="1"><span class='strong amt'><?= shift_auto($mb['mb_shift_amt'],$curencys[1]) . " " . $curencys[1]?></span></td>
+		<th scope="row">출금 총액</th>
+		<td colspan="1"><span class='strong amt'><?= shift_auto($mb['mb_shift_amt'],$curencys[0])?></span> <?=$curencys[0]?></td>
+
+		<th scope="row">쇼핑몰 사용</th>
+		<td colspan="1"><span class='strong amt'><?=shift_auto($mb['mb_fee'],$curencys[0])?></span> <?=$curencys[0]?></td>
+	</tr>
+
+
+	<tr class="ly_up padding-box fund">
+		<th scope="row">누적 매출 합계 (PV)</th>
+		<td colspan="1"><span class='strong soodang'><?= number_format($mb['mb_save_point']) ?> </span><?=$curencys[0]?></td>
 
 		<th scope="row">수당제한비율</th>
 			<td colspan="1">
 				<span style="margin-right: 20px;">
 					<input type="checkbox" name="b_autopack" value="1" <?=$mb['b_autopack'] ? "checked" : "" ?>/>
 				</span>
-				<input type="text" value="<?=$mb['q_autopack'] ? $mb['q_autopack'] : $limited?>" class="frm_input wide" name="q_autopack"/> % <span style="color:red;">(제한 : <?=shift_auto($mb['mb_index'], $curencys[1])?>)</span>
+				<input type="text" value="<?=$mb['q_autopack'] ? $mb['q_autopack'] : $limited?>" class="frm_input wide" name="q_autopack"/> % <span style="color:red;">(제한 : <?=shift_auto($mb['mb_index'], $curencys[0])?>)</span>
 			</td>
 	</tr>
 
@@ -776,7 +783,7 @@ $rank_result = sql_fetch($rank_sql);
 						return false;
 					} */
 
-					if (confirm("해당 회원에게 " + item.it_name + " 패키지를 지급하시겠습니까?\n회원 잔고에서 " + Price(item.it_cust_price) + " <?= $curencys[1] ?> (이)가 차감됩니다.")) {} else {
+					if (confirm("해당 회원에게 " + item.it_name + " 패키지를 지급하시겠습니까?\n회원 잔고에서 " + Price(item.it_cust_price) + " <?= $curencys[0] ?> (이)가 차감됩니다.")) {} else {
 						return false;
 					}
 
@@ -877,7 +884,7 @@ $rank_result = sql_fetch($rank_sql);
 			<?= $curencys[0] ?> 지갑주소 : <input type="text" name="eth_my_wallet" value="<?php echo Decrypt($mb['eth_my_wallet'], $mb['mb_id'], 'x') ?>" id="eth_my_wallet" class="frm_input wide" size="15" style="width:300px; margin-left: 15px;"><br>
 			<?= $curencys[4] ?> 지갑주소 : <input type="text" name="etc_my_wallet" value="<?php echo Decrypt($mb['etc_my_wallet'], $mb['mb_id'], 'x') ?>" id="etc_my_wallet" class="frm_input wide" size="15" style="width:300px; margin-left: 15px;"><br>
 			<?= $curencys[3] ?> 지갑주소 : <input type="text" name="mb_wallet" value="<?php echo Decrypt($mb['mb_wallet'], $mb['mb_id'], 'x') ?>" id="mb_wallet" class="frm_input wide" size="15" style="width:300px; margin-left: 15px;"><br>
-			<?= $curencys[1] ?> 지갑주소 : <input type="text" name="usdt_my_wallet" value="<?php echo Decrypt($mb['usdt_my_wallet'], $mb['mb_id'], 'x') ?>" id="usdt_my_wallet" class="frm_input wide" size="15" style="width:300px; margin-left: 15px;">
+			<?= $curencys[0] ?> 지갑주소 : <input type="text" name="usdt_my_wallet" value="<?php echo Decrypt($mb['usdt_my_wallet'], $mb['mb_id'], 'x') ?>" id="usdt_my_wallet" class="frm_input wide" size="15" style="width:300px; margin-left: 15px;">
 		</td>
 		<?}?>
 	</tr>
