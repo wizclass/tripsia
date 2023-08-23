@@ -2,7 +2,7 @@
 
 $sub_menu = "600200";
 include_once('./_common.php');
-// $debug = 1;
+$debug = 1;
 include_once('./bonus_inc.php');
 include_once(G5_PATH . '/util/recommend.php');
 
@@ -33,7 +33,7 @@ if (!$debug) {
 }
 
 // 직급 승급
-$grade_cnt = 7;
+$grade_cnt = 4;
 $levelup_result = bonus_pick($code);
 
 //직추천 회원 기준
@@ -82,12 +82,13 @@ function grade_name($val)
 {
     global $grade_cnt;
     $full_name = '';
-    if($val == 0){$full_name = '(에이전트)';}
-    /* else if($val == 3){$full_name = '테라';} */
-    /* else if($val == 2){$full_name = '기가';} */
-    /* else if($val == 1){$full_name = '메가';} */
+    if($val == 0){$full_name = '일반';}
+    else if($val == 4){$full_name = 'VIP';} 
+    else if($val == 3){$full_name = '퍼스트';} 
+    else if($val == 2){$full_name = '비지니스';} 
+    else if($val == 1){$full_name = '이코노미';} 
 
-    $grade_name = $val . " STAR".$full_name;
+    $grade_name = $val . " STAR = ".$full_name;
 
     return $grade_name;
 }
@@ -176,7 +177,7 @@ for ($i = 0; $i < $grade_cnt; $i++) {
     echo "<br>" . grade_name($i + 1);
     echo  " -  [ 승급기준]  본인구매기준" . ": P" . Number_format($lvlimit_sales_level[$i]) . " 이상 ";
     echo  "/ 추천라인 산하매출" . Number_format($lvlimit_recom[$i] * $lvlimit_recom_val) . " 이상 ";
-    echo  "/ 직추천 : " . limit_conditions($lvlimit_cnt[$i],'text') . '<br>';
+    echo  "/ 조건 : " . limit_conditions($lvlimit_cnt[$i],'text') . '<br>';
 }
 echo "</code><br><br><br>";
 
