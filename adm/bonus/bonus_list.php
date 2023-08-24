@@ -178,7 +178,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 
 	<li class="right-border outbox{">
 	<label for="to_date" class="sound_only">기간 종료일</label>
-	<input type="text" name="to_date" value="<?php if($to_date){echo $to_date; }else{echo date("Ymd");} ?>" id="to_date" required class="required frm_input date_input" size="13" maxlength="10"> 
+	<input type="date" name="to_date" value="<?php if($to_date){echo $to_date; }else{echo date("Ymd");} ?>" id="to_date" required class="required frm_input date_input" size="13" maxlength="10"> 
 	
 	
 	<input type="radio" name="price" id="pv" value='pv' checked='true' style="display:none;">
