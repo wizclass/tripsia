@@ -128,7 +128,8 @@ $cart_count = sql_num_rows($result);
                 <span class="prqty_sc li_prqty_sp"><span>배송비 </span><?php echo $ct_send_cost; ?></span>
                 <span class="total_point li_prqty_sp"><span>적립포인트 </span><strong><?php echo number_format($sum['point']); ?></strong></span>
             </div>
-             <div class="total_price total_span"><span>소계 </span><strong><?php echo number_format($sell_price); ?></strong> 원 (<strong><?php echo number_format($sell_price/$exchange_rate); ?></strong> <?=$token_symbol?>)</div>
+    
+             <div class="total_price total_span"><span>소계 </span><strong><?php echo number_format($sell_price); ?></strong> 원 (<strong><?php echo shift_auto($sell_price/$exchange_rate,$curencys[0]); ?></strong> <?=$token_symbol?>)</div>
         </li>
 
         <?php
@@ -168,13 +169,13 @@ $cart_count = sql_num_rows($result);
         <dt>포인트</dt>
         <dd><strong><?php echo number_format($tot_point); ?> 점</strong></dd>
         <dt class="sod_bsk_cnt">총계</dt>
-        <dd class="sod_bsk_cnt"><strong><?php echo number_format($tot_price); ?></strong> 원 (<strong><?php echo number_format($tot_price/$exchange_rate); ?></strong> <?=$token_symbol?>)</dd>
+        <dd class="sod_bsk_cnt"><strong><?php echo number_format($tot_price); ?></strong> 원 (<strong><?php echo shift_auto($tot_price/$exchange_rate,$curencys[0]); ?></strong> <?=$token_symbol?>)</dd>
         <?php } ?>
     </dl>
     <?php } ?>
 
     <div id="sod_bsk_act" class="btn_confirm">
-        <div class="total">총계 <strong class="total_cnt"><?php echo number_format($tot_price); ?> 원 (<?php echo number_format($tot_price/$exchange_rate); ?> <?=$token_symbol?>)</strong>
+        <div class="total">총계 <strong class="total_cnt"><?php echo number_format($tot_price); ?> 원 (<?php echo shift_auto($tot_price/$exchange_rate,$curencys[0]); ?> <?=$token_symbol?>)</strong>
         </div>
         <input type="hidden" name="url" value="<?php echo G5_SHOP_URL; ?>/orderform.php">
         <input type="hidden" name="act" value="">

@@ -90,7 +90,7 @@ $cp_count = get_shop_member_coupon_count($member['mb_id'], true);
     <section id="smb_my_wish" class="wishlist">
         <h2><a href="<?php echo G5_SHOP_URL; ?>/wishlist.php">최근 위시리스트</a></h2>
 
-        <ul style="display: flex;justify-content: center;">
+        <ul>
             <?php
             $sql = " select *
                        from {$g5['g5_shop_wish_table']} a,
@@ -120,7 +120,7 @@ $cp_count = get_shop_member_coupon_count($member['mb_id'], true);
             }
 
             if ($i == 0)
-                echo '<li class="empty_list">보관 내역이 없습니다.</li>';
+                echo '<li class="empty_list" style="float: none;width: 100%;">보관 내역이 없습니다.</li>';
             ?>
         </ul>
          <a href="<?php echo G5_SHOP_URL; ?>/wishlist.php" class="btn_more">더보기</a>

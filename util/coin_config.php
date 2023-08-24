@@ -26,11 +26,12 @@ $pre_row = sql_fetch($pre_sql);
 if(strtolower($pre_row['mode']) == 'test'){
     $mode = 'test';
 }
-if(isset($default['de_token_price'])){
-    $exchange_rate = $default['de_token_price']; // 교환시 비율
-}else{
-    $exchange_rate =1;
-}
+
+// if(isset($default['de_token_price'])){
+//     $exchange_rate = $default['de_token_price']; // 교환시 비율
+// }else{
+//     $exchange_rate =1;
+// }
 
 if(strtolower($mode) == 'test'){
     //  테스트모드일때

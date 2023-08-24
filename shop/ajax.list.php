@@ -64,6 +64,7 @@ $list->set_view('it_img', true);
 $list->set_view('it_id', false);
 $list->set_view('it_name', true);
 $list->set_view('it_price', true);
+$list->set_view('it_icon',true);
 if(isset($use_sns) && $use_sns){
     $list->set_view('sns', true);
 }
