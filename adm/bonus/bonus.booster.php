@@ -88,9 +88,9 @@ for($i = 0; $i < $row = sql_fetch_array($member_for_paying_result); $i++){
     $mb_id = $row['id'];
     $recommended_cnt = $row['cnt'];
 
-    if($recommended_cnt <= 1){$recommended_cnt = $bonus_rate[0];}
-    if($recommended_cnt > 5){$recommended_cnt = 5;}
-    if($recommended_cnt >= 2){$recommended_cnt = $bonus_rate[$recommended_cnt];}
+    if($recommended_cnt >= 5){$recommended_cnt = 5;}
+
+    $recommended_cnt = $bonus_rate[$recommended_cnt-1];
 
     $booster_member = return_down_manager($row['mb_no'],$recommended_cnt);
 
@@ -205,9 +205,10 @@ for($i = 0; $i < $row = sql_fetch_array($member_for_paying_result); $i++){
 function get_bonus_rate($depth){
     global $booster_bonus_rate;
 
-    if($depth <= 3){$bonus_benefit_rate = $depth > 0 ? $booster_bonus_rate[$depth-1] : 0;}
-    else if($depth >= 4){$bonus_benefit_rate = $booster_bonus_rate[3];}
-
+    if($depth <= 3){$bonus_benefit_rate = $booster_bonus_rate[$depth-1];}
+    else if($depth >= 4 || $depth <= 10){$bonus_benefit_rate = $booster_bonus_rate[3];}
+    else if($depth >= 11){$bonus_benefit_rate = $booster_bonus_rate[4];}
+    
     return $bonus_benefit_rate;
 }
 

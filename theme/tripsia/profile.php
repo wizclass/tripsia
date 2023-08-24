@@ -228,7 +228,7 @@
 				</div>
 
 				<div class='col-sm-12 col-12 profile-box certificate'>
-					<h3 class='title b_line'>
+					<!-- <h3 class='title b_line'>
 						<i class="ri-wallet-2-line kyc_icon" style="font-weight:300;"></i>
 						<span >HJA 주소 등록</span>
 					</h3>
@@ -241,7 +241,7 @@
 						<li class='col-sm-3 col-3 text-right' style="">
 							<button class="addr_btn btn" data-name="ch_addr" style="margin:30px 5px 10px 0;"> 등록/변경</button>
 						</li>
-					</ul>
+					</ul> -->
 
 					<!-- <ul class='row'>
 						<li class='col-sm-9 col-8'>

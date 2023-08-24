@@ -88,7 +88,7 @@ $cp_count = get_shop_member_coupon_count($member['mb_id'], true);
     </section>
 
     <section id="smb_my_wish" class="wishlist">
-        <h2 style="text-align:center;"><a href="<?php echo G5_SHOP_URL; ?>/wishlist.php">최근 위시리스트</a></h2>
+        <h2><a href="<?php echo G5_SHOP_URL; ?>/wishlist.php">최근 위시리스트</a></h2>
 
         <ul style="display: flex;justify-content: center;">
             <?php
