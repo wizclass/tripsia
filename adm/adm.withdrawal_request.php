@@ -2,7 +2,7 @@
 $sub_menu = "700400";
 include_once('./_common.php');
 include_once(G5_THEME_PATH . '/_include/wallet.php');
-// include_once(G5_PLUGIN_PATH.'/Encrypt/rule.php');
+include_once(G5_PLUGIN_PATH.'/Encrypt/rule.php');
 
 auth_check($auth[$sub_menu], 'r');
 
@@ -52,6 +52,8 @@ $result = sql_query($sql);
 $total_arr = array();
 $total_count = 0;
 $total_out = 0;
+
+$colspan = 15;
 
 for($i = 0; $i < $row = sql_fetch_array($result); $i++){
 	$total_count += $row['cnt'];
@@ -336,6 +338,7 @@ $ord_rev = $ord_array[($ord_key + 1) % 2]; // 내림차순→오름차순, 오�
 
 								$wallet_addr1 = Decrypt($row['addr'],$secret_key,$secret_iv);
 								$wallet_addr2 = Decrypt($wallet_addr,$row['mb_id'],'x');
+
 								if($wallet_addr1 == $wallet_addr2){ ?>
 								<a href='https://etherscan.io/address/<?=$wallet_addr1?>' target='_blank'><?=$wallet_addr1?></a> 
 								<!-- <div class='eth_addr'><a href='https://filfox.info/ko/address/<?= $row['addr'] ?>' target='_blank'><?= $row['addr'] ?></a></div> -->
@@ -407,7 +410,10 @@ $total_hap = $row['hap'];
 $total_amt = $row['amt_total'];
 $total_out = $row['outamt'];
 $total_fee = $row['feehap']; -->
-
+<?
+if ($i == 0)
+	echo '<tr><td colspan="'.$colspan.'" class="empty_table">자료가 없거나 관리자에 의해 삭제되었습니다.</td></tr>';
+?>
 			<tfoot>
 				<td>합계:</td>
 				<td><?= $total_count ?></td>

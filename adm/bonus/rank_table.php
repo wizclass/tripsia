@@ -3,7 +3,7 @@ $sub_menu = "600400";
 include_once('./_common.php');
 include_once(G5_PATH.'/util/package.php');
 
-$g5['title'] = "패키지 현황";
+$g5['title'] = "패키지 상품 현황";
  
 include_once(G5_ADMIN_PATH.'/admin.head.php');
 include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
@@ -223,15 +223,15 @@ function select_change(f){
     <input type='hidden' name='rneth' id='input_rneth' value='<?=$_GET['rneth']?>'>
 
         <div class="selectbox inline">
-            <label for='select_rlevel'>CLASS 선택 : </label>
+            <label for='select_rlevel'>패키지 CLASS 선택 : </label>
             <select id='select_rlevel' onchange="select_change(this);">
                 <option value='p1' <?=onselect('p1')?> >p1</option>
                 <option value='p2' <?=onselect('p2')?> >p2</option>
                 <option value='p3' <?=onselect('p3')?> >p3</option>
                 <option value='p4' <?=onselect('p4')?> >p4</option>
                 <option value='p5' <?=onselect('p5')?> >p5</option>
-                <option value='p6' <?=onselect('p6')?> >p6</option>
-                <option value='p7' <?=onselect('p7')?> >p7</option>
+                <!-- <option value='p6' <?=onselect('p6')?> >p6</option>
+                <option value='p7' <?=onselect('p7')?> >p7</option> -->
             </select>
         </div>
 

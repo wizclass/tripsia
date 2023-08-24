@@ -15,10 +15,6 @@ if($_GET['mode'] == 'del'){
 	$sql_target = 'g5_member';
 }
 
-
-
-
-
 $sub_sql = "";
 
 if ($_GET['sst'] == "total_fund") {
@@ -127,7 +123,7 @@ $intercept_count = $row['cnt'];
 
 $listall = '<a href="' . $_SERVER['SCRIPT_NAME'] . '" class="ov_listall" style="margin: 0px 12px 0px 0px">전체목록</a>';
 
-
+$excel_down = true;
 
 $g5['title'] = '회원관리';
 include_once('./admin.head.php');
@@ -626,9 +622,9 @@ $stats_result = sql_fetch($stats_sql); */
 
 <!-- "excel download" -->
 
-<script src="../excel/tabletoexcel/xlsx.core.min.js"></script>
+<!-- <script src="../excel/tabletoexcel/xlsx.core.min.js"></script>
 <script src="../excel/tabletoexcel/FileSaver.min.js"></script>
-<script src="../excel/tabletoexcel/tableExport.js"></script>
+<script src="../excel/tabletoexcel/tableExport.js"></script> -->
 
 
 

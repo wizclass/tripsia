@@ -31,7 +31,7 @@ $menu["menu700"] = array (
 	array('700200', '회원 구매/결제 내역', G5_ADMIN_URL.'/shop_admin/g5_orderlist.php', 'scf_order', 1),
 	array('700300', '입금 요청 내역', G5_ADMIN_URL.'/adm.deposit_request.php', 'bbs_board'),
 	array('700400', '출금 요청 내역', G5_ADMIN_URL.'/adm.withdrawal_request.php', 'bbs_board'),
-	array('700700', '입금계좌관리', G5_ADMIN_URL.'/adm.Account_Manager.php', 'bbs_board')
+	array('700700', '입금계좌관리', G5_ADMIN_URL.'/adm.Account_Manage.php', 'bbs_board')
 	);
 }
 

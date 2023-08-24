@@ -154,12 +154,12 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 		font-weight:bold;
 	}
 
+	span.ov_listall{margin-left:10px; }
+	span.ov_listall:after{content:""; border-right:2px solid gray; padding-right:10px;}
+
 </style>
 
 <link href="<?=G5_ADMIN_URL?>/css/scss/bonus/bonus_list.css" rel="stylesheet">
-<script src="../../excel/tabletoexcel/xlsx.core.min.js"></script>
-<script src="../../excel/tabletoexcel/FileSaver.min.js"></script>
-<script src="../../excel/tabletoexcel/tableExport.js"></script>
 
 <div class="local_desc01 local_desc">
     <p>
@@ -174,7 +174,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 
 
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
-<div class="local_ov01 local_ov white" style="border-bottom:1px dashed black;">
+<div class="local_ov01 local_ov" style="border-bottom:1px dashed black;padding-bottom:20px;background:white;">
 
 	<li class="right-border outbox{">
 	<label for="to_date" class="sound_only">기간 종료일</label>
@@ -261,14 +261,14 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 </form>
 
 
-<form name="benefitlist" id="benefitlist">
+<form name="benefitlist" id="benefitlist" style="margin-top:-50px;">
 <input type="hidden" name="sst" value="<?php echo $sst ?>">
 <input type="hidden" name="sod" value="<?php echo $sod ?>">
 <input type="hidden" name="sfl" value="<?php echo $sfl ?>">
 <input type="hidden" name="stx" value="<?php echo $stx ?>">
 <input type="hidden" name="page" value="<?php echo $page ?>">
 <input type="hidden" name="token" value="<?php echo $token ?>">
-<div class="local_ov01">
+<div class="local_ov01 local_ov">
     <?php echo $listall ?>
     <span class="ov_listall">전체 <?php echo number_format($total_count) ?> 건 </span>
 	<strong><?=$max_day_row['last_day']?> </strong>
@@ -276,7 +276,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 	<span class="ov_listall">데일리 : <strong><?=shift_auto($max_day_row['daily'],$curencys[1])?></strong></span>
 	<span class="ov_listall">부스터 : <strong><?=shift_auto($max_day_row['booster'],$curencys[1])?></strong></span>
 	<span class="ov_listall">세일즈 : <strong><?=shift_auto($max_day_row['sales'],$curencys[1])?></strong></span>
-	<span>직급 수당(월 해당일) : <strong><?=shift_auto($max_day_row['grade'],$curencys[1])?></strong></span>
+	<span class="ov_listall">직급 수당(월 해당일) : <strong><?=shift_auto($max_day_row['grade'],$curencys[1])?></strong></span>
 </div>
 <div class="tbl_head01 tbl_wrap">
     <table id='table'>

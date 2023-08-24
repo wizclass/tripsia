@@ -88,9 +88,7 @@ h2{font-size: 1.083em;font-weight: bold;margin:10px 0}
 #gnb .gnb_li .btn_op.menu-850{background:url(../img/menu-850-1.png) 50% 50% no-repeat #ebebeb }
 #gnb .on .btn_op.menu-850{background:url(../img/menu-850.png) 50% 50% no-repeat #fff}
 
-#gnb .gnb_li:nth-child(n+6):nth-child(-n+11) .btn_op {
-  background-size:20px 20px;
-}
+
 
 #gnb .gnb_li button:hover{background-color:#f3f3f3}
 #gnb .gnb_oparea{display:none;position:absolute;top:0;left:50px;background:#fff;height:100%;width:170px;padding:20px;border-right:1px solid #dbdbdb;
@@ -112,7 +110,7 @@ box-shadow: 2px 0 2px rgba(150,150,150,0.1);}
 #container_wr{padding:25px;min-height:500px}
 #container_title{position:fixed;top:50px;left:0;width:100%;line-height:50px;font-size:1.5em;padding:0 20px;padding-left:240px;border-bottom:1px solid #ddd;background:#fff;z-index:99}
 #container.container-small #container_title{padding-left:70px}
-.container_wr{padding:5px}
+
 
 /* 화면낭독기 사용자용 */
 #hd_login_msg {position:absolute;top:0;left:0;width:1px;height:1px;overflow:hidden}
@@ -281,8 +279,10 @@ legend {position:absolute;width:0;height:0;font-size:0;line-height:0;text-indent
 
 
 #sort_mb {width:800px}
-
 #sort_sodr {width:600px}
+
+
+.local_ov01.local_ov{background: #f7f7f7;padding:10px 0;}
 
 
 /* 하단 레이아웃 */
@@ -1243,3 +1243,19 @@ i{font-style:italic; vertical-align: middle;} /*아이콘*/
     font-size:14px;
     font-family: Montserrat, Arial, sans-serif;;
   }
+
+
+  /* 개별커스텀 */
+  .container_wr{
+    padding: 20px;
+    height: auto;
+    width: 100%;
+    float: unset;
+    background:#FFF;
+    display: flow-root;
+  }
+  #benefitlist{padding:20px;}
+
+  #fmemberlist{padding:20px;}
+
+  .btn_submit{min-height:40px;}

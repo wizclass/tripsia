@@ -1,5 +1,5 @@
 <?php
-$sub_menu = "750300";
+$sub_menu = "300450";
 include_once('./_common.php');
 
 auth_check($auth[$sub_menu], 'r');
@@ -64,13 +64,6 @@ $colspan = 15;
 </style>
 
 <div class="local_ov01 local_ov flex_center">
-    <?php echo $listall ?>
-    생성된 게시판수 <?php echo number_format($total_count) ?>개
-
-    | <a href="/adm/board_notice.php" class="board_menu">Notice</a>
-    | <a href="/adm/board_news.php" class="board_menu">News</a>
-    | <a href="/adm/board_support.php" class="board_menu">Support center</a>
-    | <a href="/adm/board_kyc.php" class="board_menu">KYC 회원인증</a>
 </div>
 
 <iframe src= "<?=G5_THEME_URL?>/support_center.admin.php" width="100%" height="700px;" scrolling="auto" style="border:0;background:white;"></iframe>

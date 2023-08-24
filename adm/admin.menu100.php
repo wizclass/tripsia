@@ -1,4 +1,5 @@
 <?php
+if($member['mb_id'] == 'admin'){
 $menu['menu100'] = array (
     array('100000', '환경설정', G5_ADMIN_URL.'/config_form.php',   'config'),
     array('100100', '기본환경설정', G5_ADMIN_URL.'/config_form.php',   'cf_basic'),
@@ -21,3 +22,4 @@ if(version_compare(phpversion(), '5.3.0', '>=') && defined('G5_BROWSCAP_USE') &&
 
 $menu['menu100'][] = array('100410', 'DB업그레이드', G5_ADMIN_URL.'/dbupgrade.php', 'db_upgrade');
 $menu['menu100'][] = array('100400', '부가서비스', G5_ADMIN_URL.'/service.php', 'cf_service');
+}

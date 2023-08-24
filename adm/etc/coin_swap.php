@@ -117,7 +117,7 @@ if($coin_cnt > 9){
     <?php echo $listall ?>
     <p class='guide'>
         <!-- -이모지 : 📊 📈 📉 🎁 <br> -->
-        <span class='small strong'>현재기준통화 : <strong><?=strtoupper($minings[$now_mining_coin])?></strong> </span><br>
+        <span class='small strong'>현재기준통화 : <strong><?=strtoupper($curencys[0])?></strong> </span><br>
 	</p>
     <!-- <button type='button' class='btn pollding_btn'>접어두기</button> -->
 </div>

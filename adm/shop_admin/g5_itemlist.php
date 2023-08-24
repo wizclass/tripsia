@@ -139,9 +139,10 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
 <style>
     thead th{width:10%}
     thead th.num{width:20px !important;}
+    input[type="text"]{padding-left:5px;}
 </style>
 
-<div class="tbl_head02 tbl_wrap">
+<div class="tbl_head01 tbl_wrap">
     <table>
     <caption><?php echo $g5['title']; ?> 목록</caption>
     <thead>
