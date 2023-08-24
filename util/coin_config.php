@@ -1,5 +1,6 @@
 <?
 $is_debug = 0;
+
 if(isset($_GET['debug'])){
   $is_debug = 1;
 }
@@ -89,6 +90,7 @@ $token_decimal = $_token['decimal']; // 자릿수
 $token_color = $_token['color']; // 토큰컬러
 $token_id = $_token['id']; // 토큰명
 $token_decimal_numeric = $_token['decimal_numeric']; // 데시멜 0 갯수
+
 // 포인트
 $point_symbol = $point_arr['symbol'];
 $point_img = $point_arr['point_img'];
@@ -96,7 +98,7 @@ $point_symbol_img = $point_arr['point_symbol_img'];
 $point_id = $point_arr['id'];
 ?>
 
-<?if(strtolower($mode) == 'test'){?>
+<?if(strtolower($mode) == 'test' && USE_WALLET){?>
     <div class='prev_mode' style='background:black;color:white;text-align:center'><?=strtoupper(NETWORK)?> TEST MODE</div>
 <?}?>
 

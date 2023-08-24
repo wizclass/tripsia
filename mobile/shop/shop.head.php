@@ -27,6 +27,7 @@ if($default['de_coin_use'] > 1){
 
 <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.35/dist/web3.min.js"></script>
 <script src="/lib/wallet/erc_wallet.js"></script>
+<link rel="stylesheet" href="<?=G5_CSS_URL?>/scss/victor.css"/>
 
 <header id="hd">
     <?php if ((!$bo_table || $w == 's' ) && defined('_INDEX_')) { ?><h1><?php echo $config['cf_title'] ?></h1><?php } ?>
@@ -38,7 +39,7 @@ if($default['de_coin_use'] > 1){
     } ?>
 
     <div id="hd_wr">
-        <div id="logo"><a href="<?php echo G5_URL; ?>/"><img src="<?php echo G5_DATA_URL; ?>/common/mobile_logo_img" alt="<?php echo $config['cf_title']; ?> 메인"></a></div>
+        <div id="logo"><a href="<?php echo G5_URL; ?>/"><img src="<?php echo G5_THEME_URL; ?>/img/gnb_logo.png" alt="<?php echo $config['cf_title']; ?> 메인"></a></div>
         <div id="hd_btn">
             <button type="button" id="btn_hdcate"><i class="ri-menu-line"></i><span class="sound_only">분류</span></button>
             <button type="button" id="btn_hdsch"><i class="ri-search-line"></i><span class="sound_only">검색열기</span></button>

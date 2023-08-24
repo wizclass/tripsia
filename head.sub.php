@@ -75,7 +75,7 @@ if (defined('G5_IS_ADMIN')) {
 ?>
 
 <!-- VICTOR-SHOP CSS 추가 -->
-<link rel="stylesheet" href="<?=G5_CSS_URL?>/scss/victor.css"/>
+
 <link rel="stylesheet" href="<?=G5_CSS_URL?>/bootstrap-grid.css"/>
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.4.0/fonts/remixicon.css" rel="stylesheet">
 
