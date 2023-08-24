@@ -820,6 +820,14 @@ a.btn_cancle,
   color: white;
 }
 
+.bank_info_desc {
+  width: 100%;
+  font-size: 14px;
+  padding: 5px 0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 #mining_history .mymining_total {
   float: right;
   text-align: right;
@@ -1400,10 +1408,6 @@ a.btn_cancle,
   text-align: right;
   font-size: 14px;
   line-height: 20px;
-  font-weight: bold;
-}
-
-.hist_name {
   font-weight: bold;
 }
 
@@ -2035,6 +2039,9 @@ a.btn_cancle,
 .dark .mywallet #deposit .history_box .hist_con .hist_con_row1 .hist_value {
   color: #ffd965;
 }
+.dark .mywallet #deposit .history_box .hist_con .hist_con_row1 .bank_info_desc {
+  color: #ffd965;
+}
 .dark .mywallet #deposit .history_box .hist_con .hist_con_row1 .curency_value {
   color: white;
 }
@@ -2087,6 +2094,9 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .mywallet #withdraw .history_box .hist_con .hist_con_row1 .hist_value {
+  color: #ffd965;
+}
+.dark .mywallet #withdraw .history_box .hist_con .hist_con_row1 .bank_info_desc {
   color: #ffd965;
 }
 .dark .mywallet #withdraw .history_box .hist_con .hist_con_row1 .hist_name {
@@ -2175,6 +2185,9 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .upstairs .history_box .hist_con .hist_con_row1 .hist_value {
+  color: #ffd965;
+}
+.dark .upstairs .history_box .hist_con .hist_con_row1 .bank_info_desc {
   color: #ffd965;
 }
 .dark .upstairs .history_box .hist_con .hist_con_row1 .hist_sub_price {

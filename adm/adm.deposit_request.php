@@ -239,7 +239,6 @@ $result = sql_query($sql);
 		// 현재 통계치
 		$stats_sql = "SELECT status, sum(in_amt) as hap, count(in_amt) as cnt from {$g5['deposit']} as A WHERE 1=1 ".$sql_condition. " GROUP BY status";
 		$stats_result = sql_query($stats_sql);
-        
 
 		while($stats = sql_fetch_array($stats_result)){
 			// $Nresult = $total_result['hap'] ? round($total_result['hap'],2) : '0';
@@ -247,7 +246,7 @@ $result = sql_query($sql);
 			echo "<a href='./adm.deposit_request.php?".$qstr."&status=".$stats['status']."'><span class='tit'>";
 			echo status($stats['status']);
 			echo "</span> : ".$stats['cnt'];
-			echo "건 = <strong>".shift_auto($stats['hap'],$curencys[1])."</strong></a>";
+			echo "건 = <strong>".calculate_math($stats['hap'],2)."</strong></a>";
 		}
 	?>
 </div>
@@ -313,7 +312,7 @@ $result = sql_query($sql);
 
         <td><?=shift_auto($row['amt'])?></td>
         <td class='coin'><?=$row['coin']?></td>
-        <td><input type='text' class='reg_text input_amt_val' style='font-weight:600;color:blue;text-align:right' value='<?=shift_auto($row['in_amt'],$curencys[1])?>'></td>
+        <td><input type='text' class='reg_text input_amt_val' style='font-weight:600;color:blue;text-align:right' value='<?=calculate_math($row['in_amt'],2)?>'></td>
         <td><?=$row['cost']?></td>
         <td>
             <!-- <?=status($row['status'])?> -->

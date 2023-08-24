@@ -2557,7 +2557,6 @@ input:checked + .slider:before {
   font-size: 12px;
   line-height: 30px;
   color: #29386b;
-  font-weight: bold;
   margin-top: -5px;
 }
 

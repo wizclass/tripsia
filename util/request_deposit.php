@@ -28,7 +28,7 @@ if($debug ==1){
 // 입금계좌정보
 $deposit_array = array_bank_account(1);
 $deposit_info = $deposit_array[$txhash];
-$deposit_infomation = $deposit_info['account_name'].' : '.$deposit_info['bank_name']." ".$deposit_info['bank_account'];
+$deposit_infomation = $deposit_info['account_name'].' : '.$deposit_info['bank_name']." ".$deposit_info['bank_account']." ".$deposit_info['bank_account_name'];
 
 /*기존건 확인*/
 $pre_result = sql_fetch("SELECT count(*) as cnt from wallet_deposit_request 
@@ -58,8 +58,8 @@ if($pre_result['cnt'] < 1){
     $point = $usdt * $d_price;
   }
 
-  $sql = "INSERT INTO wallet_deposit_request(mb_id,od_id, txhash, create_dt,create_d,status,coin,cost,amt,in_amt) 
-  VALUES('$mb_id',{$txhash},'$deposit_infomation','$now_datetime','$now_date',0,'$coin', {$usdt},{$d_price},{$point})";
+  $sql = "INSERT INTO wallet_deposit_request(mb_id,od_id, txhash, bank_account, create_dt,create_d,status,coin,cost,amt,in_amt) 
+  VALUES('$mb_id',{$txhash},'$deposit_infomation','{$deposit_info['bank_account']}','$now_datetime','$now_date',0,'$coin', {$usdt},{$d_price},{$point})";
   
   if($debug){
     print_R($sql);

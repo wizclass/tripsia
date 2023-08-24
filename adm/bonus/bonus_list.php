@@ -309,7 +309,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 
 		<td width='80' style='text-align:center'><?=get_text($row['allowance_name']); ?></td>
 		<td width="100" class='bonus'><?=Number_format($soodang,BONUS_NUMBER_POINT) ?></td>
-		<td width="30" class='bonus'><?=$curencys[1]?></td>
+		<td width="30" class='bonus'><?=$curencys[0]?></td>
 		
 
 		<td width="300"><?= $row['rec']."<br> <span class='adm'> [".$row['rec_adm']."]</span>" ?></td>

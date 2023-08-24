@@ -39,7 +39,7 @@ $total_page  = ceil($total_count / $rows);
 if ($page < 1) $page = 1; // 페이지가 없으면 첫 페이지
 $from_record = ($page - 1) * $rows; // 시작 열
 
-$sql = "SELECT mb_id, od_id, od_cart_price, od_receipt_time, od_name, od_cash, od_settle_case, upstair, od_status,od_date,pv
+$sql = "SELECT mb_id, od_id, od_cart_price, od_receipt_time, od_name, od_cash, od_settle_case, upstair, od_status,od_date,pv,od_cash_no
 {$sql_common}
 {$sql_search} ";
 
@@ -83,12 +83,10 @@ $result = sql_query($sql);
 	}
 
 	.dark .pack_name{
-		background: #1a1a1a;
     	padding: 2px 10px;
     	display: block;
     	border-radius: 8px;
 		width:auto;
-
 	}
 </style>
 
@@ -147,6 +145,7 @@ $result = sql_query($sql);
 									} else {
 										$row_col = 'col-6 col-lg-4';
 									}
+
 							?>
 									<div class="<?= $row_col ?> r_card_box">
 										<div class="r_card r_card_<?= $i ?>" data-row=<?= json_encode($data_arr, JSON_UNESCAPED_UNICODE) ?>>
@@ -159,7 +158,7 @@ $result = sql_query($sql);
 											<div>
 
 												<div class=" text_wrap">
-													<div class="it_price"><?= shift_auto($row[$i - 1]['it_price'], $curencys[1]) ?> <?= $curencys[1] ?></div>
+													<div class="it_price"><?= shift_auto($row[$i - 1]['it_price'], $curencys[0]) ?> <?= $curencys[0] ?></div>
 													<div class='origin_price' style="font-size:14px;">수익률 : <?= $row[$i - 1]['it_supply_point'] ?> %</div>
 												</div>
 											</div>
@@ -204,8 +203,8 @@ $result = sql_query($sql);
 						<div class='col-5 my_cash_wrap'>
 							<!-- <input type='radio' value='eth' class='radio_btn' name='currency'><input type="text" id="trade_money_eth" class="trade_money" placeholder="0" min=5 data-currency='eth' readonly> -->
 							<div>
-								<input type="text" id="total_coin_val" class='input_price' value="<?= shift_auto($available_fund, $curencys[1]) ?>" readonly>
-								<span class="currency-right coin"><?= $curencys[1] ?></span>
+								<input type="text" id="total_coin_val" class='input_price' value="<?= shift_auto($available_fund, $curencys[0]) ?>" readonly>
+								<span class="currency-right coin"><?= $curencys[0] ?></span>
 							</div>
 						</div>
 
@@ -215,7 +214,7 @@ $result = sql_query($sql);
 
 						<div class='col-6'>
 							<input type="text" id='shift_dollor' class='input_price red' readOnly>
-							<span class="currency-right coin "><?= $curencys[1] ?></span>
+							<span class="currency-right coin "><?= $curencys[0] ?></span>
 						</div>
 					</div>
 
@@ -242,12 +241,8 @@ $result = sql_query($sql);
 				<? } ?>
 
 				<? while ($row = sql_fetch_array($result)) {
-					if (strlen($row['od_name']) > 2) {
-						$od_name = "P0";
-					} else {
-						$od_name = $row['od_name'];
-					}
-
+					
+					$od_name = $row['od_cash_no'];
 					$od_settle_case = $row['od_settle_case'];
 				?>
 
@@ -259,7 +254,7 @@ $result = sql_query($sql);
 							</div>
 
 							<div class="row">
-								<h2 class="pack_name pack_f_<?= substr($od_name, 1, 1) ?>"><?= strtoupper($row['od_name']) ?> </h2>
+								<h2 class="pack_name pack_f_<?= substr($od_name, 1, 1) ?>"><?= strtoupper($row['od_name']) ?> <?=$od_name?></h2>
 								<!-- <span class='hist_sub_price'><?= shift_auto($row['od_cash'], $od_settle_case) ?> <?= $od_settle_case ?></span> -->
 
 								<?php if($od_name != "P0" || $od_name != "P8"){?>
@@ -334,7 +329,7 @@ $result = sql_query($sql);
 			won_price = data[0].it_cust_price;
 			func = "new";
 			od_id = "";
-			origin_bal = '<?= shift_auto($available_fund, $curencys[1]) ?>';
+			origin_bal = '<?= shift_auto($available_fund, $curencys[0]) ?>';
 			price_calc = origin_bal.replace(/,/g, '') - won_price.replace(/,/g, '');
 			$('#upgrade').hide().attr("disabled", true);;
 			$('#purchase').show().attr("disabled", false);
@@ -365,8 +360,8 @@ $result = sql_query($sql);
 		}); */
 
 		function change_coin_status() {
-			$('#trade_total').val(Price(it_price) + ' <?= $curencys[1] ?>');
-			$('#shift_won').text('VAT 포함 : ' + Price(won_price) + ' <?= $curencys[1] ?>');
+			$('#trade_total').val(Price(it_price) + ' <?= $curencys[0] ?>');
+			$('#shift_won').text('VAT 포함 : ' + Price(won_price) + ' <?= $curencys[0] ?>');
 			$('#shift_dollor').val(Price(price_calc));
 
 			// 상품구매로 이동
@@ -482,7 +477,7 @@ $result = sql_query($sql);
 			od_id = $(this).data('od_id');
 			prev_goods_price = this.dataset.price;
 			it_name = $(this).siblings('.pack_name').html();
-			upgrade_price_calc = '<?= shift_auto($available_fund, $curencys[1]) ?>';
+			upgrade_price_calc = '<?= shift_auto($available_fund, $curencys[0]) ?>';
 
 			dialogModal("패키지 구매", "패키지 업그레이드를 누르면 해당패키지에서 상위패키지로 차액만큼 차감되며, 상위패키지가 적용됩니다.", "confirm")
 
@@ -497,9 +492,9 @@ $result = sql_query($sql);
 						console.log(res);
 						if (res.result == 'success') {
 							$('.change_title').text('PACKAGE 업그레이드');
-							$('#trade_total').val(res.it_cust_price + ' <?= $curencys[1] ?>')
+							$('#trade_total').val(res.it_cust_price + ' <?= $curencys[0] ?>')
 							$('#shift_dollor').val(Price(parseFloat(upgrade_price_calc.replace(/,/g , '')) - parseFloat(res.diff_price.replace(/,/g , ''))));
-							$('#shift_won').text('VAT 포함 : ' + Price(res.it_cust_price) + ' <?= $curencys[1] ?>');
+							$('#shift_won').text('VAT 포함 : ' + Price(res.it_cust_price) + ' <?= $curencys[0] ?>');
 							$('#upgrade').show().attr("disabled", false);
 							$('#purchase').hide().attr("disabled", true);
 							$('#total_coin_val').val(upgrade_price_calc);

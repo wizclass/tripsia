@@ -390,6 +390,7 @@ function curency_txt($value, $kind = 'deposit')
   
   .swap_amt{font-size:16px;text-align:left;letter-spacing: -1px;}
   #active_amt{font-weight:bold}
+  #active_in{font-weight:bold}
 </style>
 
 <main>
@@ -434,16 +435,16 @@ function curency_txt($value, $kind = 'deposit')
           <div class="content-box round account_card" data-id=<?= $deposit_array[$i]['no'] ?>>
             <p class="card_title"><?= $deposit_array[$i]['account_name'] ?></p>
 
-            <p class="cabinet">
+            <!-- <p class="cabinet">
 
-              <span class="bank_name"><?= $deposit_array[$i]['bank_name'] ?></span>
-              <span class="bank_account_num"><?= $deposit_array[$i]['bank_account'] ?></span>
-              <span class="bank_account_name"><?= $deposit_array[$i]['bank_account_name'] ?></span>
+              <span class="bank_name"></span>
+              <span class="bank_account_num"></span>
+              <span class="bank_account_name"></span>
 
               <button class="btn wd line_btn mt20 " id="accountCopy" onclick="copy_bank_account_num(this)">
                 <span> 계좌복사 </span>
               </button>
-            </p>
+            </p> -->
           </div>
 
         <? $i++;
@@ -493,7 +494,7 @@ function curency_txt($value, $kind = 'deposit')
       <hr class="hr_dash"></hr>
 
       <div class="col-sm-12 col-12 content-box round mt20" id="eth">
-        <h3 class="wallet_title">입금(구매)신청 </h3> <span class='desc'> - 선택된 계좌로 입금후 1회만 요청해주세요</span>
+        <h3 class="wallet_title">입금(구매)신청 </h3> <span class='desc'> - 선택된 구좌로 1회만 요청해주세요.</span>
         <div style="clear:both"></div>
         <div class="row">
 
@@ -529,6 +530,11 @@ function curency_txt($value, $kind = 'deposit')
             <button class="btn btn_wd font_white deposit_request deposit_value" data-currency="<?= $curencys[1] ?>">
               <span>입금(구매)신청</span>
             </button>
+
+            <div class='txt-box deposit_alert col-12'>
+              입금(구매)신청 후 내역에 입금(구매) 정보가 매칭됩니다.<br>
+              신청금액과 실제 입금액이 다른경우 처리가 지연될수 있습니다.
+            </div>
           </div>
         </div>
       </div>
@@ -537,7 +543,7 @@ function curency_txt($value, $kind = 'deposit')
 
       <!-- 입금 요청 내역 -->
       <div class="history_box content-box">
-        <h3 class="hist_tit wallet_title">입금 내역</h3>
+        <h3 class="hist_tit wallet_title">입금(구매) 신청 내역</h3>
 
         <div class="b_line2"></div>
         <? if (sql_num_rows($result_deposit) == 0) { ?>
@@ -572,9 +578,15 @@ function curency_txt($value, $kind = 'deposit')
 
               <div class="row">
                 <!-- <span class='hist_name'>TXID : <?= $row['txhash'] ?></span> -->
-                <span class='hist_name'><?= $row['txhash'] ?></span>
+                <?
+                  $bank_info = explode(':',$row['txhash']);
+                ?>
+                <span class='hist_name'><?=$bank_info[0] ?></span>
                 <span class="hist_value status"><? string_shift_code($row['status']) ?></span>
+                <input type="hidden" class="bank_account_num" name="bank_account" value="<?=$row['bank_account']?>">
+                <div class="bank_info_desc " onclick="copy_order_bank_account_num(this);"><?=$bank_info[1]?></div>
               </div>
+              
             </div>
           </div>
         <? } ?>
@@ -681,18 +693,18 @@ function curency_txt($value, $kind = 'deposit')
             <button id="pin_open" class="btn wd yellow form-send-button">인증</button>
           </div>
           <div class="col-7">
-            <button type="button" class="btn wd btn_wd form-send-button" id="Withdrawal_btn" data-toggle="modal" data-target="" data-currency="<?= $curencys[0]; ?>" disabled>출금 신청</button>
+            <button type="button" class="btn wd btn_wd form-send-button" id="Withdrawal_btn" data-toggle="modal" data-target="" data-currency="<?= $curencys[0]; ?>" disabled>출금(판매) 신청</button>
           </div>
         </div>
       </div>
 
       <!-- 출금내역 -->
       <div class="history_box content-box">
-        <h3 class="hist_tit wallet_title">출금 내역</h3>
+        <h3 class="hist_tit wallet_title">출금(판매) 신청내역</h3>
         <div class="b_line2"></div>
 
         <? if (sql_num_rows($result_withdraw) == 0) { ?>
-          <div class="no_data">출금내역이 존재하지 않습니다</div>
+          <div class="no_data">출금(판매) 신청내역이 존재하지 않습니다</div>
         <? } ?>
 
         <? while ($row = sql_fetch_array($result_withdraw)) {
@@ -790,6 +802,20 @@ function curency_txt($value, $kind = 'deposit')
   function copy_bank_account_num(e) {
     var temp = $("<input>");
     var bank_account_num = $(e).parent().find('.bank_account_num').text();
+    console.log(bank_account_num);
+
+    $("body").append(temp);
+    temp.val( onlyNumberReturn(bank_account_num) ).select();
+    document.execCommand("copy");
+    temp.remove();
+
+    dialogModal("", "<p>계좌번호가 복사 되었습니다.</p>", "success");
+  }
+
+  // (입금)계좌번호 복사
+  function copy_order_bank_account_num(e) {
+    var temp = $("<input>");
+    var bank_account_num = $(e).parent().find('.bank_account_num').val();
     console.log(bank_account_num);
 
     $("body").append(temp);
@@ -1300,7 +1326,8 @@ function curency_txt($value, $kind = 'deposit')
         $('.cabinet').fadeOut();
         $('.account_card').removeClass('active');
 
-        $(this).children('.cabinet').slideDown();
+        // 계좌 노출 미사용
+        // $(this).children('.cabinet').slideDown();
         $(this).addClass('active');
       }
       select_account_card_id = card_id;
@@ -1398,7 +1425,7 @@ function curency_txt($value, $kind = 'deposit')
       var mb_id = '<?=$member['mb_id']?>';
 
       if(Number(select_account_card_id) < 1){
-        dialogModal('<p>입금(구매) 계좌 선택</p>', '<p>입금(구매) 계좌를 선택해주세요.</p>', 'warning');
+        dialogModal('<p>입금(구매) 구좌 선택</p>', '<p>입금(구매)구좌를 선택해주세요.</p>', 'warning');
         return false;
       }
 
@@ -1423,8 +1450,9 @@ function curency_txt($value, $kind = 'deposit')
         return false;
       }
 
-      if (in_min_limit > 0 && Number(d_price) < Number(in_min_limit)) {
-        dialogModal('<p>최소 입금액 확인</p>', '<p>최소 입금 확인 금액은 ' + Price(Number(in_min_limit)) + coin + ' 입니다. </p>', 'warning');
+      // 입금액 fixed_amt d_price
+      if (in_min_limit > 0 && Number(fixed_amt) < Number(in_min_limit)) {
+        dialogModal('<p>최소 입금액 확인</p>', '<p>최소 입금 확인 금액은 ' + Price(Number(in_min_limit)) + ' USDT' + ' 입니다. </p>', 'warning');
         return false;
       }
 
@@ -1441,7 +1469,7 @@ function curency_txt($value, $kind = 'deposit')
         },
         success: function(result) {
           if (result.response == "OK") {
-            dialogModal('입금 요청', '입금요청이 정상처리되었습니다.', 'success');
+            dialogModal('입금(구매) 신청', '입금(구매) 신청이 정상처리되었습니다.', 'success');
             $('.closed').click(function() {
               location.reload();
             });

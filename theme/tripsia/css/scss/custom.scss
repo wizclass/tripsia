@@ -579,6 +579,7 @@ a.btn_cancle,
     background: #6214ab !important;
 }
 
+
 .pack_f_0 {
     color: #555 !important;
 }
@@ -1047,6 +1048,13 @@ a.btn_cancle,
     }
 }
 
+.bank_info_desc{
+    width:100%;
+    font-size:14px;
+    padding:5px 0;
+    font-weight:600;
+    cursor: pointer;
+}
 
 #mining_history {
     .mymining_total {
@@ -1765,9 +1773,7 @@ a.btn_cancle,
     line-height:20px;
     font-weight:bold;
 }
-.hist_name{
-    font-weight:bold;
-}
+
 
 
 
@@ -2729,6 +2735,9 @@ a.btn_cancle,
                         .hist_value {
                             color: $main-colors;
                         }
+                        .bank_info_desc{
+                            color: $main-colors;
+                        }
 
                         .curency_value{
                             color:white;
@@ -2803,6 +2812,9 @@ a.btn_cancle,
                         }
 
                         .hist_value {
+                            color: $main-colors;
+                        }
+                        .bank_info_desc{
                             color: $main-colors;
                         }
 
@@ -2938,6 +2950,9 @@ a.btn_cancle,
                     }
 
                     .hist_value {
+                        color: $main-colors;
+                    }
+                    .bank_info_desc{
                         color: $main-colors;
                     }
 

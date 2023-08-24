@@ -16,7 +16,7 @@ $mb_rank = $member['rank'];
 // $output_val ='169.09';
 // $coin_val = 'eth';
 
-$coin_val = $curencys[1];
+$coin_val = $curencys[0];
 $func = $_POST['func'];
 $input_val= $_POST['input_val'];
 $output_val = $_POST['output_val'];
@@ -62,6 +62,7 @@ $sql = "insert g5_order set
 	, od_soodang_date   = '".$soodang_date."'
 	, od_settle_case    = '".$coin_val."'
 	, od_status         = '패키지구매'
+	, od_cash_no 		= '".$pack_maker."'	
 	, upstair    		= ".$it_point."
 	, pv				= ".$pv." ";
 

@@ -2,6 +2,7 @@
 if($member['mb_id'] == 'admin'){
 $menu["menu700"] = array (
 	array('700000', ' 입금/출금/매출', ''.G5_ADMIN_URL.'/shop_admin/g5_orderlist.php', '0'),
+	array('70050', '입출금설정', G5_ADMIN_URL.'/bonus/wallet.config.php', 'sst_order_stats'),
 	array('700010', '코인 시세(UPbit)', ''.G5_ADMIN_URL.'/etc/coin_swap.php', 'coin_swap' , 1),
 	array('700020', '코인 시세(자사)', ''.G5_ADMIN_URL.'/company_coin_config.php', 'company_coin' , 1),
 	

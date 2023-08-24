@@ -26,7 +26,7 @@ $pack_maker = $_POST['select_maker'];
 $it_supply_point = $_POST['it_supply_point'];
 
 $val = substr($pack_maker,1,1);
-$coin_val = $curencys[1];
+$coin_val = $curencys[0];
 
 if($debug){
 	$mb_id = 'test1';
@@ -63,6 +63,7 @@ $sql = "insert g5_order set
 	, od_date           = '".$now_date."'
 	, od_soodang_date   = '".$soodang_date."'
 	, od_settle_case    = '".$coin_val."'
+	, od_cash_no 		= '".$pack_maker."'	
 	, od_status         = '패키지구매(관리자)'
 	, upstair    		= ".$it_point."
 	, pv				= ".$pv." ";
