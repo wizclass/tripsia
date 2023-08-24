@@ -330,7 +330,7 @@ for ($i=0; $i<count($upload); $i++)
 	$sql = " insert into {$g5['board_file_table']}
 				set bo_table = '{$bo_table}',
 						wr_id = '{$wr_id}',
-						bf_no = '{($i+1)}',
+						bf_no = {$i}+1,
 						bf_source = '{$upload[$i]['source']}',
 						bf_file = '{$upload[$i]['file']}',
 						bf_content = '{$bf_content[$i]}',
@@ -340,11 +340,11 @@ for ($i=0; $i<count($upload); $i++)
 						bf_height = '{$upload[$i]['image']['1']}',
 						bf_type = '{$upload[$i]['image']['2']}',
 						bf_datetime = '".G5_TIME_YMDHIS."' ";
+
+
 	sql_query($sql);
-	print_R($sql);
 	
 }
-
 
 
 // 업로드된 파일 내용에서 가장 큰 번호를 얻어 거꾸로 확인해 가면서
