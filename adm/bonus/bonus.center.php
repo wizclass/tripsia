@@ -6,7 +6,7 @@ include_once('./bonus_inc.php');
 
 auth_check($auth[$sub_menu], 'r');
 
-// $debug =1;
+$debug =1;
 
 // 지난주 날짜 구하기 
 /* $today=$bonus_day;

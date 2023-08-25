@@ -2,7 +2,7 @@
 
 $sub_menu = "600200";
 include_once('./_common.php');
-$debug = 1;
+// $debug = 1;
 include_once('./bonus_inc.php');
 include_once(G5_PATH . '/util/recommend.php');
 
@@ -273,7 +273,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
                 $member_count  = $cnt_result['cnt'];
 
                 echo "<br><br><span class='title block'>" .grade_name($i) ."(" . $member_count . ")</span><br>";
-                echo  " -  [ 승급기준 ] 보유구매등급 : P" . ($lvlimit_sales_level[$i]) . " 이상 | 추천산하매출 : " . Number_format($lvlimit_recom[$i] * $lvlimit_recom_val) . " 이상 ";
+                echo  " -  [ 승급기준 ] 본인매출 : " . Number_format($lvlimit_sales_level[$i]) . " USDT 이상 | 추천산하매출 : " . Number_format($lvlimit_recom[$i] * $lvlimit_recom_val) . " 이상 ";
                 if($i == 0){
                     echo  " | 직추천 : "; 
                 }else{
@@ -332,9 +332,9 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 
 
                         // 내 구매등급  
-                        echo "<br>본인 아이템등급 : <span class='blue'>P" . Number_format($item_rank) . "</span>";
+                        echo "<br>본인 매출 : <span class='blue'>" . Number_format($mb_save_point) . "</span>";
 
-                        if ($item_rank >= $lvlimit_sales_level[$i]) {
+                        if ($mb_save_point >= $lvlimit_sales_level[$i]) {
                             $rank_cnt += 1;
                             $rank_option1 = 1;
                             echo "<span class='red'> == OK </span>";

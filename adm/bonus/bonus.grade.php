@@ -7,7 +7,7 @@ include_once('./bonus_inc.php');
 auth_check($auth[$sub_menu], 'r');
 
 
-$debug = 1;
+// $debug = 1;
 
 
 // $month = date('m', $timestr);
@@ -27,7 +27,7 @@ if($day > 13 && $day <= 20){
     $half_todate    = date('Y-m-'.$lastday, $timestr); // 매월 말일
 } */
 
-$d_1 = mktime(0,0,0, date("m"), 1, date("Y")); // 이번달 1일
+/* $d_1 = mktime(0,0,0, date("m"), 1, date("Y")); // 이번달 1일
 
 // 지난달 1일~말일
 $prev_month = strtotime("-1 month", $d_1); // 지난달
@@ -36,9 +36,16 @@ $prev_m = date('m', $prev_month);
 $day = date('d', $timestr);
 $lastday = date('t', $prev_month);
 
-$month_frdate    = date('Y-m-01', $prev_month); // 매월 1 시작일자
-$month_todate    = date('Y-m-'.$lastday, $prev_month); // 매월 말일
+$start_week    = date('Y-m-01', $prev_month); // 매월 1 시작일자
+$end_week    = date('Y-m-'.$lastday, $prev_month); // 매월 말일 */
 
+$previous_week = strtotime("-1 week +1 day");
+
+$start_week = strtotime("last monday midnight",$previous_week);
+$end_week = strtotime("next sunday",$start_week);
+
+$start_week = date("Y-m-d",$start_week);
+$end_week = date("Y-m-d",$end_week);
 
 
 // 직급 수당
@@ -64,7 +71,7 @@ $bonus_layer = $bonus_row['layer'];
 $bonus_layer_tx = bonus_layer_tx($bonus_layer);
 $bonus_limited = $bonus_row['limited'];
 
-$company_sales = 4;
+$company_sales = 5;
 
 /* 
 //보름간 매출 합계 
@@ -74,7 +81,7 @@ $total_order = $total_order_reult['hap'];
 */
 
 //지난달 매출 합계 
-$total_order_query = "SELECT SUM(od_cash) AS hap FROM g5_order WHERE od_date BETWEEN '{$month_frdate}' AND '{$month_todate}' ";
+$total_order_query = "SELECT SUM(od_cash) AS hap FROM g5_order WHERE od_soodang_date BETWEEN '{$start_week}' AND '{$end_week}' ";
 $total_order_reult = sql_fetch($total_order_query);
 $total_order = $total_order_reult['hap'];
 
@@ -106,6 +113,20 @@ $pre_sql = "select grade, count(*) as cnt
 
 $pre_result = sql_query($pre_sql);
 
+function grade_name($val)
+{
+    global $grade_cnt;
+    $full_name = '';
+    if($val == 0){$full_name = '일반';}
+    else if($val == 4){$full_name = 'VIP';} 
+    else if($val == 3){$full_name = '퍼스트';} 
+    else if($val == 2){$full_name = '비지니스';} 
+    else if($val == 1){$full_name = '이코노미';} 
+
+    $grade_name = $val . " STAR = ".$full_name;
+
+    return $grade_name;
+}
 
 function rate_txt($val){
     $list = explode(',',$val);
@@ -130,7 +151,7 @@ ob_start();
 echo "<strong>직급(등급) 지급비율 : ";
 print_R(rate_txt($bonus_row['rate']));
 echo "   </strong> |    지급조건 :".$pre_condition.' | '.$bonus_condition_tx." | ".$bonus_layer_tx."<br>";
-echo "<br><strong> 현재일 : ".$bonus_day." |  ".$half."(매출산정기준) : <span class='red'>".$month_frdate."~".$month_todate."</span> | ".$half." PV 합계 : <span class='blue big'>".Number_format($total_order).' '.$curencys[0]."</span>  </strong><br>";
+echo "<br><strong> 현재일 : ".$bonus_day." |  ".$half." 매출산정기준 : 구매일 + 3Day | <span class='red'>".$start_week."~".$end_week."</span> | ".$half." PV 합계 : <span class='blue big'>".Number_format($total_order).' '.$curencys[0]."</span>  </strong><br>";
 echo "<br> 직급수당 대상금액 : <span class='blue big'>".$company_sales."% = ".Number_format($grade_order).' '.$curencys[0]."</span>";
 echo "<br><br>기준대상자(직급 0 이상) : ";
 
@@ -169,7 +190,7 @@ function  excute(){
 
         // 직급표기예외
         $member_count  = $cnt_result['cnt'];
-        $grade_name = $i." STAR";
+        $grade_name = $i;
        
 
         // 수당예외
@@ -185,7 +206,7 @@ function  excute(){
         $star_rate_tx = $bonus_rate[$i -1]."%";
 
 
-        echo "<br><br><span class='title block'>".$grade_name." (".$member_count.") - ".$star_rate_tx." (".($grade_order*$star_rate)." usdt)"."</span><br>";
+        echo "<br><br><span class='title block'>".grade_name($grade_name)." (".$member_count.") - ".$star_rate_tx." (".($grade_order*$star_rate)." usdt)"."</span><br>";
 
         // 디버그 로그 
         if($debug){
