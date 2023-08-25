@@ -1,6 +1,7 @@
 <?php
 $sub_menu = '700200';
 include_once('./_common.php');
+include_once(G5_THEME_PATH.'/_include/wallet.php');
 
 auth_check_menu($auth, $sub_menu, "r");
 
@@ -436,9 +437,9 @@ if(!sql_query(" select mb_id from {$g5['g5_order_delete_table']} limit 1 ", fals
 			<?php echo $row['od_status']; ?>
         </td>
         <td class="td_numsum" style="text-align:center !important"><span class='badge t_white color<?=od_name_return_rank($row['od_name'])?>' ><?=$row['od_name']?></span></td>
-        <td class="td_numsum" style='text-align:right'> <?=$od_settle_case?></td>
+        <td class="td_numsum" style='text-align:right'><?= shift_auto($row['od_cart_price'],$od_settle_case)?> </td>
         <td style="text-align:center"><?php echo $row['od_settle_case'] ?></td>
-		<td style="text-align:right;font-weight:600"> <?=$od_settle_case?></td>
+		<td style="text-align:right;font-weight:600"><?=shift_auto($row['od_cash'],$od_settle_case)?> </td>
 		<td style="text-align:right"><?=number_format($row['upstair'])?> </td>
         <!-- <td > <?php echo $row['pv']; ?></td> -->
         <td style="text-align:center"><input type='button' class='btn od_cancel' value='구매취소' data-id="<?=$row['od_id']?>"></td>
@@ -478,9 +479,9 @@ if(!sql_query(" select mb_id from {$g5['g5_order_delete_table']} limit 1 ", fals
             <!-- <?php echo number_format($tot_itemcount); ?>건 -->
         </td>
         <th scope="row">합 계</th>
-        <td class="td_numsum" style='text-align:right; padding: 7px 5px'><?=$curencys[1]?></td>
+        <td class="td_numsum" style='text-align:right; padding: 7px 5px'><?=shift_auto($tot_orderprice,$curencys[1])?> <?=$curencys[1]?></td>
         <td></td>
-        <td style='text-align:right; padding: 7px 5px'><?=$curencys[1]?></td>
+        <td style='text-align:right; padding: 7px 5px'><?=shift_auto($tot_receiptprice,$curencys[1])?> <?=$curencys[1]?></td>
         <td></td>
         <td></td>
     </tr>
