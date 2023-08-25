@@ -146,20 +146,26 @@ jQuery(function($){
                     var $el_qty = $("input[name^=ct_qty]");
                     var $el_type = $("input[name^=io_type]");
                     var price, type, qty, total = 0;
+                    var temp = 0;
 
                     $el_prc.each(function(index) {
+                        
                         price = parseInt($(this).val());
                         qty = parseInt($el_qty.eq(index).val());
                         type = $el_type.eq(index).val();
 
                         if(type == "0") { // 선택옵션
                             total += (it_price + price) * qty;
+                            temp += (it_price + price) * qty;
                         } else { // 추가옵션
                             total += price * qty;
+                            temp += price * qty;
                         }
+                        $(this).siblings(".opt_count").find(".sit_opt_prc").empty().html("<strong>"+number_format(String(temp))+"</strong>원");
+                        temp = 0;
                     });
-            
-                    $(".sit_opt_prc").empty().html("<strong>"+number_format(String(total))+"</strong>원")
+
+                    
                     $("#sit_tot_price").empty().html("<span>총 금액 </span><strong>"+number_format(String(total))+"</strong>원 ("+number_format(total/$('#exchange_rate').val())+" "+$('#token_symbol').val()+")")
                     
                     $("#sit_tot_price").trigger("price_calculate", [total]);

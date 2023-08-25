@@ -1060,17 +1060,17 @@ function get_item_options($it_id, $subject, $is_div='', $is_first_option_title='
         $select = '<select id="it_option_1" class="it_option">'.PHP_EOL;
         $select .= '<option value="">선택</option>'.PHP_EOL;
         for($i=0; $row=sql_fetch_array($result); $i++) {
-            if($row['ct_price'] >= 0)
-                $price = '&nbsp;&nbsp;+ '.number_format($row['ct_price']).'원';
+            if($row['io_price'] >= 0)
+                $price = '&nbsp;&nbsp;+ '.number_format($row['io_price']).'원';
             else
-                $price = '&nbsp;&nbsp; '.number_format($row['ct_price']).'원';
+                $price = '&nbsp;&nbsp; '.number_format($row['io_price']).'원';
 
             if($row['io_stock_qty'] < 1)
                 $soldout = '&nbsp;&nbsp;[품절]';
             else
                 $soldout = '';
 
-            $select .= '<option value="'.$row['io_id'].','.$row['ct_price'].','.$row['io_stock_qty'].'">'.$row['io_id'].$price.$soldout.'</option>'.PHP_EOL;
+            $select .= '<option value="'.$row['io_id'].','.$row['io_price'].','.$row['io_stock_qty'].'">'.$row['io_id'].$price.$soldout.'</option>'.PHP_EOL;
         }
         $select .= '</select>'.PHP_EOL;
         
@@ -1115,9 +1115,9 @@ function get_item_supply($it_id, $subject, $is_div='', $is_first_option_title=''
 
         if(strlen($opt_id[1])) {
             if($row['ct_price'] >= 0)
-                $price = '&nbsp;&nbsp;+ '.number_format($row['ct_price']).'원';
+                $price = '&nbsp;&nbsp;+ '.number_format($row['io_price']).'원';
             else
-                $price = '&nbsp;&nbsp; '.number_format($row['ct_price']).'원';
+                $price = '&nbsp;&nbsp; '.number_format($row['io_price']).'원';
             $io_stock_qty = get_option_stock_qty($it_id, $row['io_id'], $row['io_type']);
 
             if($io_stock_qty < 1)
@@ -1125,7 +1125,7 @@ function get_item_supply($it_id, $subject, $is_div='', $is_first_option_title=''
             else
                 $soldout = '';
 
-            $options[$opt_id[0]][] = '<option value="'.$opt_id[1].','.$row['ct_price'].','.$io_stock_qty.'">'.$opt_id[1].$price.$soldout.'</option>';
+            $options[$opt_id[0]][] = '<option value="'.$opt_id[1].','.$row['io_price'].','.$io_stock_qty.'">'.$opt_id[1].$price.$soldout.'</option>';
         }
     }
 
@@ -2540,9 +2540,9 @@ function before_check_cart_price($s_cart_id, $is_ct_select_condition=false, $is_
             if( $io_infos['io_type'] ){
                 $this_io_type = $io_infos['io_type'];
             }
-            if( $io_infos['io_id'] && $io_infos['ct_price'] !== $row['ct_price'] ){
+            if( $io_infos['io_id'] && $io_infos['io_price'] !== $row['io_price'] ){
                 // 장바구니 테이블 옵션 가격과 상품 옵션테이블의 옵션 가격이 다를경우
-                $update_querys['ct_price'] = $io_infos['ct_price'];
+                $update_querys['io_price'] = $io_infos['io_price'];
             }
         }
 
