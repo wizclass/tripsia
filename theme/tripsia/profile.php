@@ -189,7 +189,7 @@
 					</ul>
 				</div>
 
-				<div class='col-sm-12 col-12 profile-box certificate'>
+				<!-- <div class='col-sm-12 col-12 profile-box certificate'>
 					<h3 class='title b_line'>
 						<i class="ri-account-box-line kyc_icon"></i>
 						<span >KYC 인증 정보</span>
@@ -214,7 +214,7 @@
 						</li>
 					</ul>
 
-					<!-- <ul class='row'>
+					<ul class='row'>
 						<li class='col-sm-9 col-8'>
 							<label >환불계좌(실명계좌) 등록</label>
 							<p ><?=get_name($member['mb_center'])?></p>
@@ -222,10 +222,10 @@
 						<li class='col-sm-3 col-4 text-right'>
 							<span class="reg_btn" data-name="ch_cert_bank"> 변경</span>
 						</li>
-					</ul> -->
+					</ul>
 
-					<!-- <div class="google-auth-top-qr" id="qrcode"></div> -->
-				</div>
+					<div class="google-auth-top-qr" id="qrcode"></div>
+				</div> -->
 
 				<div class='col-sm-12 col-12 profile-box certificate'>
 					<!-- <h3 class='title b_line'>
@@ -278,7 +278,7 @@
 					</ul>
 				</div> -->
 
-				<!-- <div class='col-sm-12 col-12 profile-box'>
+				<div class='col-sm-12 col-12 profile-box'>
 					<h3 class='title b_line'>
 						<i class="p3"><img src="<?=G5_THEME_URL?>/img/recommendation_information.png" alt=""></i>
 						<span >추천인 정보</span>
@@ -290,13 +290,13 @@
 						</li>
 					</ul>
 
-					<ul class='row'>
+					<!-- <ul class='row'>
 						<li class='col-sm-12 col-12'>
 							<label >나의 센터</label>
 							<p ><?=get_name($member['mb_center'])?></p>
 						</li>
-					</ul>
-				</div> -->
+					</ul> -->
+				</div>
 
 				<div class='col-sm-12 col-12 profile-box'>
 					

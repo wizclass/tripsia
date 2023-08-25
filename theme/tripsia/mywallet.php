@@ -532,7 +532,7 @@ function curency_txt($value, $kind = 'deposit')
             </button>
 
             <div class='txt-box deposit_alert col-12'>
-              입금(구매)신청 후 내역에 입금(구매) 정보가 매칭됩니다.<br>
+              입금(구매)신청 후 내역에 입금(구매) 정보가 확인됩니다.<br>
               신청금액과 실제 입금액이 다른경우 처리가 지연될수 있습니다.
             </div>
           </div>
@@ -543,7 +543,7 @@ function curency_txt($value, $kind = 'deposit')
 
       <!-- 입금 요청 내역 -->
       <div class="history_box content-box">
-        <h3 class="hist_tit wallet_title">입금(구매) 신청 내역</h3>
+        <h3 class="hist_tit wallet_title">입금(구매) 신청 내역 <span style="font-size:11px;font-weight:300;">- 내역의 계좌번호 클릭시 복사</span></h3>
 
         <div class="b_line2"></div>
         <? if (sql_num_rows($result_deposit) == 0) { ?>

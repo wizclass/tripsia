@@ -620,7 +620,7 @@ function string_explode($val,$dived_value = 'member'){
 function string_shift_code($val){
 	switch ($val) {
 		case "0" :
-			echo "처리진행중";
+			echo "신청대기중";
 			break;
 		case "1" :
 			echo "<p class='font_green bold'>처리완료</p>";
