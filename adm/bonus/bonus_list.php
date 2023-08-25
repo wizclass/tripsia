@@ -249,7 +249,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 
 			<label for="stx" class="sound_only">검색어<strong class="sound_only"> 필수</strong></label>
 			<input type="text" name="stx" value="<?php echo $stx ?>" id="stx" class="frm_input" style='padding:0 5px;'>
-			| 검색 기간 : <input type="text" name="start_dt" id="start_dt" placeholder="From" class="frm_input" value="<?=$fr_date?>" style='padding:0 5px;width:80px;'/> 
+			| 검색 기간 : <input type="date" name="start_dt" id="start_dt" placeholder="From" class="frm_input" value="<?=$fr_date?>" style='padding:0 5px;width:100px;'/> 
 			<!-- ~ <input type="text" name="end_dt" id="end_dt" placeholder="To" class="frm_input" value="<?=$to_date?>" style='padding:0 5px;width:80px;'/> -->
 			
 			<?=$html?>

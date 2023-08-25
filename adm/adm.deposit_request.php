@@ -234,7 +234,7 @@ $result = sql_query($sql);
 
 
 <div class="local_ov01 local_ov" style="display: flex; align-items: center">
-	<a href="./adm.deposit_request.php?<?=$qstr?>" class="ov_listall"> 결과통계 <?=$total_count?> 건 = <?=shift_auto($total_hap,$curencys[1])?></a> 
+	<a href="./adm.deposit_request.php?<?=$qstr?>" class="ov_listall"> 결과통계 <?=$total_count?> 건 = <?=shift_auto($total_hap,$curencys[0])?></a> 
 	<?
 		// 현재 통계치
 		$stats_sql = "SELECT status, sum(in_amt) as hap, count(in_amt) as cnt from {$g5['deposit']} as A WHERE 1=1 ".$sql_condition. " GROUP BY status";
@@ -246,7 +246,7 @@ $result = sql_query($sql);
 			echo "<a href='./adm.deposit_request.php?".$qstr."&status=".$stats['status']."'><span class='tit'>";
 			echo status($stats['status']);
 			echo "</span> : ".$stats['cnt'];
-			echo "건 = <strong>".calculate_math($stats['hap'],2)."</strong></a>";
+			echo "건 = <strong>".shift_auto($stats['hap'],$curencys[0])." ".$curencys[0]."</strong></a>";
 		}
 	?>
 </div>
@@ -312,7 +312,7 @@ $result = sql_query($sql);
 
         <td><?=shift_auto($row['amt'])?></td>
         <td class='coin'><?=$row['coin']?></td>
-        <td><input type='text' class='reg_text input_amt_val' style='font-weight:600;color:blue;text-align:right' value='<?=calculate_math($row['in_amt'],2)?>'></td>
+        <td><input type='text' class='reg_text input_amt_val' style='font-weight:600;color:blue;text-align:right' value='<?=shift_auto($row['in_amt'],$curencys[0])?>'></td>
         <td><?=$row['cost']?></td>
         <td>
             <!-- <?=status($row['status'])?> -->
@@ -352,7 +352,7 @@ $result = sql_query($sql);
     }
     if ($i == 0)
         echo '<tr><td colspan="'.$colspan.'" class="empty_table">자료가 없거나 관리자에 의해 삭제되었습니다.</td></tr>';
-    ?>
+    ?>단
     <tfoot>
     <tr>
         <td>합계</td>

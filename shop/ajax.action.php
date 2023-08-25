@@ -343,7 +343,7 @@ switch ($action) {
                             wi_ip = '".$_SERVER['REMOTE_ADDR']."' ";
             sql_query($sql);
 
-            die('OK');
+            die('위시리스트에 해당 상품이 등록되었습니다.');
         } else {
             die('위시리스트에 이미 등록된 상품입니다.');
         }
