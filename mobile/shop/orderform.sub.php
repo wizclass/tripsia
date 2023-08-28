@@ -540,11 +540,11 @@ if ($is_kakaopay_use) {
                             </tr>
                         <?php } ?>
                         <?php  if($default['de_coin_use'] > 0){?>
-                                <input type="hidden" id="balData" value="<?=$default['de_coin_use'] == 1 ? $total_withraw : 0?>">
+                                <input type="hidden" id="balData" value="<?=$default['de_coin_use'] == 1 ? $shop_balance : 0?>">
                                 <tr>
                                     <th>내 잔고</th>
                                     <td>
-                                        <div class="token_balance" style="font-size:13px;font-weight:bold;"><?=$default['de_coin_use'] == 1 ?  shift_auto($total_withraw,"usdt") : 0?> <?= $token_symbol ?></div>
+                                        <div class="token_balance" style="font-size:13px;font-weight:bold;"><?=$default['de_coin_use'] == 1 ?  shift_auto($shop_balance,"usdt") : 0?> <?= $token_symbol ?></div>
                                     </td>
                                 </tr>
                             <?php } ?>

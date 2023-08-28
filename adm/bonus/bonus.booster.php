@@ -75,6 +75,8 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             echo "<code>{$member_for_paying_sql}</code>";
         }
 
+        $unit = "usdt";
+
         $member_for_paying_result = sql_query($member_for_paying_sql);
 
         $mem_list = array();
@@ -82,6 +84,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
         $start_member_update_sql = "update g5_member set ";
         $update_mb_balance_sql = "";
         $update_recom_sales = '';
+        $update_mb_shop_sql ='';
         $update_where_sql = " where mb_id in(";
 
         $log_start_sql = "insert into soodang_pay(`allowance_name`,`day`,`mb_id`,`mb_no`,`benefit`,`mb_level`,`grade`,`mb_name`,`rec`,`rec_adm`,`origin_balance`,`origin_deposit`,`datetime`) values";
@@ -169,7 +172,10 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
                 $add_benefit = 0;
             }
 
-            echo "<div style='color:orange;'>발생 수당 : {$origin_benefit}</div><div style='color:red;'>▶ 수당 지급: {$add_benefit}</div><br><br>";
+            $live_benefit =  $add_benefit * $live_bonus_rate;
+            $shop_benefit =  $add_benefit * $shop_bonus_rate;
+
+            echo "<div style='color:orange;'>발생 수당 : {$origin_benefit}</div><div style='color:red;'> ▶ 수당 지급: {$live_benefit}</div><div style='color:red;'> ▶▶ 쇼핑몰포인트 지급: {$shop_benefit}</div><br><br>";
 
             if ($update_mb_balance_sql == "") {
                 $update_mb_balance_sql .= "mb_balance = case mb_id ";
@@ -177,18 +183,26 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             if ($update_recom_sales == "") {
                 $update_recom_sales .= ", recom_sales = case mb_id ";
             }
+            if ($update_mb_shop_sql == "") {
+                $update_mb_shop_sql .= ", mb_shop_point = case mb_id ";
+            }
 
-            $update_mb_balance_sql .= "when '{$mb_id}' then mb_balance + {$add_benefit} ";
+            $update_mb_balance_sql .= "when '{$mb_id}' then mb_balance + {$live_benefit} ";
+            $update_mb_shop_sql .= "when '{$mb_id}' then mb_shop_point + {$shop_benefit} ";
             $update_recom_sales .= "WHEN '{$mb_id}' then {$recom_sales} ";
             $update_where_sql .= "'{$mb_id}',";
 
-            $rec = "Booster bonus by step {$recommended_cnt} :: {$add_benefit} usdt payment{$over_benefit_log}";
-            $rec_adm = "{$rec} (expected : {$origin_benefit})";
+            $clean_live_benefit = clean_number_format($live_benefit);
+            $clean_shop_benefit = clean_number_format($shop_benefit);
+ 
+            $rec = "Booster bonus by step {$recommended_cnt} :: {$clean_live_benefit} {$unit}, Shop bonus : {$clean_shop_benefit} {$unit} {$over_benefit_log}";
+            $rec_adm = "{$rec} (expected : {$origin_benefit} {$unit})";
 
-            $log_values_sql .= "('{$code}','{$bonus_day}','{$mb_id}',{$row['mb_no']},{$add_benefit},{$row['mb_level']},{$row['grade']},
+            $log_values_sql .= "('{$code}','{$bonus_day}','{$mb_id}',{$row['mb_no']},{$live_benefit},{$row['mb_level']},{$row['grade']},
     '{$row['mb_name']}','{$rec}','{$rec_adm}',{$mb_balance},{$row['mb_deposit_point']},now()),";
         }
         $update_mb_balance_sql .= " else mb_balance end ";
+        $update_mb_shop_sql .= " else mb_shop_point end ";
         $update_recom_sales .= " ELSE recom_sales END ";
 
 
@@ -196,7 +210,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
         $update_where_sql = substr($update_where_sql, 0, -1) . ")";
         $log_values_sql = substr($log_values_sql, 0, -1);
 
-        $update_sql = $start_member_update_sql . $update_mb_balance_sql . $update_recom_sales . $update_where_sql;
+        $update_sql = $start_member_update_sql . $update_mb_balance_sql . $update_mb_shop_sql .  $update_recom_sales . $update_where_sql;
         $log_sql = $log_start_sql . $log_values_sql;
 
         if ($debug) {

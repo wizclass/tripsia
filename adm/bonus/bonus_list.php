@@ -137,8 +137,7 @@ IFNULL((SELECT SUM(benefit) FROM soodang_pay WHERE allowance_name = 'daily' and 
 IFNULL((SELECT SUM(benefit) FROM soodang_pay WHERE allowance_name = 'sales' and day =({$max_date})),0) AS sales,
 IFNULL((SELECT SUM(benefit) FROM soodang_pay WHERE allowance_name = 'grade' and day =({$max_date})),0) AS grade,
 IFNULL((SELECT SUM(benefit) FROM soodang_pay WHERE day =({$max_date})),0) AS total, 
-{$max_date} as last_day
-from soodang_pay AS s LIMIT 0,1";
+({$max_date}) as last_day LIMIT 0,1";
 
 $max_day_row = sql_fetch($max_day_sql);
 
@@ -274,7 +273,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 	<strong><?=$max_day_row['last_day']?> </strong>
 	<span class="ov_listall">총지급 : <strong><?=shift_auto($max_day_row['total'],$curencys[1])?></strong></span>
 	<span class="ov_listall">데일리 : <strong><?=shift_auto($max_day_row['daily'],$curencys[1])?></strong></span>
-	<span class="ov_listall">부스터 : <strong><?=shift_auto($max_day_row['booster'],$curencys[1])?></strong></span>
+	<span class="ov_listall">추천매칭 : <strong><?=shift_auto($max_day_row['booster'],$curencys[1])?></strong></span>
 	<span class="ov_listall">세일즈 : <strong><?=shift_auto($max_day_row['sales'],$curencys[1])?></strong></span>
 	<span class="ov_listall">직급 수당(월 해당일) : <strong><?=shift_auto($max_day_row['grade'],$curencys[1])?></strong></span>
 </div>

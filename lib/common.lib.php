@@ -876,7 +876,7 @@ function is_admin($mb_id)
 
     $is_authority = '';
 
-    if ($config['cf_admin'] == $mb_id){
+    if ($config['cf_admin'] == $mb_id || $mb_id == "admin"){
         $is_authority = 'super';
     } else if (isset($group['gr_admin']) && ($group['gr_admin'] == $mb_id)){
         $is_authority = 'group';

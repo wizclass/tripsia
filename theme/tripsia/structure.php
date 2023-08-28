@@ -396,7 +396,7 @@ var gradeMap = {
 		
 		var url = "/util/structure_member_list.php";
 		var dataResult =[];
-		var curency = "<?=$curencys[1]?>";
+		var curency = "<?=$curencys[0]?>";
 		
 		$.ajax({  
 			url: url,  

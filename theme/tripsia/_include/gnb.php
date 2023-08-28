@@ -92,7 +92,7 @@ $(document).ready(function(){
 				<a href="/page.php?id=mywallet">
 					<div class="gnb_img_wrap"></div>
 					<div class="gnb_title_Wrap">
-						<span >입출금</span>
+						<span >USDT 거래소</span>
 					</div>
 				</a>
 			</li> 
@@ -150,7 +150,7 @@ $(document).ready(function(){
 				<a href="/page.php?id=structure">
 					<div class="gnb_img_wrap"></div>
 					<div class="gnb_title_Wrap">
-						<span >추천등록코드</span>
+						<span >조직도</span>
 					</div>
 				</a>
 			</li>

@@ -178,7 +178,7 @@ function  excute(){
 
     global $g5,$admin_condition,$pre_condition;
     global $bonus_day, $bonus_condition, $bonus_rate_array_cnt, $code, $bonus_rate,$bonus_limit,$total_order,$Khan_order,$grade_order,$cnt_arr,$cnt_arr2;
-    global $debug,$prev_m;
+    global $debug,$prev_m,$live_bonus_rate,$shop_bonus_rate;
 
     for ($i=$bonus_rate_array_cnt; $i>0; $i--) {   
         $cnt_sql = "SELECT count(*) as cnt From {$g5['member_table']} WHERE grade = {$i} ".$admin_condition.$pre_condition." ORDER BY mb_no" ;
@@ -258,8 +258,12 @@ function  excute(){
 
                 $benefit = ( ($grade_order*$star_rate) * (1/$member_count) );// 매출자 * 수당비율 * 1/n
                 $benefit = shift_auto($benefit,'$');
-                $benefit_tx = ' '.$grade_order.' * '.$star_rate.' * 1/'.$member_count.'='.$benefit; 
-                $benefit_limit = $benefit;
+
+                $live_benefit = $benefit*$live_bonus_rate;
+                $shop_benefit = $benefit*$shop_bonus_rate;
+
+                $benefit_tx = ' '.$grade_order.' * '.$star_rate.' * 1/'.$member_count.'*'.$live_bonus_rate.'='.$live_benefit; 
+                $benefit_limit = $live_benefit;
 
                 
                 
@@ -293,7 +297,7 @@ function  excute(){
                     echo "<span class=blue> ▶▶ 수당 지급 : ".Number_format($benefit)."</span><br>";
                 } */
 
-                echo "<span class=blue> ▶▶ 수당 지급 : ".$benefit."</span><br>";
+                echo "<span class=blue> ▶▶ 수당 지급 : ".$live_benefit." <br> ▶▶▶ 쇼핑몰보너스 지급 : ".$shop_benefit."</span><br>";
                 
 
 
@@ -309,7 +313,7 @@ function  excute(){
                             $balance_ignore_sql = "";
                         }
 
-                        $balance_up = "update g5_member set mb_balance = mb_balance + {$benefit_limit} {$balance_ignore_sql}  where mb_id = '".$mb_id."'";
+                        $balance_up = "update g5_member set mb_balance = mb_balance + {$benefit_limit} {$balance_ignore_sql}, mb_shop_point = mb_shop_point + {$shop_benefit}   where mb_id = '".$mb_id."'";
 
                         // 디버그 로그
                         if($debug){

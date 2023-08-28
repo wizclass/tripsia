@@ -4,7 +4,7 @@ if (!defined('_GNUBOARD_')) exit;
 // 외부로그인
 function outlogin($skin_dir='basic')
 {
-    global $config, $member, $g5, $urlencode, $is_admin, $is_member, $total_withraw, $token_arr;
+    global $config, $member, $g5, $urlencode, $is_admin, $is_member, $shop_balance, $token_arr;
     
     $is_auth = false;
 

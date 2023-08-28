@@ -409,12 +409,12 @@ function curency_txt($value, $kind = 'deposit')
 
     <!-- 업비트 시세 -->
     <section id='upbit_curency' class='upbit_curency'>
-      <h3 class="wallet_title" style="margin:30px 0 0;display:flex;line-height:44px;">코인시세 By
-        <div class='upbit_logo'><img src="<?= G5_THEME_URL ?>/img/icon_bi_upbit.svg"></div>
+      <!-- <h3 class="wallet_title" style="margin:30px 0 0;display:flex;line-height:44px;">코인시세 By -->
+        <!-- <div class='upbit_logo'><img src="<?= G5_THEME_URL ?>/img/icon_bi_upbit.svg"></div> -->
         <!-- <div class="refresh_btn">
             <a id="coin_refresh" class="btn inline"><i class="ri-restart-fill" style="font-size:28px;"></i></a>
         </div> -->
-      </h3>
+      <!-- </h3> -->
       <div class="checkbox-group">
         <div class='checkbox-tile'>1 USDT = <span id='curency_usdt_eth'><?= shift_auto($coin['usdt_krw'], 'krw') ?></span> <?= $curencys[1] ?> </div>
       </div>

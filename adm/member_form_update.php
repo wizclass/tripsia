@@ -106,7 +106,7 @@ $mb_index = "mb_index = (select ifnull(sum(od_cart_price),0)*({$limited}/100) fr
 
 
 $sql_common = "  mb_name = '{$_POST['mb_name']}',
-				 mb_nick = '{$_POST['mb_nick']}',
+				 mb_nick = '{$_POST['mb_name']}',
 				 mb_email = '{$_POST['mb_email']}',
 				 mb_homepage = '{$_POST['mb_homepage']}',
 				 mb_tel = '{$_POST['mb_tel']}',

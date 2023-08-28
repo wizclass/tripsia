@@ -210,7 +210,7 @@ function get_member_level_select($name, $start_id=0, $end_id=4, $selected="", $e
         </select>";
     }
 
-	$level_name=array("일반회원","정회원","센터회원",'지사','지점','본사');
+    $level_name=array("일반회원","정회원");
 	//$level_name=array("Black","Red","Yellow","Green");
     $str = "\n<select id=\"{$name}\" name=\"{$name}\"";
     if ($event) $str .= " $event";
@@ -229,9 +229,11 @@ function get_member_level_select($name, $start_id=0, $end_id=4, $selected="", $e
 function get_grade_select($name, $start_id=0, $end_id=6, $selected="", $event="")
 {
     global $g5;
-    //$level_name=array("Freshman","Miner","0Star","1Star","2Star","3Star","4Star","5Star","6Star","manager","admin");
+
+    // $start_id = $start_id > 4 ? 4 : $start_id;
     
-	$level_name=array("0star","1star","2star","3star","4star","5star","6star","7star");
+    $level_name=array("일반","이코노미","비지니스","퍼스트","VIP");
+	// $level_name=array("0star","1star","2star","3star","4star","5star","6star","7star");
     $str = "\n<select id=\"{$name}\"  name=\"{$name}\"";
     if ($event) $str .= " $event";
     $str .= ">\n";

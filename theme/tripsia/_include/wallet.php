@@ -32,7 +32,7 @@ $total_fund = $total_bonus;
 
 // 출금가능금액 :: 총보너스 - 기출금
 $total_withraw = $total_bonus - $total_shift_amt - $member['mb_fee'];
-
+$shop_balance = $member['mb_shop_point'] - $member['mb_shop_calc'];
 // 구매가능잔고 :: 입금액 - 구매금액 = 남은금액
 $available_fund = $total_deposit;
 
@@ -194,6 +194,10 @@ function user_grade($id){
 	$mb_sql = "SELECT * from g5_member WHERE mb_id = '{$id}' ";
 	$result = sql_fetch($mb_sql);
 	return $result['grade'];
+}
+
+function _user_grade($grade){
+	return ["일반","이코노미","비지니스","퍼스트","VIP"][$grade > 4 ? 4 : $grade];
 }
 
 
@@ -477,6 +481,9 @@ function shift_auto($val,$type = 'eth'){
 }
 
 function get_coins_price(){
+
+	global $default;
+
 	$result = array();
 	$url_list = array(
 		'https://api.upbit.com/v1/ticker?markets=KRW-ETH&markets=KRW-ETC&markets=USDT-ETH&markets=USDT-ETC',
@@ -491,7 +498,7 @@ function get_coins_price(){
 	$usdt_eth = $data[0][2]['trade_price'];
 	$usdt_etc = $data[0][3]['trade_price'];
 
-	$result['usdt_krw'] = $eth_krw / $usdt_eth;
+	$result['usdt_krw'] = $default['de_coin_auto'] ? $eth_krw / $usdt_eth : $default['de_token_price'];
 	$result['usdt_eth'] = $usdt_eth;
 	$result['usdt_etc'] = $usdt_etc;
 	$result['eth_krw'] = $eth_krw;
