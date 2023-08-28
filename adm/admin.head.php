@@ -102,6 +102,7 @@ if( ! empty($_COOKIE['g5_admin_btn_gnb']) ){
 var tempX = 0;
 var tempY = 0;
 
+
 function imageview(id, w, h)
 {
 
@@ -119,6 +120,45 @@ function imageview(id, w, h)
     if (el_id.style.display != 'none')
         selectBoxHidden(id);
 }
+</script>
+
+<div id="framewrp">
+<style type="text/css">
+#framewrp {position:fixed;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:99999;display:none;}
+#framer {position:absolute;left:50%;margin-left:-300px;top:50%;margin-top:-250px;width:600px;height:500px;background-color:#fff;border:0;}
+@media screen and (max-width:480px) {
+#framer {position:absolute;left:0;margin-left:0;top:10%;margin-top:0;width:100%;height:80%;}
+}
+
+.adm_logo{display:inline-block;width:100px;left:180px !important;top:20px !important;}
+</style>
+
+	<iframe name='framer' id="framer" frameborder="0"></iframe> 
+</div><!-- // framewrp -->
+
+<script>
+$(function(){
+	$('span[id^="ajax_"]').click(function () {
+		var $type = $(this).attr("id").replace("ajax_","");
+		if ($type == "id_search") {
+			var $search = $('#set_id_sel').val();
+			$('#framer').attr("src","/shop/ajax.id.php?mbid="+$search);
+			$('#framewrp').fadeIn();
+		} else if ($type == "center_search") {
+            var $center = $('#mb_center').val();
+			$('#framer').attr("src","/shop/ajax.center.php?mb_id="+$center+"&rcm="+$center);
+			$('#framewrp').fadeIn();
+		}else if ($type == "rcm_search") {
+			var $rcm = $('#mb_recommend').val();
+			var $mb_id = $('#mb_id').val();
+			$('#framer').attr("src","/shop/ajax.id.php?mb_id="+$mb_id+"&rcm="+$rcm);
+			$('#framewrp').fadeIn();
+		}
+	});
+	$('#framewrp').click(function () {
+		$(this).hide();
+	});
+});
 </script>
 
 <div id="to_content"><a href="#container">본문 바로가기</a></div>

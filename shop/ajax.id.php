@@ -56,7 +56,7 @@ $(function(){
 include_once(G5_THEME_PATH.'/tail.sub.php');
 /*## 추천 아이디 찾기 ################################################*/
 } else if ($_GET['rcm']) {
-include_once(G5_THEME_PATH.'/head.sub.php');
+include_once(G5_PATH.'/theme/tripsia/head.sub.php');
 ?>
 <div class="id_search">
 <style type="text/css">
@@ -115,7 +115,7 @@ function close_ajax(){
 		</div>
 </div><!-- // id_search -->
 <?
-include_once(G5_THEME_PATH.'/tail.sub.php');
+include_once(G5_PATH.'/theme/tripsia/head.sub.php');
 /*## ajax 회원정보입력 ################################################*/
 
 } else if ($_POST['mb_id']) {

@@ -407,12 +407,22 @@ $rank_result = sql_fetch($rank_sql);
 					<th scope="row"><label for="mb_hp">휴대폰 번호<strong class="sound_only">필수</strong></label></th>
 					<td><input type="text" name="mb_hp" value="<?php echo $mb['mb_hp'] ?>" id="mb_hp" maxlength="13" class="frm_input wide" size="13"></td>
 				</tr>
-
 				<tr>
 					<th scope="row"><label for="mb_level">회원 레벨</label></th>
 					<td><?php echo get_member_level_select('mb_level', 0, $member['mb_level'], $mb['mb_level']) ?> <div></td>
 					<th scope="row"><label for="grade">회원 등급</label></th>
 					<td><? echo "<img src='/img/" . $mb['grade'] . ".png' style='width:40px;height:40px;'>"; ?><?php echo get_grade_select('grade', 0, $member['grade'], $mb['grade']) ?><?= $rank_result['rank_day'] ?></td>
+				</tr>
+				<tr>
+					<th scope="row">추천인</th>
+						<td colspan="1">
+
+							<? //php echo ($mb['mb_recommend'] ? get_text($mb['mb_recommend']) : '없음'); // 081022 : CSRF 보안 결함으로 인한 코드 수정 
+							?>
+							<input type="text" name="mb_recommend" id="mb_recommend" value="<?= $mb['mb_recommend'] ?>" class="frm_input wide" /><span id="ajax_rcm_search" class="btn flexible">검색</span>
+						</td>
+					<th></th>
+					<td></td>
 				</tr>
 	</div>
 
@@ -425,25 +435,6 @@ $rank_result = sql_fetch($rank_sql);
 		<td><input type="text" name="mb_tel" value="<?php echo $mb['mb_tel'] ?>" id="mb_tel" class="frm_input" size="15" maxlength="20"></td>
 	</tr> -->
 
-
-
-	<?php if ($config['cf_use_recommend']) { // 추천인 사용 
-	?>
-		<tr class='divide-top'>
-			<th scope="row">추천인</th>
-			<td colspan="1">
-
-				<? //php echo ($mb['mb_recommend'] ? get_text($mb['mb_recommend']) : '없음'); // 081022 : CSRF 보안 결함으로 인한 코드 수정 
-				?>
-				<input type="text" name="mb_recommend" id="mb_recommend" value="<?= $mb['mb_recommend'] ?>" class="frm_input wide" /><span id="ajax_rcm_search" class="btn flexible">검색</span>
-			</td>
-			<th scope="row">후원인</th>
-			<td colspan="1">
-				<input type="text" name="mb_brecommend" id="mb_brecommend" value="<?= $mb['mb_brecommend'] ?>" class="frm_input wide" disabled />
-				<span><?= $mb['mb_bre_time'] ? "등록일 : " . $mb['mb_bre_time'] : "" ?></span>
-			</td>
-		</tr>
-	<?php } ?>
 
 	<!-- <tr>
 		<th scope="row">센터지정</th>
@@ -552,7 +543,7 @@ $rank_result = sql_fetch($rank_sql);
 		}
 	</style>
 
-	<tr class="ly_up padding-box fund">
+	<tr class="ly_up padding-box fund divide-top">
 		<th scope="row">보유 잔고</th>
 
 		<td colspan="1">
@@ -630,7 +621,6 @@ $rank_result = sql_fetch($rank_sql);
 			.divide-top th,
 			.divide-top td {
 				border-top: 2px solid #333;
-				padding-top: 30px;
 			}
 
 			.divide-bottom th,
