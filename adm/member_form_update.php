@@ -103,7 +103,16 @@ if(isset($_POST['b_autopack'])){
 }
 
 $mb_index = "mb_index = (select ifnull(sum(od_cart_price),0)*({$limited}/100) from g5_order where mb_id = '{$mb_id}')";
+$mb_no_sql = "select count(mb_no) as cnt, mb_no from g5_member where mb_id = '{$_POST['mb_recommend']}'";
+$mb_no_row = sql_fetch($mb_no_sql);
 
+if($mb_no_row['cnt'] <= 0){alert('존재하지 않는 추천인 정보 입니다.');}
+
+if($_POST['reg_tr_password']){
+	$sql_tr_password = ", reg_tr_password = '".get_encrypt_string($_POST['reg_tr_password'])."'";
+}else{
+	$sql_tr_password = "";
+}
 
 $sql_common = "  mb_name = '{$_POST['mb_name']}',
 				 mb_nick = '{$_POST['mb_name']}',
@@ -131,6 +140,7 @@ $sql_common = "  mb_name = '{$_POST['mb_name']}',
 				 grade = '{$_POST['grade']}',
 				 mb_level = '{$mb_level}',
 				 mb_recommend = '{$_POST['mb_recommend']}',
+				 mb_recommend_no = '{$mb_no_row['mb_no']}',
 			  	 first_name = '{$_POST['first_name']}',
   			 	 last_name = '{$_POST['last_name']}',
 				 mb_1 = '{$_POST['mb_1']}',
@@ -179,7 +189,7 @@ if ($w == '')
 	if ($row['mb_id'])
 		alert('이미 존재하는 이메일입니다.\\nＩＤ : '.$row['mb_id'].'\\n이름 : '.$row['mb_name'].'\\n닉네임 : '.$row['mb_nick'].'\\n메일 : '.$row['mb_email']);
 	*/
-	$insert_member = " insert into {$g5['member_table']} set mb_id = '{$mb_id}', mb_password = '".get_encrypt_string($mb_password)."', mb_datetime = '".G5_TIME_YMDHIS."', mb_ip = '{$_SERVER['REMOTE_ADDR']}', mb_email_certify = '".G5_TIME_YMDHIS."', {$sql_common} ";
+	$insert_member = " insert into {$g5['member_table']} set mb_id = '{$mb_id}', mb_password = '".get_encrypt_string($mb_password)."', mb_datetime = '".G5_TIME_YMDHIS."', mb_ip = '{$_SERVER['REMOTE_ADDR']}', mb_email_certify = '".G5_TIME_YMDHIS."', {$sql_common} {$sql_tr_password} ";
 	sql_query($insert_member);
 	alert('가입처리되었습니다.');
 
@@ -333,12 +343,6 @@ else if ($w == 'u')
 		$sql_password = " , mb_password = '".get_encrypt_string($mb_password)."' ";
 	else
 		$sql_password = "";
-
-	if($_POST['reg_tr_password']){
-		$sql_tr_password = ", reg_tr_password = '".get_encrypt_string($_POST['reg_tr_password'])."'";
-	}else{
-		$sql_tr_password = "";
-	}
 
 	if ($passive_certify)
 		$sql_certify = " , mb_email_certify = '".G5_TIME_YMDHIS."' ";

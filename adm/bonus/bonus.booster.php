@@ -69,7 +69,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 
         <?php
 
-        $member_for_paying_sql = "select mb_id as id, mb_name, mb_no, mb_level, grade, mb_balance, mb_index,mb_balance_ignore, mb_deposit_point, (select count(*) from g5_member where mb_recommend = id) as cnt from g5_member where mb_save_point >= 0";
+        $member_for_paying_sql = "select mb_id as id, mb_name, mb_no, mb_level, grade, (mb_balance + mb_shop_point) as mb_balance, mb_index,mb_balance_ignore, mb_deposit_point, (select count(*) from g5_member where mb_recommend = id) as cnt from g5_member where mb_save_point >= 0";
 
         if ($debug) {
             echo "<code>{$member_for_paying_sql}</code>";

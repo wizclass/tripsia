@@ -23,6 +23,7 @@ if($debug ==1){
   $coin = $_POST['coin'];
   $d_price = $_POST['d_price'];
   $mb_name = $member['mb_name'];
+  $calc_coin = $_POST['calc_coin'];
 }
 
 // 입금계좌정보
@@ -40,7 +41,8 @@ if($pre_result['cnt'] < 1){
 
   if ($coin == '원' || $coin == 'krw') {
     $usdt = shift_coin($get_coins_price['usdt_krw'],2);
-    $point = shift_coin($d_price/$usdt,2);
+    // $point = shift_coin($d_price/$usdt,2);
+    $point = $calc_coin;
 
   }else{
     if($coin == 'etc') {
