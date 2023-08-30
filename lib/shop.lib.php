@@ -1615,10 +1615,10 @@ function get_order_info($od_id)
     $info = array();
 
     // 장바구니 주문금액정보
-    $sql = " select SUM(IF(io_type = 1, (ct_price * ct_qty), ((ct_price + ct_price) * ct_qty))) as price,
-                    SUM(cp_price) as coupon,
-                    SUM( IF( ct_notax = 0, ( IF(io_type = 1, (ct_price * ct_qty), ( (ct_price + ct_price) * ct_qty) ) - cp_price ), 0 ) ) as tax_mny,
-                    SUM( IF( ct_notax = 1, ( IF(io_type = 1, (ct_price * ct_qty), ( (ct_price + ct_price) * ct_qty) ) - cp_price ), 0 ) ) as free_mny
+    $sql = " select SUM((ct_price + io_price) * ct_qty) as price,
+                SUM(cp_price) as coupon,
+                SUM( IF( ct_notax = 0,((ct_price + io_price) * ct_qty)  - cp_price , 0 ) ) as tax_mny,
+                SUM( IF( ct_notax = 1, ((ct_price + io_price) * ct_qty)  - cp_price , 0 ) ) as free_mny
                 from {$g5['g5_shop_cart_table']}
                 where od_id = '$od_id'
                   and ct_status IN ( '주문', '입금', '준비', '배송', '완료' ) ";
@@ -2528,7 +2528,7 @@ function before_check_cart_price($s_cart_id, $is_ct_select_condition=false, $is_
         if(!$it['it_id'])
             continue;
         
-        if( $it['it_price'] !== $row['ct_price'] ){
+        if( $it['io_type'] == 1 && $it['it_price'] !== $row['ct_price'] ){
             // 장바구니 테이블 상품 가격과 상품 테이블의 상품 가격이 다를경우
             $update_querys['ct_price'] = $it['it_price'];
         }
