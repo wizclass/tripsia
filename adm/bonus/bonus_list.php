@@ -159,6 +159,9 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 </style>
 
 <link href="<?=G5_ADMIN_URL?>/css/scss/bonus/bonus_list.css" rel="stylesheet">
+<script src="../../excel/tabletoexcel/xlsx.core.min.js"></script>
+<script src="../../excel/tabletoexcel/FileSaver.min.js"></script>
+<script src="../../excel/tabletoexcel/tableExport.js"></script>
 
 <div class="local_desc01 local_desc">
     <p>
@@ -254,7 +257,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 			<?=$html?>
 		
 			<input type="submit" class="btn_submit search" value="검색"/>
-			<input type="button" class="btn_submit excel" id="btnExport"  data-name='hwajo_bonus_list' value="엑셀 다운로드" />
+			<input type="button" class="btn_submit excel" id="btnExport"  data-name='bonus_list' value="엑셀 다운로드" />
 		
 	</div>
 </form>

@@ -71,7 +71,7 @@ if($pre_result['cnt'] < 1){
   }
 
   // 입금알림 텔레그램 API
-  $msg = '[TRIPSIA][입금요청] '.$mb_id.'('.$mb_name.') 님의 '.shift_auto($d_price, $curencys[0]).' '.$curencys[0].' 입금요청이 있습니다.';
+  $msg = '[RED Banana][입금요청] '.$mb_id.'('.$mb_name.') 님의 '.shift_auto($d_price, $curencys[0]).' '.$curencys[0].' 입금요청이 있습니다.';
 
   if(TELEGRAM_ALERT_USE){  
     curl_tele_sent($msg);

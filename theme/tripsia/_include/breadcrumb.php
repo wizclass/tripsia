@@ -91,6 +91,7 @@ function remain_hash($val,$rate,$exp = true){
 	return $remain;
 }
 
+$rank_note_price = sql_fetch("SELECT it_price FROM {$g5['g5_item_table']} a JOIN {$g5['member_table']} b ON a.it_name = b.rank_note WHERE b.mb_id = '{$member['mb_id']}'");
 
 
 $title = 'Dashboard';
@@ -146,11 +147,11 @@ $title = 'Dashboard';
 							<dd class="value" style='font-size:15px;'><?=shift_auto($total_bonus,$curencys[0])?><span class='currency'><?=$curencys[0]?></span></dd>
 						</li>
 						<li class="col-4">
-							<dt class="title" >구매 가능 포인트 </dt>
+							<dt class="title" >구매 가능 USDT </dt>
 							<dd class="value" style='font-size:15px;'><?=shift_auto($available_fund,$curencys[0])?><span class='currency'><?=$curencys[0]?></span></dd>
 						</li>
 						<li class="col-4">
-							<dt class="title" >출금 가능 포인트 </dt>
+							<dt class="title" >출금 가능 USDT </dt>
 							<dd class="value" style='font-size:15px;'><?=shift_auto($total_withraw,$curencys[0])?><span class='currency'><?=$curencys[0]?></span></dd>
 						</li>
 						<!-- <li class="col-4">
@@ -177,10 +178,11 @@ $title = 'Dashboard';
 						<li class="col-4">
 							<dt class="title" >나의구매등급</dt>
 							<dd class="value"><?=$member['rank_note']?><?=rank_name($member['rank_note'])?></dd>
+							<dd class="value">(<?=shift_auto($rank_note_price['it_price'], $curencys[0])?> <?=$curencys[0]?>)</dd>
 						</li>
 
 						<li class="col-4">
-							<dt class="title">승급대상포인트</dt>
+							<dt class="title">승급대상 USDT</dt>
 							<dd class="value"><?=Number_format($member['recom_sales'])?> </dd>
 						</li>
 
@@ -214,7 +216,7 @@ $title = 'Dashboard';
 						</li>
 
 						<li class="col-4">
-							<dt class="title">승급대상포인트</dt>
+							<dt class="title">승급대상 USDT</dt>
 							<dd class="value">
 								<?=check_value($member['mb_7'])?>
 							</dd>

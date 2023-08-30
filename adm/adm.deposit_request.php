@@ -316,12 +316,11 @@ $result = sql_query($sql);
         <td><?=$row['cost']?></td>
         <td>
             <!-- <?=status($row['status'])?> -->
-            <select name="status" uid="<?=$row['uid']?>" class='sel_<?=$row['status']?>'>
+            <select name="status" uid="<?=$row['uid']?>" class='sel_<?=$row['status']?>' <?=$row['status'] == 1 ? 'disabled':'';?>>
                 <option <?=$row['status'] == 0 ? 'selected':'';?> value=0>요청확인중</option>
                 <option <?=$row['status'] == 1 ? 'selected':'';?> value=1>승인</option>
                 <option <?=$row['status'] == 2 ? 'selected':'';?> value=2>대기</option>
                 <option <?=$row['status'] == 3 ? 'selected':'';?> value=3>불가</option>
-                <option <?=$row['status'] == 4 ? 'selected':'';?> value=4>취소</option>
             </select>	
         </td>
         <td class='time'><?=$row['create_dt']?></td>

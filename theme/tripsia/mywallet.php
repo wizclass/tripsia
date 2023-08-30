@@ -427,16 +427,16 @@ function curency_txt($value, $kind = 'deposit')
           <div class="content-box round account_card" data-id=<?= $deposit_array[$i]['no'] ?>>
             <p class="card_title"><?= $deposit_array[$i]['account_name'] ?></p>
 
-            <!-- <p class="cabinet">
+            <p class="cabinet">
 
-              <span class="bank_name"></span>
-              <span class="bank_account_num"></span>
-              <span class="bank_account_name"></span>
+              <span class="bank_name"><?= $deposit_array[$i]['bank_name'] ?></span>
+              <span class="bank_account_num"><?= $deposit_array[$i]['bank_account'] ?></span>
+              <span class="bank_account_name"><?= $deposit_array[$i]['bank_account_name'] ?></span>
 
-              <button class="btn wd line_btn mt20 " id="accountCopy" onclick="copy_bank_account_num(this)">
-                <span> 계좌복사 </span>
+              <button class="btn wd line_btn mt20 " id="accountCopy" style="background: #212429" onclick="copy_bank_account_num(this)">
+                <span style="color: #fff"> 계좌복사 </span>
               </button>
-            </p> -->
+            </p>
           </div>
 
         <? $i++;
@@ -1315,12 +1315,12 @@ function curency_txt($value, $kind = 'deposit')
     function account_card_open() {
       var card_id = $(this).data('id');
       if (select_account_card_id != card_id) {
-        $('.cabinet').fadeOut();
+        $('.cabinet').css('display', 'none');
         $('.account_card').removeClass('active');
-
         // 계좌 노출 미사용
         // $(this).children('.cabinet').slideDown();
         $(this).addClass('active');
+        $(this).children('.cabinet').css('display', 'block');
       }
       select_account_card_id = card_id;
     }
