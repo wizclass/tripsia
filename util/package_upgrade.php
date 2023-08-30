@@ -36,7 +36,7 @@ mb_balance + mb_deposit_point + mb_deposit_calc - mb_shift_amt AS balance
 FROM {$g5['member_table']} 
 WHERE mb_id = '{$mb_id}'");
 
-// 3-1. 구매 가능 잔고가 부족할 경우 failed 30000 - 10000 > 20000
+// 3-1. 구매 가능 잔고가 부족할 경우 failed
 if(((int)$up_pack_info['it_cust_price'] - (int)$exist_package['od_cart_price']) > floor($mb_info['sum_deposit'])) {
 	echo json_encode(array("result" => "failed", "code" => "200", "message" => "구매 가능한 잔고가 부족합니다."));
 	return false;
@@ -52,20 +52,22 @@ $pack_update_sql = "UPDATE {$g5['g5_order_table']} SET
 		od_cart_price				= " . $up_pack_info['it_cust_price'] . ",
 		od_cash    					= " . $up_pack_info['it_price'] . ",
 		upstair    					= " . $up_pack_info['it_point'] . ",
-		od_name    					= '" . $up_pack_info['it_maker'] . "',
+		od_name    					= '" . $up_pack_info['it_name'] . "',
 		od_tno    					= " . $up_pack_info['it_id'] . ",
 		pv    							= " . $up_pack_info['it_supply_point'] . ", 
 		od_receipt_time   = '" . $now_datetime . "', 
 		od_time           = '" . $now_datetime . "', 
 		od_date           = '" . $now_date . "',
 		od_status					= '패키지업그레이드',
-		od_pg							= '" . $exist_package['od_name'] . '->' . $up_pack_info['it_maker'] . "',
-		od_app_no							= '" . $exist_package['no'] . "'  WHERE od_id = '" . $od_id . "'";
+		od_pg							= '" . $exist_package['od_name'] . '->' . $up_pack_info['it_name'] . "',
+		od_app_no							= '" . $exist_package['no'] . "',
+		od_cash_no 				= '" . $up_pack_info['it_maker'] . "' WHERE od_id = '" . $od_id . "'";
+;
 
 sql_query($pack_update_sql);
 
 // 3. 상위 패키지 테이블로 이동 및 기존 패키지 테이블에서 삭제
-$prev_pack = strtolower($exist_package['od_name']);
+$prev_pack = strtolower($exist_package['od_cash_no']);
 $next_pack = strtolower($up_pack_info['it_maker']);
 $move_package = "INSERT INTO package_{$next_pack} (idx, mb_id, it_name, nth, cdate, cdatetime, pdate, od_id, promote)
  SELECT idx, mb_id, it_name, nth, cdate, cdatetime, pdate, od_id, promote from package_{$prev_pack} WHERE od_id = '{$od_id}'";
