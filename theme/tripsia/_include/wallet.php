@@ -197,7 +197,8 @@ function user_grade($id){
 }
 
 function _user_grade($grade){
-	return ["일반","이코노미","비지니스","퍼스트","VIP"][$grade > 4 ? 4 : $grade];
+	$array = ["일반","이코노미","비지니스","퍼스트","VIP"];
+	return $array[$grade > 4 ? 4 : $grade];
 }
 
 
