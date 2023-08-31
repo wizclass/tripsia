@@ -95,8 +95,7 @@ var gradeMap = {
 			}
 		});
 
-		 $(document).on('click','.lvl-username' ,function(e) {
-			// console.log($(this).text());
+		 $(document).on('click','#lvl-userid' ,function(e) {
 
 			getList($(this).text(), 'name');
 			getLeg('<?=$tree_id?>', $(this).text());
@@ -393,7 +392,6 @@ var gradeMap = {
 	}
 
 	function getList(member_no, type){
-		
 		var url = "/util/structure_member_list.php";
 		var dataResult =[];
 		var curency = "<?=$curencys[0]?>";
