@@ -291,7 +291,7 @@ else if ($w == 'u')
 		}
 
 		$coin = get_coins_price();
-		$deposit_adm_value = ($deposit_code.$deposit_adm) / $coin['usdt_eth'];
+		// $deposit_adm_value = ($deposit_code.$deposit_adm) / $coin['usdt_eth'];
 		$in_deposit_adm_value = $deposit_code.$deposit_adm;
 
 		$deposit_adm_sql = "insert wallet_deposit_request set
@@ -304,7 +304,7 @@ else if ($w == 'u')
 				, coin          	= '{$curencys[0]}'
 				, fee    			= 0
 				, cost         		= 0
-				, amt    			= {$deposit_adm_value}
+				, amt    			= {$in_deposit_adm_value}
 				, in_amt			= {$in_deposit_adm_value}
 				, admin_states 		= '{$admin_states}'";
 
