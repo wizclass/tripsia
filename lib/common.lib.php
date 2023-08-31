@@ -3139,60 +3139,66 @@ function conv_unescape_nl($str)
 // 회원 삭제
 function member_delete($mb_id)
 {
-    global $config;
-    global $g5;
 
-    $sql = " select mb_name, mb_nick, mb_ip, mb_recommend, mb_memo, mb_level from {$g5['member_table']} where mb_id= '".$mb_id."' ";
-    $mb = sql_fetch($sql);
+	global $config;
+	global $g5;
 
-    // 이미 삭제된 회원은 제외
-    if(preg_match('#^[0-9]{8}.*삭제함#', $mb['mb_memo']))
-        return;
+	
+	$move_sql = "INSERT INTO g5_member_del (select * from {$g5['member_table']} where mb_id= '".$mb_id."')";
+	// $mb = sql_fetch($sql);
+	sql_query($move_sql);
 
-    if ($mb['mb_recommend']) {
-        $row = sql_fetch(" select count(*) as cnt from {$g5['member_table']} where mb_id = '".addslashes($mb['mb_recommend'])."' ");
-        if ($row['cnt'])
-            insert_point($mb['mb_recommend'], $config['cf_recommend_point'] * (-1), $mb_id.'님의 회원자료 삭제로 인한 추천인 포인트 반환', "@member", $mb['mb_recommend'], $mb_id.' 추천인 삭제');
-    }
+	// 삭제일 기록
+	$del_date_update = "UPDATE g5_member_del set mb_leave_date = '".date('Ymd', G5_SERVER_TIME)."' WHERE mb_id = '".$mb_id."'";
+	sql_query($del_date_update);
 
-    // 회원자료는 정보만 없앤 후 아이디는 보관하여 다른 사람이 사용하지 못하도록 함 : 061025
-    $sql = " update {$g5['member_table']} set mb_password = '', mb_level = 1, mb_email = '', mb_homepage = '', mb_tel = '', mb_hp = '', mb_zip1 = '', mb_zip2 = '', mb_addr1 = '', mb_addr2 = '', mb_birth = '', mb_sex = '', mb_signature = '', mb_memo = '".date('Ymd', G5_SERVER_TIME)." 삭제함\n".sql_real_escape_string($mb['mb_memo'])."' where mb_id = '{$mb_id}' ";
+	$del_sql = "DELETE FROM g5_member WHERE mb_id = '{$mb_id}'  ";
+	sql_query($del_sql);
+	
+	/* 
+	$sql = " select mb_name, mb_nick, mb_ip, mb_recommend, mb_memo, mb_level from {$g5['member_table']} where mb_id= '".$mb_id."' ";
+	$mb = sql_fetch($sql);
+	
 
-    sql_query($sql);
+	// 이미 삭제된 회원은 제외
+	if(preg_match('#^[0-9]{8}.*삭제함#', $mb['mb_memo']))
+		return;
 
-    // 포인트 테이블에서 삭제
-    sql_query(" delete from {$g5['point_table']} where mb_id = '$mb_id' ");
+	if ($mb['mb_recommend']) {
+		$row = sql_fetch(" select count(*) as cnt from {$g5['member_table']} where mb_id = '".addslashes($mb['mb_recommend'])."' ");
 
-    // 그룹접근가능 삭제
-    sql_query(" delete from {$g5['group_member_table']} where mb_id = '$mb_id' ");
+		if ($row['cnt'])
+			insert_point($mb['mb_recommend'], $config['cf_recommend_point'] * (-1), $mb_id.'님의 회원자료 삭제로 인한 추천인 포인트 반환', "@member", $mb['mb_recommend'], $mb_id.' 추천인 삭제');
+	}
 
-    // 쪽지 삭제
-    sql_query(" delete from {$g5['memo_table']} where me_recv_mb_id = '$mb_id' or me_send_mb_id = '$mb_id' ");
+	// 회원자료는 정보만 없앤 후 아이디는 보관하여 다른 사람이 사용하지 못하도록 함 : 061025
+	$sql = " update {$g5['member_table']} set mb_password = '', grade=0, mb_level = 0, mb_recommend='', mb_brecommend='' ,mb_brecommend_type='', mb_recommend_no='', mb_email = '', mb_homepage = '', mb_tel = '', mb_hp = '', mb_zip1 = '', mb_zip2 = '', mb_addr1 = '', mb_addr2 = '', mb_birth = '', mb_sex = '', mb_signature = '', mb_leave_date=".date('Ymd', G5_SERVER_TIME).", mb_memo = '".date('Ymd', G5_SERVER_TIME)." 삭제함\n{$mb['mb_memo']}' where mb_id = '{$mb_id}' ";
+	sql_query($sql);
+	print_R($sql);
 
-    // 스크랩 삭제
-    sql_query(" delete from {$g5['scrap_table']} where mb_id = '$mb_id' ");
+	// 포인트 테이블에서 삭제
+	sql_query(" delete from {$g5['point_table']} where mb_id = '$mb_id' ");
 
-    // 관리권한 삭제
-    sql_query(" delete from {$g5['auth_table']} where mb_id = '$mb_id' ");
+	// 그룹접근가능 삭제
+	sql_query(" delete from {$g5['group_member_table']} where mb_id = '$mb_id' ");
 
-    // 그룹관리자인 경우 그룹관리자를 공백으로
-    sql_query(" update {$g5['group_table']} set gr_admin = '' where gr_admin = '$mb_id' ");
+	// 쪽지 삭제
+	sql_query(" delete from {$g5['memo_table']} where me_recv_mb_id = '$mb_id' or me_send_mb_id = '$mb_id' ");
 
-    // 게시판관리자인 경우 게시판관리자를 공백으로
-    sql_query(" update {$g5['board_table']} set bo_admin = '' where bo_admin = '$mb_id' ");
+	// 스크랩 삭제
+	sql_query(" delete from {$g5['scrap_table']} where mb_id = '$mb_id' ");
 
-    //소셜로그인에서 삭제 또는 해제
-    if(function_exists('social_member_link_delete')){
-        social_member_link_delete($mb_id);
-    }
+	// 관리권한 삭제
+	sql_query(" delete from {$g5['auth_table']} where mb_id = '$mb_id' ");
 
-    // 아이콘 삭제
-    @unlink(G5_DATA_PATH.'/member/'.substr($mb_id,0,2).'/'.$mb_id.'.gif');
+	// 그룹관리자인 경우 그룹관리자를 공백으로
+	sql_query(" update {$g5['group_table']} set gr_admin = '' where gr_admin = '$mb_id' ");
 
-    // 프로필 이미지 삭제
-    @unlink(G5_DATA_PATH.'/member_image/'.substr($mb_id,0,2).'/'.$mb_id.'.gif');
+	// 게시판관리자인 경우 게시판관리자를 공백으로
+	sql_query(" update {$g5['board_table']} set bo_admin = '' where bo_admin = '$mb_id' ");
 
-    run_event('member_delete_after', $mb_id);
+	// 아이콘 삭제
+	@unlink(G5_DATA_PATH.'/member/'.substr($mb_id,0,2).'/'.$mb_id.'.gif'); */
 }
 
 // 이메일 주소 추출
