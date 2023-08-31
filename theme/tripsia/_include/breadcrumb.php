@@ -10,7 +10,7 @@ $bonus_per = bonus_per();
 $next_rate_time = next_exchange_rate_time();
 
 //내 직추천인
-$direct_reffer_sql = "SELECT count(mb_id) as cnt from g5_member WHERE mb_recommend = '{$member['mb_id']}' ";
+$direct_reffer_sql = "SELECT count(mb_id) as cnt from g5_member WHERE mb_recommend = '{$member['mb_id']}' AND mb_level = 1";
 $direct_reffer_result = sql_fetch($direct_reffer_sql);
 $direct_reffer = $direct_reffer_result['cnt'];
 
