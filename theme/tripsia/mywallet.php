@@ -565,7 +565,7 @@ function curency_txt($value, $kind = 'deposit')
                     break;
                 }
                 ?>
-                <span class="hist_value"><?= shift_auto($row['amt']) . ' ' . $curencys[1]?></span>
+                <span class="hist_value"><?= $row['amt'] == '0' ? '' : shift_auto($row['amt']) . ' ' . $curencys[1];?></span>
                 <span class="curency_value" > <?= $row['in_amt'] . ' ' . $curencys[0] ?></span>
 
               </div>

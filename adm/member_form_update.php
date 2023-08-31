@@ -304,7 +304,7 @@ else if ($w == 'u')
 				, coin          	= '{$curencys[0]}'
 				, fee    			= 0
 				, cost         		= 0
-				, amt    			= {$in_deposit_adm_value}
+				, amt    			= 0
 				, in_amt			= {$in_deposit_adm_value}
 				, admin_states 		= '{$admin_states}'";
 
