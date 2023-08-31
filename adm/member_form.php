@@ -442,7 +442,7 @@ $rank_result = sql_fetch($rank_sql);
 	</tr> -->
 
 
-	<!-- <tr>
+	<tr>
 		<th scope="row">센터지정</th>
 		<td colspan="1">
 			<input type="checkbox" style='width:24px;height:24px' name="center_use" id="center_use" value=" <?= $mb['center_use'] ?> " class="frm_input" <? if ($mb['center_use'] == '1') {
@@ -456,7 +456,7 @@ $rank_result = sql_fetch($rank_sql);
 
 			<div id='mb_nick_regist' class='<?= $center_regist_class ?>'>
 				| 센터명 :
-				<input type="text" name="mb_nick" id="mb_nick_field" value="<?= $mb['mb_nick'] ?>" class="frm_input" />
+				<input type="text" name="mb_center_name" id="mb_nick_field" value="<?= $mb['mb_center_name'] ?>" class="frm_input" />
 			</div>
 
 		</td>
@@ -465,7 +465,7 @@ $rank_result = sql_fetch($rank_sql);
 		<td colspan="1">
 			<input type="text" name="mb_center" id="mb_center" value="<?= $mb['mb_center'] ?>" class="frm_input wide" />
 		</td>
-	</tr> -->
+	</tr>
 
 
 

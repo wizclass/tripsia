@@ -351,7 +351,7 @@ $result = sql_query($sql);
     }
     if ($i == 0)
         echo '<tr><td colspan="'.$colspan.'" class="empty_table">자료가 없거나 관리자에 의해 삭제되었습니다.</td></tr>';
-    ?>단
+    ?>
     <tfoot>
     <tr>
         <td>합계</td>
