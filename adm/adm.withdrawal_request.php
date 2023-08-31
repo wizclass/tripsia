@@ -236,7 +236,7 @@ function return_status_tx($val)
 <!-- <input type="button" class="btn_submit excel" id="btnExport"  data-name='hwajo_bonus_withdrawal' value="엑셀 다운로드" /> -->
 
 <div class="local_ov01 local_ov" style="display:flex; align-items:center">
-	<a href="./adm.withdrawal_request.php?<?= $qstr ?>" class="ov_listall"> 결과통계 <?= $total_count ?> 건 = <?= shift_auto($total_out,2)?><?=$curencys[0]?> / <?=shift_auto($total_amt,0)?><?=$curencys[1]?>  </a>
+	<a href="./adm.withdrawal_request.php?<?= $qstr ?>" class="ov_listall"> 결과통계 <?= $total_count ?> 건 = <?= shift_auto($total_out,2)?> <?=$curencys[0]?> / <?=shift_auto($total_amt,0)?><?=$curencys[1]?>  </a>
 	<?
 	// 현재 통계치
 	$stats_sql = "SELECT status, sum(out_amt)  as hap, count(out_amt) as cnt from {$g5['withdrawal']} as A WHERE 1=1 " . $sql_condition . " GROUP BY status";
@@ -273,9 +273,9 @@ $ord_rev = $ord_array[($ord_key + 1) % 2]; // 내림차순→오름차순, 오�
 		
 			<thead>
 				<!-- <th style="width:3%;">선택</th> -->
-				<th style="width:4%;"><a href="?ord=<?php echo $ord_rev; ?>&ord_word=uid">No <?php echo $ord_arrow[$ord_key]; ?></a></th>
+				<th style="width:3%;"><a href="?ord=<?php echo $ord_rev; ?>&ord_word=uid">No <?php echo $ord_arrow[$ord_key]; ?></a></th>
 				<th style="width:7%;">아이디 </th>
-				<th style="width:4%;">이름</th>
+				<th style="width:5%;">이름</th>
 				<!-- <th style="width:4%;">KYC인증 </th> -->
 				<th style="width:auto">출금정보</th>
 				<th style="width:5%;">출금전잔고<br>( <?=$curencys[0]?> )</th>

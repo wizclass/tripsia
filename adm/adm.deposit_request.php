@@ -234,7 +234,7 @@ $result = sql_query($sql);
 
 
 <div class="local_ov01 local_ov" style="display: flex; align-items: center">
-	<a href="./adm.deposit_request.php?<?=$qstr?>" class="ov_listall"> 결과통계 <?=$total_count?> 건 = <?=shift_auto($total_hap,$curencys[0])?></a> 
+	<a href="./adm.deposit_request.php?<?=$qstr?>" class="ov_listall"> 결과통계 <?=$total_count?> 건 = <?=shift_auto($total_hap,$curencys[0])?> <?=$curencys[0]?></a> 
 	<?
 		// 현재 통계치
 		$stats_sql = "SELECT status, sum(in_amt) as hap, count(in_amt) as cnt from {$g5['deposit']} as A WHERE 1=1 ".$sql_condition. " GROUP BY status";
@@ -256,6 +256,9 @@ $result = sql_query($sql);
         <strong>- 요청확인중 :</strong> 기본값 | <strong>승인 :</strong> 입금금액 포인트 반영 | <strong>대기 :</strong> 확인처리중 | <strong>불가 :</strong> 입금자, 입금액 불일치 - 입금액변경하여 처리가능 | <strong>취소 :</strong> 미승인처리<br>
         <!-- <strong>- 후원레그2 추가 : </strong> 기존회원중 후원레그2 수동 추가 (신규입금자는 입금승인시 자동처리) -->
 	</p>
+    <p>
+        <strong>- 입금요청금액 합계 :</strong> 관리자 지급/차감 제외하고 계산
+    </p>
 </div>
 
 <div class="tbl_head01 tbl_wrap">
