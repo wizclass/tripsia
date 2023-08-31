@@ -76,6 +76,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
         }
 
         $unit = "usdt";
+        $shop_unit = "usdp";
 
         $member_for_paying_result = sql_query($member_for_paying_sql);
 
@@ -195,7 +196,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             $clean_live_benefit = clean_number_format($live_benefit);
             $clean_shop_benefit = clean_number_format($shop_benefit);
  
-            $rec = "Booster bonus by step {$recommended_cnt} :: {$clean_live_benefit} {$unit}, Shop bonus : {$clean_shop_benefit} {$unit} {$over_benefit_log}";
+            $rec = "Booster bonus by step {$recommended_cnt} :: {$clean_live_benefit} {$unit}, Shop bonus : {$clean_shop_benefit} {$shop_unit} {$over_benefit_log}";
             $rec_adm = "{$rec} (expected : {$origin_benefit} {$unit})";
 
             $log_values_sql .= "('{$code}','{$bonus_day}','{$mb_id}',{$row['mb_no']},{$live_benefit},{$row['mb_level']},{$row['grade']},

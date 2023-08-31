@@ -56,6 +56,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 if(!$get_today){
 
 	$unit = "usdt";
+	$shop_unit = "usdp";
 
 	$member_start_sql = "update g5_member set ";
 	$member_balance_column_sql = "";
@@ -112,14 +113,14 @@ if(!$get_today){
 		$_benefit = clean_coin_format($benefit * $live_bonus_rate,2);
 		$_clean_number_benefit  = clean_number_format($_benefit);
 
-		$rec = "Daily bonus {$order_list_row['pv']}% : {$_clean_number_benefit} {$unit}, Shop Bonus : {$clean_shop_benefit} {$unit} {$over_benefit_log}";
+		$rec = "Daily bonus {$order_list_row['pv']}% : {$_clean_number_benefit} {$unit}, Shop Bonus : {$clean_shop_benefit} {$shop_unit} {$over_benefit_log}";
 		$benefit_log = "{$clean_number_goods_price}(상품가격) * ( {$order_list_row['pv']}% [상품지급률] ) ){$over_benefit_log}";
 		
 		$total_paid_list[$order_list_row['mb_id']]['log'] .= "<br><span>{$benefit_log} = </span><span class='blue'>{$clean_number_benefit}</span>";
 		$total_paid_list[$order_list_row['mb_id']]['sub_log'] = "<span>현재총수당 : {$clean_number_mb_balance}, 수당한계점 : {$clean_number_mb_index} </span>";
 	
 		$log_values_sql .= "('{$code}','{$bonus_day}','{$order_list_row['mb_id']}',{$order_list_row['mb_no']},{$_benefit},{$order_list_row['mb_level']},{$order_list_row['grade']},
-							'{$order_list_row['mb_name']}','{$rec}','{$benefit_log}={$_clean_number_benefit} {$unit}, {$clean_shop_benefit} {$unit}(expected : {$clean_number_benefit} {$unit})',{$mb_balance},{$order_list_row['mb_deposit_point']},now()),";
+							'{$order_list_row['mb_name']}','{$rec}','{$benefit_log}={$_clean_number_benefit} {$unit}, {$clean_shop_benefit} {$shop_unit}(expected : {$clean_number_benefit} {$unit})',{$mb_balance},{$order_list_row['mb_deposit_point']},now()),";
 	
 	}
 	
