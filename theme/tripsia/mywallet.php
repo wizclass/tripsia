@@ -14,7 +14,11 @@ if ($nw['nw_with'] == 'N') {
 $coin = get_coins_price();
 // print_R($coin);
 
-$withdrawal_price = $coin['usdt_krw'];
+$withdrawal_price = shift_coin($coin['usdt_krw'],KRW_NUMBER_POINT);
+$withdrawal_price_sell = shift_coin($default['de_token_sell_price'],KRW_NUMBER_POINT);
+$shift_auto_withdrawal_price = shift_auto($coin['usdt_krw'], 'krw');
+$shift_auto_withdrawal_price_sell = shift_auto($default['de_token_sell_price'],'krw');
+
 $coin_eth_usdt = $coin['eth_usdt'];
 $coin_usdt_etc = $coin['usdt_etc'];
 
@@ -398,7 +402,6 @@ function curency_txt($value, $kind = 'deposit')
       </div>
     </div>
 
-
     <!-- 업비트 시세 -->
     <section id='upbit_curency' class='upbit_curency'>
       <!-- <h3 class="wallet_title" style="margin:30px 0 0;display:flex;line-height:44px;">코인시세 By -->
@@ -408,14 +411,13 @@ function curency_txt($value, $kind = 'deposit')
         </div> -->
       <!-- </h3> -->
       <div class="checkbox-group">
-        <div class='checkbox-tile'>1 USDT = <span id='curency_usdt_eth'><?= shift_auto($coin['usdt_krw'], 'krw') ?></span> <?= $curencys[1] ?> </div>
+        <div class='checkbox-tile'>1 USDT = <span id='curency_usdt_eth'><?= $shift_auto_withdrawal_price ?></span> <?= $curencys[1] ?> </div>
       </div>
     </section>
 
-
-
     <!-- 입금 -->
     <section id='deposit' class='loadable'>
+
       <h3 class="wallet_title">입금(구매)계좌 선택</h3>
 
       <section id="account_select" class="account_select">
@@ -778,6 +780,7 @@ function curency_txt($value, $kind = 'deposit')
   function switch_func(n) {
     $('.loadable').removeClass('active');
     $('#' + n).toggleClass('active');
+    $('#curency_usdt_eth').text(n == "deposit" ? '<?=$shift_auto_withdrawal_price?>' : '<?=$shift_auto_withdrawal_price_sell?>');
   }
 
   function switch_func_paging(n) {
@@ -937,11 +940,11 @@ function curency_txt($value, $kind = 'deposit')
       
       if (curency_tmp == '원' && curency_tmp != usdt_curency) {
         shift_coin_value = 0;
-        swap_coin_price = (real_withdraw_val * <?= $coin['usdt_krw'] ?>);
-        swap_fee_val = (real_fee_val * <?= $coin['usdt_krw'] ?>);
+        swap_coin_price = (real_withdraw_val * <?= $withdrawal_price_sell ?>);
+        swap_fee_val = (real_fee_val * <?= $withdrawal_price_sell ?>);
       }
       
-      swap_val = Number(input_value*<?= $coin['usdt_krw'] ?>).toFixed(shift_coin_value)
+      swap_val = Number(input_value*<?= $withdrawal_price_sell ?>).toFixed(shift_coin_value)
       fixed_amt = Number(swap_coin_price).toFixed(shift_coin_value);
       fixed_fee = Number(swap_fee_val).toFixed(shift_coin_value);
 
@@ -1208,7 +1211,8 @@ function curency_txt($value, $kind = 'deposit')
           fixed_amt: fixed_amt,
           bank_name: withdrawal_bank_name,
           bank_account: withdrawal_bank_account,
-          account_name: withdrawal_account_name
+          account_name: withdrawal_account_name,
+          rate:<?=$withdrawal_price_sell?>
 
         },
         success: function(res) {
@@ -1338,7 +1342,7 @@ function curency_txt($value, $kind = 'deposit')
       let swap_coin_price = deposit_amount * <?= $withdrawal_price ?>;
 
       if(symbol == '원') {
-        swap_coin_price = deposit_amount/<?=shift_coin($coin['usdt_krw'],KRW_NUMBER_POINT)?>;
+        swap_coin_price = deposit_amount/<?=$withdrawal_price?>;
         fixed_amt = Number(swap_coin_price).toFixed(2);
         $('.in_coin').css('display', 'block');
         $('#active_in').text(`${number_with_commas(fixed_amt)} USDT`);
@@ -1350,7 +1354,7 @@ function curency_txt($value, $kind = 'deposit')
         } else if (symbol == etc_curency) {
           swap_coin_price = deposit_amount * <?= $coin['etc_krw'] ?>;
         } else if (symbol == usdt_curency) {
-          swap_coin_price = deposit_amount * <?= $coin['usdt_krw'] ?>;
+          swap_coin_price = deposit_amount * <?= $withdrawal_price ?>;
         } 
 
         fixed_amt = Number(swap_coin_price).toFixed(0);

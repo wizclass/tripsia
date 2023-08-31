@@ -266,8 +266,8 @@ if(!sql_query(" select mb_id from {$g5['g5_order_delete_table']} limit 1 ", fals
 
 <div class="sch_last">
     <strong>주문일자</strong>
-    <input type="text" id="fr_date"  name="fr_date" value="<?php echo $fr_date; ?>" class="frm_input" size="10" maxlength="10"> ~
-    <input type="text" id="to_date"  name="to_date" value="<?php echo $to_date; ?>" class="frm_input" size="10" maxlength="10">
+    <input type="date" id="fr_date"  name="fr_date" value="<?php echo $fr_date; ?>" class="frm_input" size="10" maxlength="10"> ~
+    <input type="date" id="to_date"  name="to_date" value="<?php echo $to_date; ?>" class="frm_input" size="10" maxlength="10">
     <button type="button" onclick="javascript:set_date('오늘');">오늘</button>
     <button type="button" onclick="javascript:set_date('어제');">어제</button>
     <button type="button" onclick="javascript:set_date('이번주');">이번주</button>

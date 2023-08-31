@@ -285,7 +285,7 @@ $ord_rev = $ord_array[($ord_key + 1) % 2]; // 내림차순→오름차순, 오�
 				<th style="width:5%;">출금수수료</th>
 
 				<th style="width:7%;">출금액</th>
-				<th style="width:5%;">출금시세<br>( <?=$curencys[0]?> )</th>
+				<th style="width:5%;">출금시세<br>( <?=$curencys[1]?> )</th>
 
 				<!-- <th style="width:5%;">적용코인시세</th> -->
 

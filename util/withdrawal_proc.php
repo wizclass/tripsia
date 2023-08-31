@@ -42,7 +42,7 @@ $coin = get_coins_price();
 	} 
 */
 
-$market_price = $coin['usdt_krw'];
+$market_price = $_POST['rate'];
 
 
 

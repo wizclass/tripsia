@@ -38,7 +38,7 @@ if (G5_HTTPS_DOMAIN) {
 // 쇼핑몰 설정값 배열변수
 $default = sql_fetch(" select * from {$g5['g5_shop_default_table']} ");
 $exchange_rate = $default['de_token_price'] ? $default['de_token_price'] : 1;
-$_token['symbol'] = "USDT";
+$_token['symbol'] = "USDP";
 if($default['de_coin_auto']){
     
     function _get_coins_price(){

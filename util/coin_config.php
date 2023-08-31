@@ -57,7 +57,7 @@ define('WEB3_ENDPOINT','https://'.NETWORK.'.infura.io/v3/'.PROJECT_ID);
 $token_arr = array(
   'vct'=>array(
     'addr'=>VCT_CONTRACT,
-    'symbol'=>'USDT',
+    'symbol'=>'USDP',
     'coin_img'=>'/img/victor/vct_coin.png',
     'coin_symbol_img'=>'/img/victor/token_symbol_circle.png',
     'decimal'=>'8',

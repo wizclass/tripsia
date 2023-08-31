@@ -18,3 +18,4 @@ SIRsoft000/
 data/*
 config.php
 wizclass.php
+./m3cron/dbconfig.php
