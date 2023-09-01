@@ -157,7 +157,8 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 
                 $booster_benefit = $value['mb_my_sales'] * ($bonus_benefit_rate * 0.01);
                 $add_benefit += $booster_benefit;
-                echo "<span>{$value['mb_id']} ( {$depth} 대 ) => {$value['mb_my_sales']} (DAILY 수당) * ( {$bonus_benefit_rate} (보너스 비율) * 0.01 )) = </span><span class='blue'>{$booster_benefit}</span><br>";
+                $clean_mb_my_sales = clean_coin_format($value['mb_my_sales']);
+                echo "<span>{$value['mb_id']} ( {$depth} 대 ) => {$clean_mb_my_sales} (DAILY 수당) * ( {$bonus_benefit_rate} (보너스 비율) * 0.01 )) = </span><span class='blue'>{$booster_benefit}</span><br>";
             }
 
             $origin_benefit = $add_benefit;

@@ -225,11 +225,11 @@ function select_change(f){
         <div class="selectbox inline">
             <label for='select_rlevel'>패키지 CLASS 선택 : </label>
             <select id='select_rlevel' onchange="select_change(this);">
-                <option value='p1' <?=onselect('p1')?> >p1</option>
-                <option value='p2' <?=onselect('p2')?> >p2</option>
-                <option value='p3' <?=onselect('p3')?> >p3</option>
-                <option value='p4' <?=onselect('p4')?> >p4</option>
-                <option value='p5' <?=onselect('p5')?> >p5</option>
+                <option value='p1' <?=onselect('p1')?> >제주도</option>
+                <option value='p2' <?=onselect('p2')?> >동남아</option>
+                <option value='p3' <?=onselect('p3')?> >유럽</option>
+                <option value='p4' <?=onselect('p4')?> >아프리카</option>
+                <option value='p5' <?=onselect('p5')?> >알레스카(크루즈)</option>
                 <!-- <option value='p6' <?=onselect('p6')?> >p6</option>
                 <option value='p7' <?=onselect('p7')?> >p7</option> -->
             </select>
