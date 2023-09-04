@@ -17,6 +17,7 @@ if($debug ==1){
   $coin = '원';
   $d_price = 300000;
   $mb_name = '테스터1';
+  $calc_coin = 300000;
 }else{
   $mb_id = $_POST['mb_id'];
   $txhash = $_POST['hash'];
@@ -31,11 +32,23 @@ $deposit_array = array_bank_account(1);
 $deposit_info = $deposit_array[$txhash];
 $deposit_infomation = $deposit_info['account_name'].' : '.$deposit_info['bank_name']." ".$deposit_info['bank_account']." ".$deposit_info['bank_account_name'];
 
+// 입금설정 
+$wallet_config = wallet_config('deposit');
+$deposit_day_limit = $wallet_config['day_limit'];
+
+
+if($deposit_day_limit == 0){
+  $limit_cnt = 100;
+}else{
+  $limit_cnt = $deposit_day_limit;
+}
+
+
 /*기존건 확인*/
 $pre_result = sql_fetch("SELECT count(*) as cnt from wallet_deposit_request 
 WHERE mb_id ='{$mb_id}' AND create_d = '{$now_date}' AND in_amt = {$d_price} ");
 
-if($pre_result['cnt'] < 1){
+if($pre_result['cnt'] < $limit_cnt){
 
   $get_coins_price = get_coins_price();
 
@@ -84,7 +97,7 @@ if($pre_result['cnt'] < 1){
   if($result){
     echo json_encode(array("response"=>"OK", "data"=>'complete'));
   }else{
-    echo json_encode(array("response"=>"FAIL", "data"=>"<p>ERROR<br>Please try later</p>"));
+    echo json_encode(array("response"=>"FAIL", "data"=>"처리되지 않았습니다.<br> 다시시도해주시기 바랍니다."));
   }
 }else{
   echo json_encode(array("response"=>"FAIL", "data"=>"이미 해당 요청이 처리진행중입니다."),JSON_UNESCAPED_UNICODE);
