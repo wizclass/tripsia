@@ -52,6 +52,12 @@ if ($withdrwal_max_limit != 0 && ($total_withraw * $withdrwal_max_limit * 0.01) 
   $withdrwal_total = $total_withraw * ($withdrwal_max_limit * 0.01);
 }
 
+// 출금 정보 수정 불가 추가 
+if($member['bank_name'] != '' && $member['bank_account'] != ''){
+  $bank_withrawal_info = true;
+}else{
+  $bank_withrawal_info = false;
+}
 
 // P2P 입금계좌
 $deposit_array = array_bank_account(1,'use');
@@ -642,14 +648,14 @@ function curency_txt($value, $kind = 'deposit')
 
           <div class='col-12'><label class="sub_title">- 출금정보 (최초 1회입력)</label></div>
           <div class='col-6'>
-            <input type="text" id="withdrawal_bank_name" class="b_ghostwhite " placeholder="은행명" value="<?= $member['bank_name'] ?>">
+            <input type="text" id="withdrawal_bank_name" class="b_ghostwhite " placeholder="은행명" value="<?= $member['bank_name'] ?>" <?if($bank_withrawal_info){echo " readonly ";}?>>
           </div>
           <div class='col-6'>
-            <input type="text" id="withdrawal_account_name" class="b_ghostwhite " placeholder="예금주" value="<?= $member['account_name'] ?>">
+            <input type="text" id="withdrawal_account_name" class="b_ghostwhite " placeholder="예금주" value="<?= $member['account_name'] ?>" <?if($bank_withrawal_info){echo " readonly ";}?>>
           </div>
           <div class='col-12'>
             <!-- <input type="text" id="withdrawal_bank_account" class="b_ghostwhite " placeholder="출금 계좌번호를 입력해주세요" value="<?= Decrypt($member['eth_my_wallet'], $member['mb_id'], 'x'); ?>"> -->
-            <input type="text" id="withdrawal_bank_account" class="b_ghostwhite " placeholder="출금 계좌번호를 입력해주세요" value="<?= $member['bank_account'] ?>">
+            <input type="text" id="withdrawal_bank_account" class="b_ghostwhite " placeholder="출금 계좌번호를 입력해주세요" value="<?= $member['bank_account'] ?>" <?if($bank_withrawal_info){echo " readonly ";}?>>
           </div>
         </div>
 

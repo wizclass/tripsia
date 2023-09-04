@@ -160,14 +160,14 @@
 
 						 
 					</ul>
-					<!-- <?php if($member['bank_name'] && $member['bank_account'] && $member['account_name']){?>
+					<?php if($member['bank_name'] && $member['bank_account'] && $member['account_name']){?>
 					<ul class='row person_info'>
 						<li class='col-12'>
 							<label>출금정보</label>
 							<p><?=$member['bank_name']?> : <?=$member['bank_account']?> (<?=$member['account_name']?>)</p>	
 						</li>
 					</ul>
-					<?php } ?> -->
+					<?php } ?>
 				</div>
 				<div class='col-sm-12 col-12 profile-box security'>
 					<h3 class='title b_line'>
