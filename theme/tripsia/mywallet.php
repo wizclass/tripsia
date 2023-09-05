@@ -1144,14 +1144,14 @@ function curency_txt($value, $kind = 'deposit')
       var withdrawal_bank_account = $('#withdrawal_bank_account').val();
 
       // 모바일 등록 여부 확인
-      // if(mb_hp == '' || mb_hp.length < 10){
-      //   dialogModal('정보수정', '<strong> 안전한 출금을 위해 인증가능한 모바일 번호를 등록해주세요.</strong>', 'warning');
+      if(mb_hp == '' || mb_hp.length < 10){
+        dialogModal('정보수정', '<strong> 안전한 출금을 위해 인증가능한 모바일 번호를 등록해주세요.</strong>', 'warning');
 
-      //   $('.closed').on('click',function(){
-      //     location.href='/page.php?id=profile';
-      //   })
-      //   return false;
-      // }
+        $('.closed').on('click',function(){
+          location.href='/page.php?id=profile';
+        })
+        return false;
+      }
 
       //KYC 인증 
       /* var out_count = Number("<?= $auth_cnt ?>");
@@ -1201,7 +1201,7 @@ function curency_txt($value, $kind = 'deposit')
         return false;
       }
 
-      // process_pin_mobile().then(function (){
+    process_pin_mobile().then(function (){
 
       $.ajax({
         type: "POST",
@@ -1234,7 +1234,7 @@ function curency_txt($value, $kind = 'deposit')
         }
       });
 
-      // });
+    });
 
       /* if (!mb_block) {
       } else {
@@ -1243,7 +1243,7 @@ function curency_txt($value, $kind = 'deposit')
     });
 
 
-    /* function process_pin_mobile(){
+    function process_pin_mobile(){
 
       return new Promise(
         function(resolve,reject){
@@ -1300,7 +1300,7 @@ function curency_txt($value, $kind = 'deposit')
           alert('잠시 후 다시 시도해주세요.');
         }
       });
-    } */
+    } 
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

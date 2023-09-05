@@ -1308,7 +1308,7 @@ include_once('_rewrite_config_form.php');
         <tr class="icode_old_version">
             <th scope="row">충전 잔액<br>(구버전)</th>
             <td>
-                <?php echo number_format($userinfo['coin']); ?> 원.
+                <?php echo number_format($userinfo['coin']); ?> 원
                 <a href="http://www.icodekorea.com/smsbiz/credit_card_amt.php?icode_id=<?php echo get_text($config['cf_icode_id']); ?>&amp;icode_passwd=<?php echo get_text($config['cf_icode_pw']); ?>" target="_blank" class="btn_frmline">충전하기</a>
             </td>
         </tr>

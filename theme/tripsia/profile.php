@@ -136,9 +136,9 @@
 							<label>모바일</label>  
 							<div class='row'>
 								<div class='col-8'><p><?=format_phone($member['mb_hp'])?></p></div>
-								<!-- <?if($member['mb_hp'] == '' || $member['mb_certify'] != 1){?>
+								<?if($member['mb_hp'] == '' || $member['mb_certify'] != 1){?>
 									<div class='col-4 text-right'><input type="button" value="수정/변경" class="btn inline num_pop_open pop_open" ></div>
-								<?}?> -->
+								<?}?>
 							</div>
 						</li>
 					
@@ -726,7 +726,7 @@ $(function() {
 			<label for="" >새로운 전화번호 (ex: 01011112222)</label>
 			<div class="num_pop_div clear_fix">
 				<!-- <input type="text" id="new_nation_num" value="<?=$member['nation_number']?>"  maxlength="3" placeholder="국가번호" readonly> -->
-				<input type="text" id="new_hp_num" value="" style="width:100%;margin-left:0;" placeholder="전화번호(숫자만)" >
+				<input type="text" id="new_hp_num" value="" style="width:100%;margin-left:0;color: black;" placeholder="전화번호(숫자만)" >
 			</div>
 
 
