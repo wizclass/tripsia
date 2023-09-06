@@ -13,9 +13,9 @@ if($_REQUEST['type'] == 'name'){
 }
 
 if($mb_no < 2){
-	$depth_limit = 3;
+	$depth_limit = 10;
 }else{
-	$depth_limit = 2;
+	$depth_limit = 10;
 }
 
 $result  = return_down_manager($mb_no,$depth_limit);

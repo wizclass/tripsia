@@ -76,7 +76,7 @@ if ($now_id){
 	$go_id = $tree_id;
 }
 
-if(!$_GET['mb_org_num']) {$mb_org_num = 4;}else{$mb_org_num = $_GET['mb_org_num'];}
+if(!$_GET['mb_org_num']) {$mb_org_num = 10;}else{$mb_org_num = $_GET['mb_org_num'];}
 $max_org_num = 10;
 
 $sql = "select * from g5_member_bclass_chk where mb_id='".$tree_id."' and  cc_date='".date("Y-m-d",time())."' order by cc_no desc";
