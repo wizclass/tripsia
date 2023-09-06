@@ -36,7 +36,11 @@ var levelMap = {
 	3 : 'lvl-four dl_4depth',
 	4 : 'lvl-five dl_5depth',
 	5 : 'lvl-six dl_6depth',
-	9 : 'lvl-ten dl_10depth'
+	6 : 'lvl-six dl_7depth',
+	7 : 'lvl-six dl_8depth',
+	8 : 'lvl-six dl_9depth',
+	9 : 'lvl-ten dl_10depth',
+	10 : 'lvl-ten dl_11depth'
 };
 
 
@@ -47,7 +51,11 @@ var depthMap = {
 		3 : 'dl_4depth',
 		4 : 'dl_5depth',
 		5 : 'dl_6depth',
-		6 : 'dl_7depth'
+		6 : 'dl_7depth',
+		7 : 'dl_8depth',
+		8 : 'dl_9depth',
+		9 : 'dl_10depth',
+		10 : 'dl_11depth'
 	};
 
 var gradeMap = {
@@ -58,6 +66,10 @@ var gradeMap = {
 		4 : 'gr_4',
 		5 : 'gr_5',
 		6 : 'gr_6',
+		7 : 'gr_7',
+		8 : 'gr_8',
+		9 : 'gr_9',
+		10 : 'gr_10',
 	};
 
 	var $selected;
