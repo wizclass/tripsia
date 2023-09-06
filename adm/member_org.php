@@ -739,7 +739,7 @@ function go_member(go_id){
 
 		data2 = "<table style='width:100%'>";
 		data2 += "			<tr>";
-		data2 += "				<td bgcolor='#f9f9f9' height='30' style='padding-left:10px'><b>상위 회원</b></td>";
+		data2 += "				<td bgcolor='#f9f9f9' height='20' style='padding-left:10px'><b>상위 회원</b></td>";
 		data2 += "			</tr>";
 		for(i=(temp.length-1);i>=0;i--){
 			data2 += temp[i];

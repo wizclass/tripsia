@@ -8,7 +8,7 @@ function pv($value){
 	return number_format($value/$pv_unit);
 }
 
-
+$tree_id = $member['mb_id'];
 
 $max_num    = 800;
 $max_up_num = 10; //5단계만 보이길 원하실 경우 4로 하시면 됩니다.
@@ -853,9 +853,9 @@ function get_brecommend_up($m_id)
 
 function get_recommend2_up($m_id,$admin_id) 
 { 
-	global $g5,$max_up_num,$ru_num, $gubun;
+	global $g5,$max_up_num,$ru_num, $gubun, $tree_id;
 
-	if (!$admin_id) $admin_id= $tree_id;
+	if (!$admin_id) $admin_id = $tree_id;
 
 	$class_name     = "g5_member_class";
 	$recommend_name = "mb_recommend";
@@ -864,15 +864,14 @@ function get_recommend2_up($m_id,$admin_id)
 
 	}else{
 		$ru_num++;
-		$sql  = " select ".$recommend_name.",(select mb_name from g5_member where mb_id=m.".$recommend_name.") as recomm_name from {$g5['member_table']} as m where mb_id='{$m_id}' and mb_leave_date = ''";
-
-		// print_r($sql);
+		$sql  = " select ".$recommend_name.",(select mb_name from g5_member where mb_id=m.".$recommend_name.") as recomm_name from {$g5['member_table']} as m where mb_id='{$m_id}' and mb_leave_date = '' ;";
+		
 		$row  = sql_fetch($sql);
 
 		if ($row['mb_recommend']){
 			echo '
 					<tr>
-						<td bgcolor="#f9f9f9"  style="padding:10px 0px 10px 10px">
+						<td bgcolor="#f9f9f9"  style="padding:5px">
 						<div style="cursor:pointer" onclick="go_member(\''.$row['mb_recommend'].'\')"><span class=searchid>'.$row['mb_recommend'].'</span>';
 			if($row['recomm_name'] != ''){
 				echo '<span class=search_nick>('.$row['recomm_name'].')</span>';

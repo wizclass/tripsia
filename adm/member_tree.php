@@ -22,6 +22,9 @@ if($member['mb_id'] == 'admin'){
 	$tree_id = $member['mb_id'];
 }
 
+if (!$fr_date) $fr_date = Date("Y-m-d", time()-60*60*24*365);
+if (!$to_date) $to_date = Date("Y-m-d", time());
+
 
 if ($_GET['go']=="Y"){
 	goto_url("member_tree.php#org_start");
@@ -73,8 +76,8 @@ if ($now_id){
 	$go_id = $tree_id;
 }
 
-$max_org_num = 4;
-$mb_org_num = 4;
+if(!$_GET['mb_org_num']) {$mb_org_num = 4;}else{$mb_org_num = $_GET['mb_org_num'];}
+$max_org_num = 10;
 
 $sql = "select * from g5_member_bclass_chk where mb_id='".$tree_id."' and  cc_date='".date("Y-m-d",time())."' order by cc_no desc";
 $row = sql_fetch($sql);
@@ -147,8 +150,9 @@ else
         yearSuffix: ""
     };
 	$.datepicker.setDefaults($.datepicker.regional["ko"]);
-
+	$("#fr_date,#to_date").datepicker({ changeMonth: true, changeYear: true, dateFormat: "yy-mm-dd", showButtonPanel: true, yearRange: "c-99:c+99", maxDate: "+0d" });
 </script>
+
 <link href="<?=G5_ADMIN_URL?>/css/scss/member_tree.css" rel="stylesheet">
 <style>
 	
@@ -213,80 +217,60 @@ else
 	</div>
 </div>
 <div style="padding-top:10px;clear:both"></div>
-<div id="div_left" style="width:15%;float:left;min-height:670px;border:">
-<?
-if (!$fr_date) $fr_date = Date("Y-m-d", time()-60*60*24*365);
-if (!$to_date) $to_date = Date("Y-m-d", time());
-?>
-	<div style="margin-left:10px;padding:5px 5px 5px 5px;border:1px solid #d9d9d9;height:683px">
+
+<div class="flex_container">
+<div id="div_left" class="flex-item">
+
+	<div class="left_bar">
 		<form name="sForm2" id="sForm2" method="get" action="member_tree.php">
 		<input type="hidden" name="now_id" id="now_id" value="<?=$now_id?>">
-		<table>
-			<tr>
-				<td bgcolor="#f2f5f9" height="30" style="padding-left:10px">
-				<div style="float:left">
-				<b>표시인원</b>
-				</div>
-				<div style="float:right">
-				<input type="text" id="mb_org_num"  name="mb_org_num" value="<?=$max_org_num?>" class="frm_input" style="text-align:center" size="3" maxlength="3"> 단계 &nbsp;
-				</div>
-				</td>
-			</tr>
-			<tr>
-				<td bgcolor="#f2f5f9" height="20" style="padding:10px 10px 10px 10px" align=center>
-				<input type="radio" id="gubun" name="gubun" onclick="document.sForm2.submit();" value=""<?if ($gubun=="") echo " checked"?>> 추천인
-				<!-- <input type="radio" id="gubun" name="gubun" onclick="document.sForm2.submit();" value="B"<?if ($gubun=="B") echo " checked"?>> 바이너리레그 -->
-
-				</td>
-			</tr>
-			<tr>
-				<td bgcolor="#f2f5f9" height="30" style="padding-left:10px"><b>매출기간</b></td>
-			</tr>
-			<tr>
-				<td bgcolor="#f2f5f9" height="30" style="padding:10px 10px 10px 10px" align=center>
-				<input type="text" id="fr_date"  name="fr_date" value="<?php echo $fr_date; ?>" class="frm_input"  style="text-align:center;width:90px" maxlength="10"> ~
-				<input type="text" id="to_date"  name="to_date" value="<?php echo $to_date; ?>" class="frm_input" style="text-align:center;width:90px" maxlength="10">
-
-				</td>
-			</tr>
-
-			<tr>
-				<td bgcolor="#f2f5f9" height="30" align="center">
-				<input type="submit"  class="btn_submit" value="적 용">
-				</td>
-			</tr>
-		</table>
+		<div class="left_top">
+			<ol>
+				<p>표시인원</p>
+				<div class='grow2 right'><input type="text" id="mb_org_num"  name="mb_org_num" value="<?=$mb_org_num?>" class="frm_input" style="text-align:center" size="3" maxlength="3"> 단계 &nbsp;</div>
+			</ol>
+			<ol class="tbp10 buttonset">
+				<div class="grow1 flex just-center"><input type="radio" id="gubun1" name="gubun" onclick="document.sForm2.submit();" value=""<?if ($gubun=="") echo " checked"?>> <label for="gubun1">추천인 </label></div>
+				<div class="grow1 flex just-center"><input type="radio" id="gubun2" name="gubun" onclick="document.sForm2.submit();" value="B"<?if ($gubun=="B") echo " checked"?>> <label for="gubun2">후원인 </label></div>
+			</ol>
+			<hr>
+			<ol><p>매출기간</p></ol>
+			<ol class="just-center">
+				<input type="text" id="fr_date"  name="fr_date" value="<?php echo $fr_date; ?>" class="frm_input"  style="text-align:center;width:80px" maxlength="10"> ~
+				<input type="text" id="to_date"  name="to_date" value="<?php echo $to_date; ?>" class="frm_input" style="text-align:center;width:80px" maxlength="10">
+			</ol>
+			<hr>
+			<ol class="just-center"><input type="submit"  class="btn_submit " value="적 용"></ol>
+		</div>
 		</form>
+		
 		<div id="div_member"></div>
+
 		<form name="sForm" id="sForm" method="post" style="padding-top:10px" onsubmit="return false;">
 		<input type="hidden" name="gubun" value="<?=$gubun?>">
 		<input type="hidden" name="tree_id" value="<?=$tree_id?>">
-		<table>
-			<tr>
-				<td bgcolor="#f2f5f9" height="30" style="padding-left:10px"><b>회원검색</b></td>
-			</tr>
-			<tr>
-				<td bgcolor="#f2f5f9" height="30" style="padding:10px 10px 10px 10px">
-				
-				<select name="sfl" id="sfl">
-				    <option value="mb_id"<?php echo get_selected($_GET['sfl'], "mb_id"); ?>>회원아이디</option>
-					<option value="mb_name"<?php echo get_selected($_GET['sfl'], "mb_name"); ?>>이름</option>
-				</select>
-				<div style="padding-top:5px">
-				<label for="stx" class="sound_only">검색어<strong class="sound_only"> 필수</strong></label>
-				<input type="text" name="stx" value="<?php echo $stx ?>" id="stx"  class="required frm_input" style="width:100%;" onkeypress="event.keyCode==13?btn_search():''">
+		
+		<div class="left_top">
+			<ol>
+				<p>회원검색</p>
+				<div class="grow2 right">
+					<select name="sfl" id="sfl">
+						<option value="mb_id"<?php echo get_selected($_GET['sfl'], "mb_id"); ?>>회원아이디</option>
+						<option value="mb_name"<?php echo get_selected($_GET['sfl'], "mb_name"); ?>>이름</option>
+					</select>
 				</div>
-				</td>
-			</tr>
-			<tr>
-				<td bgcolor="#f2f5f9" height="30" align="center">
-				<input type="button" onclick="btn_search();" class="btn_submit" value="검 색">
-				</td>
-			</tr>
-		</table>
+			</ol>
+			<ol class="just-center">
+				<label for="stx" class="sound_only">검색어<strong class="sound_only"> 필수</strong></label>
+				<input type="text" name="stx" value="<?php echo $stx ?>" id="stx"  class="required frm_input" style="width:100%;padding-left:5px;" onkeypress="event.keyCode==13?btn_search():''">
+			</ol>
+			<hr>
+			<ol class="just-center"><input type="button" onclick="btn_search();" class="btn_submit" value="검 색"></ol>
+		</div>
+
 		</form>
 
-		<div id="div_result" style="margin-top:5px;overflow-y: auto;height:418px">
+		<div id="div_result" style="margin-top:5px;overflow-y: auto;">
 
 		</div>
 	</div>
@@ -298,48 +282,43 @@ if (!$to_date) $to_date = Date("Y-m-d", time());
 
 
 
-<?
+	<?
+	$sql       = "select c.c_id,c.c_class from g5_member m join ".$class_name." c on m.mb_id=c.mb_id where c.mb_id='{$tree_id}' and c.c_id='$go_id'";
+	$srow      = sql_fetch($sql);
 
 
-$sql       = "select c.c_id,c.c_class from g5_member m join ".$class_name." c on m.mb_id=c.mb_id where c.mb_id='{$tree_id}' and c.c_id='$go_id'";
-$srow      = sql_fetch($sql);
+	$my_depth  = strlen($srow['c_class']);
+	$max_depth = ($my_depth+($mb_org_num*2));
+
+	//업데이트유무 확인
+	$sql = "select * from ".$class_name."_chk where cc_date='".date("Y-m-d",time())."' order by cc_no desc";
+	// print_R($sql )
+	$mrow = sql_fetch($sql);
 
 
-$my_depth  = strlen($srow['c_class']);
-$max_depth = ($my_depth+($max_org_num*2));
+	$sql = "select c.c_id,c.c_class,(select mb_level from g5_member where mb_id=c.c_id) as mb_level,
+	(select grade from g5_member where mb_id=c.c_id) as grade
+	,(select mb_name from g5_member where mb_id=c.c_id) as c_name
+	,(select count(*) from g5_member where mb_recommend=c.c_id) as c_child
+	,(select mb_b_child from g5_member where mb_id=c.c_id) as b_child
+	,(select mb_id from g5_member where mb_brecommend=c.c_id and mb_brecommend_type='L' limit 1) as b_recomm
+	,(select mb_id from g5_member where mb_brecommend=c.c_id and mb_brecommend_type='R' limit 1) as b_recomm2
+	,(select count(mb_no) from g5_member where ".$recommend_name."=c.c_id and mb_leave_date = '') as m_child
+	,(SELECT mb_rate FROM g5_member WHERE mb_id = c.c_id) AS mb_rate
+	,(SELECT mb_save_point FROM g5_member WHERE mb_id = c.c_id) AS mb_pv
+	,(SELECT mb_habu_sum FROM g5_member WHERE mb_id = c.c_id) AS mb_habu_sum
+	,(SELECT recom_sales FROM g5_member WHERE mb_id = c.c_id) AS recom_sales
+	,(SELECT mb_child FROM g5_member WHERE mb_id=c.c_id) AS mb_children
+	,(SELECT mb_nick FROM g5_member WHERE mb_id=c.c_id) AS mb_nick
+	,(SELECT mb_center FROM g5_member WHERE mb_id=c.c_id) AS mb_center
+	from g5_member m join ".$class_name." c on m.mb_id=c.mb_id where c.mb_id='{$tree_id}' and c.c_class like '{$srow['c_class']}%' and length(c.c_class)<".$max_depth." order by c.c_class";
+	// print_R($sql);
+	$result = sql_query($sql);
+	?>
 
-
-?>
-<?
-		//업데이트유무 확인
-		$sql = "select * from ".$class_name."_chk where cc_date='".date("Y-m-d",time())."' order by cc_no desc";
-		// print_R($sql )
-		$mrow = sql_fetch($sql);
-		
-
-		$sql = "select c.c_id,c.c_class,(select mb_level from g5_member where mb_id=c.c_id) as mb_level,
-		(select grade from g5_member where mb_id=c.c_id) as grade
-		,(select mb_name from g5_member where mb_id=c.c_id) as c_name
-		,(select count(*) from g5_member where mb_recommend=c.c_id) as c_child
-		,(select mb_b_child from g5_member where mb_id=c.c_id) as b_child
-		,(select mb_id from g5_member where mb_brecommend=c.c_id and mb_brecommend_type='L' limit 1) as b_recomm
-		,(select mb_id from g5_member where mb_brecommend=c.c_id and mb_brecommend_type='R' limit 1) as b_recomm2
-		,(select count(mb_no) from g5_member where ".$recommend_name."=c.c_id and mb_leave_date = '') as m_child
-		,(SELECT mb_rate FROM g5_member WHERE mb_id = c.c_id) AS mb_rate
-		,(SELECT mb_save_point FROM g5_member WHERE mb_id = c.c_id) AS mb_pv
-		,(SELECT mb_habu_sum FROM g5_member WHERE mb_id = c.c_id) AS mb_habu_sum
-		,(SELECT recom_sales FROM g5_member WHERE mb_id = c.c_id) AS recom_sales
-		,(SELECT mb_child FROM g5_member WHERE mb_id=c.c_id) AS mb_children
-		,(SELECT mb_nick FROM g5_member WHERE mb_id=c.c_id) AS mb_nick
-		,(SELECT mb_center FROM g5_member WHERE mb_id=c.c_id) AS mb_center
-		from g5_member m join ".$class_name." c on m.mb_id=c.mb_id where c.mb_id='{$tree_id}' and c.c_class like '{$srow['c_class']}%' and length(c.c_class)<".$max_depth." order by c.c_class";
-		// print_R($sql);
-		$result = sql_query($sql);
-		?>
-
-<div id="div_right" style="width:85%;float:left;min-height:500px">
-		<div class="zTreeDemoBackground left" style="min-height:573px;margin:0px 10px 0px 10px;border:1px solid #d9d9d9;">
-			<ul id="treeDemo" class="ztree" style="padding:20px;"></ul>
+<div id="div_right" class="flex-item">
+		<div class="zTreeDemoBackground left">
+			<ul id="treeDemo" class="ztree" ></ul>
 		</div>
 		
 		<SCRIPT type="text/javascript">
@@ -513,6 +492,8 @@ $max_depth = ($my_depth+($max_org_num*2));
 		</SCRIPT>
 </div>
 
+</div>
+
 
 <script type="text/javascript">
 
@@ -570,6 +551,7 @@ function btn_search(){
 }
 function go_member(go_id){
 	$("#now_id").val(go_id);
+
 	$.get("ajax_get_up_member.php?gubun=<?=$gubun?>&go_id="+go_id, function (data) {
 
 		data = $.trim(data);
@@ -577,13 +559,13 @@ function go_member(go_id){
 
 		data2 = "<table style='width:100%'>";
 		data2 += "			<tr>";
-		data2 += "				<td bgcolor='#f9f9f9' height='30' style='padding-left:10px'><b>상위 회원</b></td>";
+		data2 += "				<td bgcolor='#f9f9f9' height='20' style='padding-left:10px'><b>상위 회원</b></td>";
 		data2 += "			</tr>";
 		for(i=(temp.length-1);i>=0;i--){
 			data2 += temp[i];
 		}
-		
 		data2 += "</table>";
+
 		$('#div_member').html(data2);
 
 		$.get("ajax_get_tree_load.php?gubun=<?=$gubun?>&fr_date=<?=$fr_date?>&to_date=<?=$to_date?>&go_id="+go_id, function (data) {
@@ -606,7 +588,7 @@ function btn_user(){
 $(function(){
 	$('.user_id').on('click',function(){
 		var target = $(this).data('id');
-		console.log(target);
+		console.log("go_member :: " + target);
 		go_member(target);
 
 	});

@@ -178,7 +178,7 @@ function  excute(){
 
     global $g5,$admin_condition,$pre_condition;
     global $bonus_day, $bonus_condition, $bonus_rate_array_cnt, $code, $bonus_rate,$bonus_limit,$total_order,$Khan_order,$grade_order,$cnt_arr,$cnt_arr2;
-    global $debug,$prev_m,$live_bonus_rate,$shop_bonus_rate;
+    global $debug,$prev_m,$live_bonus_rate,$shop_bonus_rate,$balanace_ignore;
 
     for ($i=$bonus_rate_array_cnt; $i>0; $i--) {   
         $cnt_sql = "SELECT count(*) as cnt From {$g5['member_table']} WHERE grade = {$i} ".$admin_condition.$pre_condition." ORDER BY mb_no" ;

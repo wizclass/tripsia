@@ -240,3 +240,43 @@ ul.ztree.zTreeDragUL {margin:0; padding:0; position:absolute; width:auto; height
 .grade_5{background:blue !important;}
 .grade_6{background:black !important;}
 .grade_9{background:black !important;}
+
+
+
+/*조직도 커스텀*/
+.flex_container{display:flex}
+.flex-item{display:flex;}
+
+#div_left{flex-shrink: 0;width:200px;}
+#div_right{flex-grow:1;}
+
+.left_bar{padding:5px 5px 5px 5px;border:1px solid #d9d9d9;}
+.left_bar .frm_input,.left_bar select{line-height:26px;height:26px;}
+
+.left_bar .left_top{padding:8px; background:#f2f5f9;display:flex;flex-direction:column;}
+.left_bar .left_top ol{display:flex;align-items: center;padding:5px 0;}
+.left_bar .left_top ol:last-child{border:none;}
+
+.left_bar .left_top ol p{text-align: left;font-weight:600;}
+.left_bar .left_top ol label{margin-left:5px;}
+.left_bar .left_top .buttonset{margin:0 10px;text-align:center}
+.left_bar  #div_member{margin-top:5px;}
+
+
+.zTreeDemoBackground{
+  width:100%;padding:15px;border:1px solid #d9d9d9;background:#fcfcfc;min-height:600px;
+}
+
+
+.grow1 {flex-grow:1}
+.grow2 {flex-grow:2}
+
+.center{text-align:center}
+.just-center{justify-content: center;}
+.right{text-align:right}
+
+.left_bar hr{width:100%;height:0;border:none;border-bottom:1px solid #ececec}
+
+.flex{display:flex}
+.tbp10{padding-top:10px !important;padding-bottom:10px !important;}
+.tbp20{padding-top:20px !important;padding-bottom:20px !important;}

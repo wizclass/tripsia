@@ -9,14 +9,24 @@ fr_date: 2021-02-24
 to_date: 2022-02-24
 go_id: test1 */
 
+/*슈퍼관리자인경우 최상위 관리자로 변경*/
+if($member['mb_id'] == 'admin'){
+	$tree_id = $config['cf_admin'];
+}else{
+	$tree_id = $member['mb_id'];
+}
+
 
 $go_id = $_GET['go_id'];
 
 if ($member['mb_org_num']){
 	$max_org_num = $member['mb_org_num'];
 }else{
-	$max_org_num = 5;
+	$max_org_num = 10;
 }
+
+$max_org_num = 10;
+
 
 if ($gubun=="B"){
 	$class_name     = "g5_member_bclass";
@@ -28,11 +38,13 @@ if ($gubun=="B"){
 
 //$mrow = sql_fetch("select * from g5_member where mb_id='{$go_id}'");
 
-$crow = sql_fetch("select c_class from $class_name where mb_id='{$member['mb_id']}' and c_id='{$go_id}'");
+$crow = sql_fetch("select c_class from {$class_name} where mb_id='{$tree_id}' and c_id='{$go_id}'");
+
 $mdepth = (strlen($crow['c_class'])/2);
 
 
-$sql       = "select c.c_id,c.c_class from g5_member m join ".$class_name." c on m.mb_id=c.mb_id where c.mb_id='{$member['mb_id']}' and c.c_id='$go_id'";
+$sql       = "select c.c_id,c.c_class from g5_member m join ".$class_name." c on m.mb_id=c.mb_id where c.mb_id='{$tree_id}' and c.c_id='{$go_id}'";
+
 $srow      = sql_fetch($sql);
 $my_depth  = strlen($srow['c_class']);
 $max_depth = ($my_depth+($max_org_num*2));
@@ -51,10 +63,13 @@ $sql = "select c.c_id,c.c_class,
 ,(SELECT mb_child FROM g5_member WHERE mb_id=c.c_id) AS mb_children
 ,(SELECT mb_nick FROM g5_member WHERE mb_id=c.c_id) AS mb_nick
 ,(SELECT mb_center FROM g5_member WHERE mb_id=c.c_id) AS mb_center
- from g5_member m join ".$class_name." c on m.mb_id=c.mb_id where c.mb_id='{$member['mb_id']}' and c.c_class like '{$crow['c_class']}%' and length(c.c_class)<".$max_depth." order by c.c_class";
+ from g5_member m join ".$class_name." c on m.mb_id=c.mb_id where c.mb_id='{$tree_id}' and c.c_class like '{$crow['c_class']}%' and length(c.c_class)<".$max_depth." order by c.c_class";
+
 $result = sql_query($sql);
 
 for ($i=0; $row=sql_fetch_array($result); $i++) {
+
+	
 
 	if (strlen($row['c_class'])==2){
 		$parent_id = 0;
@@ -95,10 +110,9 @@ for ($i=0; $row=sql_fetch_array($result); $i++) {
 	$data .= '{ id:"'.$row['c_class'].'", pId:"'.$parent_id.'", name:"'.$name_line.'", open:true, click:false},';
 }
 
-
 ?>
 
-		<div class="zTreeDemoBackground left" style="min-height:573px;margin:0px 10px 0px 10px;border:1px solid #d9d9d9;">
+		<div class="zTreeDemoBackground left" >
 			<ul id="treeDemo" class="ztree"></ul>
 		</div>
 
