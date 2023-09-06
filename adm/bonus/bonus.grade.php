@@ -259,8 +259,11 @@ function  excute(){
                 $benefit = ( ($grade_order*$star_rate) * (1/$member_count) );// 매출자 * 수당비율 * 1/n
                 $benefit = shift_auto($benefit,'$');
 
-                $live_benefit = $benefit*$live_bonus_rate;
-                $shop_benefit = $benefit*$shop_bonus_rate;
+                $live_benefit = $benefit;
+                $shop_benefit = 0;
+                
+                // $live_benefit = $benefit*$live_bonus_rate;
+                // $shop_benefit = $benefit*$shop_bonus_rate;
 
                 $benefit_tx = ' '.$grade_order.' * '.$star_rate.' * 1/'.$member_count.'*'.$live_bonus_rate.'='.$live_benefit; 
                 $benefit_limit = $live_benefit;
