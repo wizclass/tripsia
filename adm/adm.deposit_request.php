@@ -269,6 +269,7 @@ $result = sql_query($sql);
         <th scope="col" width='5%'>no</th>
         <th scope="col" width='7%'>아이디</th>
         <th scope="col" width='7%'>추천인</th>
+        <th scope="col" width='5%'>이름</th>
         <!-- <th scope="col" width='5%'>센터</th> -->
         <th scope="col" width='15%'>입금정보</th>
         <th scope="col" width='5%'>입금요청금액</th>
@@ -292,7 +293,7 @@ $result = sql_query($sql);
         $duplicate = $duplicate_result['cnt'];
         if($duplicate > 1){$row_dup = 'row_dup';}else{$row_dup = '';}
 
-        $member_sql = "SELECT A.mb_recommend,A.mb_sponsor,B.mb_brecommend,(SELECT mb_nick from g5_member WHERE mb_id = A.mb_center) as mb_center from g5_member A, g5_member B WHERE A.mb_id = '{$row['mb_id']}' AND B.mb_id = A.mb_recommend";
+        $member_sql = "SELECT A.mb_name,A.mb_recommend,A.mb_sponsor,B.mb_brecommend,(SELECT mb_nick from g5_member WHERE mb_id = A.mb_center) as mb_center from g5_member A, g5_member B WHERE A.mb_id = '{$row['mb_id']}' AND B.mb_id = A.mb_recommend";
         $member_result = sql_fetch($member_sql);
 
         $member_binary_sql = sql_fetch("SELECT A.mb_brecommend,B.mb_id FROM g5_member A  LEFT JOIN g5_member_binary B ON A.mb_id = B.mb_id WHERE A.mb_id ='{$row['mb_id']}' ");
@@ -307,6 +308,7 @@ $result = sql_query($sql);
         <td ><?php echo $row['uid'] ?></td>
         <td class='td_id'><a href='/adm/member_form.php?sst=&sod=&sfl=&stx=&page=&w=u&mb_id=<?=$row['mb_id']?>' target='_blank'><?=$row['mb_id'] ?></a></td>
         <td style='color:#666'><?=$member_result['mb_recommend']?></td>
+        <td style='color:#666'><?=$member_result['mb_name']?></td>
         <!-- <td style='color:#666'><?=$member_result['mb_center']?></td> -->
 
         <td style='color:#666'>
