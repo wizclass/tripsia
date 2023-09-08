@@ -4,7 +4,7 @@ $sub_menu = "600200";
 include_once('./_common.php');
 include_once('./bonus_inc.php');
 
-$debug = false;
+$debug = true;
 
 auth_check($auth[$sub_menu], 'r');
 
@@ -69,7 +69,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 
         <?php
 
-        $member_for_paying_sql = "select mb_id as id, mb_name, mb_no, mb_level, grade, (mb_balance + mb_shop_point) as mb_balance, mb_index,mb_balance_ignore, mb_deposit_point, (select count(*) from g5_member where mb_recommend = id) as cnt from g5_member where mb_save_point >= 0";
+        $member_for_paying_sql = "select mb_id as id, mb_name, mb_no, mb_level, grade, (mb_balance + mb_shop_point) as mb_balance, mb_index,mb_balance_ignore, mb_deposit_point, (select count(*) from g5_member where mb_recommend = id and mb_level > 0) as cnt from g5_member where mb_save_point >= 0 and mb_level > 0";
 
         if ($debug) {
             echo "<code>{$member_for_paying_sql}</code>";
@@ -252,7 +252,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
         {
             global $config, $g5, $mem_list;
 
-            $mb_result = sql_fetch("SELECT count(*) as cnt, mb_id,mb_name,mb_level,grade,mb_rate,mb_save_point,rank,recom_sales,mb_my_sales from g5_member WHERE mb_no = '{$mb_no}' ");
+            $mb_result = sql_fetch("SELECT count(*) as cnt, mb_id,mb_name,mb_level,grade,mb_rate,mb_save_point,rank,recom_sales,mb_my_sales from g5_member WHERE mb_no = '{$mb_no}'");
 
             $list = [];
             $list['mb_id'] = $mb_result['mb_id'];
@@ -284,24 +284,34 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 
             if ($cnt == 0 || ($cnt != 0 && $count < $cnt)) {
 
-                $recommend_tree_result = sql_query("SELECT mb_id,mb_name,mb_level,grade,mb_rate,mb_save_point,rank,recom_sales,mb_my_sales from g5_member WHERE mb_recommend = '{$mb_id}' ");
+                $limit_level = "and mb_level > 0";
+
+                // if($count == 1){
+                //     $limit_level = "";
+                // }
+
+                $recommend_tree_result = sql_query("SELECT mb_id,mb_name,mb_level,grade,mb_rate,mb_save_point,rank,recom_sales,mb_my_sales from g5_member WHERE mb_recommend = '{$mb_id}' {$limit_level}");
                 $recommend_tree_cnt = sql_num_rows($recommend_tree_result);
                 if ($recommend_tree_cnt > 0) {
                     ++$count;
 
                     while ($row = sql_fetch_array($recommend_tree_result)) {
-                        $list['mb_id'] = $row['mb_id'];
-                        $list['mb_name'] = $row['mb_name'];
-                        $list['mb_level'] = $row['mb_level'];
-                        $list['grade'] = $row['grade'];
-                        $list['mb_rate'] = $row['mb_rate'];
-                        $list['recom_sales'] = $row['recom_sales'];
-                        $list['mb_save_point'] = $row['mb_save_point'];
-                        $list['rank'] = $row['rank'];
-                        $list['mb_my_sales'] = $row['mb_my_sales'];
-                        $list['depth'] = $count;
-                        array_push($mem_list, $list);
+
+                        if($row['mb_level'] > 0){
+                            $list['mb_id'] = $row['mb_id'];
+                            $list['mb_name'] = $row['mb_name'];
+                            $list['mb_level'] = $row['mb_level'];
+                            $list['grade'] = $row['grade'];
+                            $list['mb_rate'] = $row['mb_rate'];
+                            $list['recom_sales'] = $row['recom_sales'];
+                            $list['mb_save_point'] = $row['mb_save_point'];
+                            $list['rank'] = $row['rank'];
+                            $list['mb_my_sales'] = $row['mb_my_sales'];
+                            $list['depth'] = $count;
+                            array_push($mem_list, $list);
+                        }
                         recommend_downtree($row['mb_id'], $count, $cnt);
+
                     }
                 }
             }
