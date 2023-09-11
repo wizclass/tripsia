@@ -8,7 +8,12 @@ function pv($value){
 	return number_format($value/$pv_unit);
 }
 
-$tree_id = $member['mb_id'];
+if($member['mb_id'] == 'admin'){
+	$tree_id = $config['cf_admin'];
+}else{
+	$tree_id = $member['mb_id'];
+}
+
 
 $max_num    = 800;
 $max_up_num = 10; //5단계만 보이길 원하실 경우 4로 하시면 됩니다.
@@ -134,7 +139,7 @@ function habu_sales_calc($gubun, $recom, $deep){
 function get_org_down($srow){
 	
 	
-	global $max_org_num, $org_num, $my_depth, $member, $fr_date, $to_date, $mdepth, $mrow, $gubun, $order_field, $order_split, $ngubun, $order_proc;
+	global $max_org_num, $org_num, $my_depth, $member, $fr_date, $to_date, $mdepth, $mrow, $gubun, $order_field, $order_split, $ngubun, $order_proc,$tree_id;
 
 	if ($gubun=="B"){
 		$class_name     = "g5_member_bclass";
@@ -200,7 +205,7 @@ function get_org_down($srow){
 			,(SELECT mb_child FROM g5_member WHERE mb_id=c.c_id) AS mb_children
 			FROM g5_member m
 			JOIN ".$class_name." c ON m.mb_id=c.mb_id
-			WHERE c.mb_id='{$member['mb_id']}' AND LENGTH(c.c_class)={$clen} AND c.c_class LIKE '".$srow['c_class']."%'
+			WHERE c.mb_id='{$tree_id}' AND LENGTH(c.c_class)={$clen} AND c.c_class LIKE '".$srow['c_class']."%'
 			ORDER BY c.c_class
 			LIMIT 50
 			";

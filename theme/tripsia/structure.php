@@ -79,8 +79,10 @@ var gradeMap = {
 	$(function() {
 		// 상세보기
 
-		$(document).on('click','.lvl' ,function(e) {
+		/* $(document).on('click','.lvl' ,function(e) {
+			
 			$(this).toggleClass('lvl-is-open');
+
 			$selected = $(this).next();
 			if($selected.css('max-height') != '0px' ){
 				$selected.css('max-height','0px');
@@ -88,6 +90,7 @@ var gradeMap = {
 				$selected.css('max-height', $selected.prop('scrollHeight') + 'px');
 			}
 			// console.log($(this).attr('mb_no'));
+
 			if($(this).hasClass('lvl-is-open')){
 				$.get( "/util/level_structure_upgraded.mem.php", {
 					mb_no: $(this).attr('mb_no')
@@ -105,7 +108,7 @@ var gradeMap = {
 					console.log( e );
 				});
 			}
-		});
+		}); */
 
 		 $(document).on('click','#lvl-userid' ,function(e) {
 
@@ -124,10 +127,10 @@ var gradeMap = {
 		});
 */
 
-		// $(document).on('click','._lvl > .lv' ,togglebar);
-		// $(document).on('click','._lvl > .toggle' ,togglebar);
+		/* $(document).on('click','._lvl > .lv' ,togglebar);
+		$(document).on('click','._lvl > .toggle' ,togglebar);
 
-		/* function togglebar() {
+		function togglebar() {
 			var con = $(this).parents('.lvl-container');
 			var level = con.attr('class').replace('lvl-container ','');
 
@@ -142,6 +145,7 @@ var gradeMap = {
 			}
 			event.stopPropagation();
 		} */
+
 
 
 		$(document).on('click','.go' ,function(e) {
@@ -389,9 +393,9 @@ var gradeMap = {
 
 			$('.accordion_wrap dt').click(function() {
 				
-				console.log($(this).data('depth'));
+				// console.log($(this).data('depth'));
+
 				var target_under_num = $(this).data('depth')+2;
-				// $(this).next().stop().slideToggle();
 				for(i=10; i >= target_under_num; i-- ){
 					$('.dl_'+i+'depth').stop().slideToggle();
 				}
@@ -486,9 +490,11 @@ var gradeMap = {
 					
 					var target_under_num = $(this).data('depth')+1;
 					console.log("depth ::" + target_under_num);
-					for(i=10; i >= target_under_num; i-- ){
-						$('.dl_'+i+'depth').stop().slideToggle();
+
+					for(i=12; i >= target_under_num; i-- ){
+						$('.dl_'+i+'depth').slideToggle();
 					}
+
 				});
 			},
 			

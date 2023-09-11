@@ -6,7 +6,12 @@ include_once('./inc.member.class.php');
 auth_check($auth[$sub_menu], 'r');
 
 
-$tree_id = $member['mb_id'];
+if($member['mb_id'] == 'admin'){
+	$tree_id = $config['cf_admin'];
+}else{
+	$tree_id = $member['mb_id'];
+}
+
 
 if ($gubun=="B"){
 	$class_name     = "g5_member_bclass";
