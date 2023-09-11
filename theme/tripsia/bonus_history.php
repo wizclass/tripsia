@@ -27,7 +27,7 @@
 
 $sql ="SELECT a.cate, a.day,COUNT(DAY) AS cnt, SUM(a.c_sum) AS d_sum FROM
 (
-SELECT allowance_name AS cate, DAY, round(SUM(benefit),0) AS c_sum  FROM soodang_pay WHERE day between '{$fr_date}' and '{$to_date}' AND mb_id = '{$member['mb_id']}' GROUP BY allowance_name,DAY
+SELECT allowance_name AS cate, DAY, SUM(benefit) AS c_sum  FROM soodang_pay WHERE day between '{$fr_date}' and '{$to_date}' AND mb_id = '{$member['mb_id']}' GROUP BY allowance_name,DAY
 ) a GROUP BY a.cate";
     $result = sql_query($sql);
 ?>
@@ -58,7 +58,9 @@ SELECT allowance_name AS cate, DAY, round(SUM(benefit),0) AS c_sum  FROM soodang
             <div class="no_data box_on">보너스 내역이 존재하지 않습니다</div>
             <?}?>
             <!-- 수당 -->
-            <? while($row = sql_fetch_array($result) ){?>
+            <? while($row = sql_fetch_array($result) ){
+                $row['cate'] = $row['cate'] == "booster" ? "matching" : $row['cate'];
+            ?>
             <div class="col-sm-12 col-12 content-box round" id="<?=$row['cate']?>">
 
                 <div class="box-header row">
@@ -68,14 +70,15 @@ SELECT allowance_name AS cate, DAY, round(SUM(benefit),0) AS c_sum  FROM soodang
                     </div>
 
                     <div class='col-5 text-right nopadding'>
-                        <span class='d_sum font_skyblue'> + <?=Number_format($row['d_sum'])?></span>
+                        <span class='d_sum font_skyblue'> + <?=shift_auto($row['d_sum'],$curencys[0])?></span>
                         <span class='btn inline caret'><i class="ri-arrow-down-s-line"></i></span>
                     </div>
                 </div>
 
                 <div class="box-body history_detail">
                     <?
-                        $sub_sql = "SELECT *,round(SUM(benefit),0) as total_benefit FROM soodang_pay WHERE day between '{$fr_date}' and '{$to_date}' AND mb_id = '{$member['mb_id']}' and allowance_name='{$row['cate']}' GROUP BY DAY";
+                        $row['cate'] = $row['cate'] == "matching" ? "booster" : $row['cate'];
+                        $sub_sql = "SELECT *,SUM(benefit) as total_benefit FROM soodang_pay WHERE day between '{$fr_date}' and '{$to_date}' AND mb_id = '{$member['mb_id']}' and allowance_name='{$row['cate']}' GROUP BY DAY";
                         $sub_result = sql_query($sub_sql);
                         while($row_ = sql_fetch_array($sub_result) ){?>
 
@@ -83,7 +86,7 @@ SELECT allowance_name AS cate, DAY, round(SUM(benefit),0) AS c_sum  FROM soodang
                             <dt><?=$row_['day']?></dt>
                             <dd>
                                 <span> <i class="ri-add-line"></i></span>
-                                <span><?=Number_format($row_['total_benefit'])?></span>
+                                <span><?=shift_auto($row_['total_benefit'],$curencys[0])?></span>
                                 <a href="/dialog.php?id=bonus_detail&cate=<?=$row['cate']?>&day=<?=$row_['day']?>" dat-rel='dialog' data-transition="slideup"><span class='btn inline more_btn'><i class="ri-more-2-line"></i></span></a>
                             </dd>
                         </div>

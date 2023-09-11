@@ -49,12 +49,12 @@ header h5{line-height: 28px;}
                     while($row_ = sql_fetch_array($sub_result) ){?>
                 <div class='col-7 text-left'>
                     <span style="font-size:15px"><?= $row_['day'] ?></span>
-                    <span style="font-size:13px"> [ <?= strtoupper($row_['allowance_name']) ?> ]</span>
+                    <span style="font-size:13px"> [ <?= strtoupper($row_['allowance_name'] == "booster" ? "matching" : $row_['allowance_name']) ?> ]</span>
                 </div>
 
                 <div class='col-5 text-right'>
                     <span> <i class="ri-add-line"></i></span>
-                    <span><?=Number_format($row_['total_benefit'],BONUS_NUMBER_POINT) ?> </span>
+                    <span><?=shift_auto($row_['total_benefit'],$curencys[0]) ?> </span>
                 </div>
                 <?}?>
             </div>

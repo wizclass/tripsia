@@ -301,6 +301,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 		$bg = 'bg'.($i%2);
 		$soodang = $row['benefit'];
 		$soodang_sum += $soodang;
+		$row['allowance_name'] = $row['allowance_name'] == "booster" ? "matching" : $row['allowance_name'];
 	?>
 
     <tr class="<?php echo $bg; ?>">
