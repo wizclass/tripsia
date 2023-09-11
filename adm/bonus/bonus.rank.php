@@ -109,6 +109,43 @@ function limit_conditions($val,$kind='val')
     return $result;
 }
 
+// 리스트배열중 가장 큰 값 제거 (중복시 하나만 제거 )
+function max_sales_line($list){
+    
+    
+    $arr =  array_column($list, 'recom_sales');
+    $max_value = max($arr);
+
+    $origin_array = [];
+    $dup_array = [];
+
+    foreach ($list as $key => $value) {
+
+        array_push($origin_array,$value['recom_sales']);
+
+        if ($value['recom_sales'] == $max_value) {
+            array_push($dup_array,$key);
+        }
+    }
+
+    unset($list[$dup_array[0]]);
+    return array($list,$origin_array);
+    
+  
+}
+
+
+function direct_recom($mb_id){
+    $direct_recom_list = [];
+
+    $direct_recom_sql = "SELECT mb_id, mb_save_point, recom_sales FROM g5_member WHERE mb_recommend = '{$mb_id}' ";
+    $direct_recom = sql_query($direct_recom_sql);
+    while($row = sql_fetch_array($direct_recom)){
+        array_push($direct_recom_list,$row);
+    }
+    return $direct_recom_list;
+}
+
 function array_columns(array $rows, array $keys)
 {
     foreach ($rows as $i => $row) {
@@ -341,6 +378,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
                         }
 
 
+
                         // 산하 추천 매출 -  save_point 기준
                         $mem_result = return_down_tree($mb_id, 0);
                         $recom_sales = array_int_sum($mem_result, 'mb_save_point', 'int');
@@ -348,20 +386,39 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
                         if (!$recom_sales) {
                             $recom_sales = 0;
                         }
-                        $recom_id = array_index_sum($mem_result, 'mb_id', 'text');
-                        $recom_sales_value = Number_format($recom_sales);
+
+                        // $recom_id = array_index_sum($mem_result, 'mb_id', 'text');
+                        $recom_sales_value = Number_format($recom_sales); 
+                        
 
 
-                        echo "<br>산하추천매출 : <span class='blue'>" . $recom_sales_value . "</span>";
+                        // 산하 추천 매출 -  recom_sales 기준
+                        $direct_recom = direct_recom($mb_id);
 
-                        if ($recom_sales >= $lvlimit_recom[$i] * $lvlimit_recom_val) {
+                        if(count($direct_recom) > 0){
+                            list($max_divide_line,$all_recom_line) = max_sales_line($direct_recom);
+                            $recom_small_sales = array_int_sum($max_divide_line, 'recom_sales', 'int');
+                            
+                        }else{
+                            $recom_small_sales = 0;
+                        }
+
+                        $recom_small_sales_value  = Number_format($recom_small_sales);
+
+                        echo "<br>산하추천매출 : ".$recom_sales_value." / <span class='blue'>" . $recom_small_sales_value . "</span>";
+                        if ($recom_small_sales >= $lvlimit_recom[$i] * $lvlimit_recom_val) {
                             $rank_cnt += 1;
                             $rank_option2 = 1;
                             echo "<span class='red'> == OK </span>";
                         }
 
-                        $mem_list = array();
-                        /*  echo "<br><span class='desc'>└ 추천산하 : ";
+                        echo "<br><code>└ ";
+                        echo "하부총라인:".count($all_recom_line)."  >> ";
+                        print_R($all_recom_line);
+                        echo "</code>";
+
+                       /*  $mem_list = array();
+                        echo "<br><span class='desc'>└ 추천산하 : ";
                         echo ($recom_id);
                         echo "</span>"; */
 
@@ -373,7 +430,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
                             $mem_cnt = $mem_cnt_result['cnt'];
                             
 
-                            echo "<br>직추천인수 : <span class='blue'>" . $mem_cnt . "</span>";
+                            echo "직추천인수 : <span class='blue'>" . $mem_cnt . "</span>";
                             if ($mem_cnt >= $lvlimit_cnt[$i]) {
                                 $rank_cnt += 1;
                                 $rank_option3 = 1;
