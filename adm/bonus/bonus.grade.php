@@ -257,7 +257,7 @@ function  excute(){
                 } */
 
                 $benefit = ( ($grade_order*$star_rate) * (1/$member_count) );// 매출자 * 수당비율 * 1/n
-                $benefit = shift_auto($benefit,'$');
+                // $benefit = shift_auto($benefit,'$');
 
                 $live_benefit = $benefit;
                 $shop_benefit = 0;
