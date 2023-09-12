@@ -135,7 +135,7 @@
                     <span class='category'><?=strtoupper($row['allowance_name'] == "booster" ? "matching" : $row['allowance_name'])?> BONUS</span>
                 </div>
                 <div class='col-5 text-right'>
-                    <span class='price'><?=shift_auto($row['benefit'],$curencys[1])?> <?=$curencys[1]?> </span>
+                    <span class='price'><?=shift_auto($row['benefit'],$curencys[0])?> <?=$curencys[0]?> </span>
                 </div>
             </div>
 
