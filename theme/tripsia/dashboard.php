@@ -132,7 +132,7 @@
             <div class="line row">
                 <div class='col-7'>
                     <span class='day'><?=timeshift($row['day'])?> </span>
-                    <span class='category'><?=strtoupper($row['allowance_name'].' Bonus')?> </span>
+                    <span class='category'><?=strtoupper($row['allowance_name'] == "booster" ? "matching" : $row['allowance_name'])?> BONUS</span>
                 </div>
                 <div class='col-5 text-right'>
                     <span class='price'><?=shift_auto($row['benefit'],$curencys[1])?> <?=$curencys[1]?> </span>
