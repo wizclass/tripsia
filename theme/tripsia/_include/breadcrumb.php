@@ -190,18 +190,17 @@ $title = 'Dashboard';
 
 					<ul class="row" style="margin:0 10px;">
 						<li class="col-12">
-							
+							<dt class="title" style="font-size:10px;" >수당한계</dt>
 							<dd class="value">
 								<div class='bonus_state_bg' data-per='<?=$bonus_per?>'>
 									<div class='bonus_state_bar' id='total_B_bar'></div>
 								</div>
-								
 								<div class='exp_per'>
 									<p class='start'>0 %</p>
 									<p class='end'><?=$limited?> %</p>
 								</div>
+								<div><?=$bonus_per?> %</div>
 							</dd>
-							<dt class="title" style="font-size:10px;" >수당한계</dt>
 						</li>
 					</ul>
 
