@@ -128,7 +128,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
     <a href="./itemexcel.php" onclick="return excelform(this.href);" target="_blank">상품일괄등록</a>
 </div> -->
 
-<form name="fitemlistupdate" method="post" action="./itemlistupdate.php" onsubmit="return fitemlist_submit(this);" autocomplete="off">
+<form name="fitemlistupdate" method="post" action="./g5_itemlistupdate.php" onsubmit="return fitemlist_submit(this);" autocomplete="off">
 <input type="hidden" name="sca" value="<?php echo $sca; ?>">
 <input type="hidden" name="sst" value="<?php echo $sst; ?>">
 <input type="hidden" name="sod" value="<?php echo $sod; ?>">
