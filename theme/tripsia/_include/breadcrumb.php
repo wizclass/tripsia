@@ -5,6 +5,7 @@ $mysales = $member['mb_deposit_point'];
 //보너스/예치금 퍼센트
 // $bonus_per = bonus_state($member['mb_id']);
 $bonus_per = bonus_per();
+$boner_per_tx = ($limited_per*($bonus_per))*100;
 
 //시세 업데이트 시간
 $next_rate_time = next_exchange_rate_time();
@@ -190,17 +191,20 @@ $title = 'Dashboard';
 
 					<ul class="row" style="margin:0 10px;">
 						<li class="col-12">
-							<dt class="title" style="font-size:10px;" >수당한계</dt>
+							
 							<dd class="value">
 								<div class='bonus_state_bg' data-per='<?=$bonus_per?>'>
-									<div class='bonus_state_bar' id='total_B_bar'></div>
+									<div class='bonus_state_bar' id='total_B_bar'>
+										<p><?=$boner_per_tx?></p>
+									</div>
 								</div>
+								
 								<div class='exp_per'>
 									<p class='start'>0 %</p>
 									<p class='end'><?=$limited?> %</p>
 								</div>
-								<div><?=$bonus_per?> %</div>
 							</dd>
+							<dt class="title" style="font-size:10px;" >수당한계 (<?=$boner_per_tx?>%)</dt>
 						</li>
 					</ul>
 

@@ -3191,3 +3191,13 @@ a.btn_cancle,
     width: 220px;
   }
 }
+.bonus_state_bar {
+  text-align: right;
+  line-height: 12px;
+  font-size: 11px;
+}
+
+.bonus_state_bar p {
+  margin-right: 5px;
+  color: white;
+}

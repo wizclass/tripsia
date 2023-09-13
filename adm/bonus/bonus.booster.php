@@ -85,7 +85,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
         $start_member_update_sql = "update g5_member set ";
         $update_mb_balance_sql = "";
         $update_recom_sales = '';
-        $update_mb_shop_sql ='';
+        $update_mb_shop_sql = '';
         $update_where_sql = " where mb_id in(";
 
         $log_start_sql = "insert into soodang_pay(`allowance_name`,`day`,`mb_id`,`mb_no`,`benefit`,`mb_level`,`grade`,`mb_name`,`rec`,`rec_adm`,`origin_balance`,`origin_deposit`,`datetime`) values";
@@ -196,8 +196,8 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 
             $clean_live_benefit = clean_number_format($live_benefit);
             $clean_shop_benefit = clean_number_format($shop_benefit);
- 
-            $rec = "Booster bonus by step {$recommended_cnt} :: {$clean_live_benefit} {$unit}, Shop bonus : {$clean_shop_benefit} {$shop_unit} {$over_benefit_log}";
+
+            $rec = "Matching bonus by step {$recommended_cnt} :: {$clean_live_benefit} {$unit}, Shop bonus : {$clean_shop_benefit} {$shop_unit} {$over_benefit_log}";
             $rec_adm = "{$rec} (expected : {$origin_benefit} {$unit})";
 
             $log_values_sql .= "('{$code}','{$bonus_day}','{$mb_id}',{$row['mb_no']},{$live_benefit},{$row['mb_level']},{$row['grade']},
@@ -297,7 +297,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 
                     while ($row = sql_fetch_array($recommend_tree_result)) {
 
-                        if($row['mb_level'] > 0){
+                        if ($row['mb_level'] > 0) {
                             $list['mb_id'] = $row['mb_id'];
                             $list['mb_name'] = $row['mb_name'];
                             $list['mb_level'] = $row['mb_level'];
@@ -311,7 +311,6 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
                             array_push($mem_list, $list);
                         }
                         recommend_downtree($row['mb_id'], $count, $cnt);
-
                     }
                 }
             }
