@@ -1,6 +1,17 @@
 <?php
 include_once('./_common.php');
 
+/*부분서비스점검*/
+$sql = " select * from maintenance";
+$nw = sql_fetch($sql);
+
+if($nw['nw_shop'] != 'Y'){
+    
+    alert('현재 사용할수 없습니다.',0);
+    goto_url(G5_URL);
+}
+
+
 define("_INDEX_", TRUE);
 
 include_once(G5_MSHOP_PATH.'/_head.php');
@@ -34,18 +45,18 @@ include_once(G5_MSHOP_PATH.'/_head.php');
 
     <?php if($default['de_mobile_type2_list_use']) { ?>
     <div class="sct_wrap">
-        <!-- <h2><a href="<?php echo G5_SHOP_URL; ?>/listtype.php?type=2">추천상품</a></h2> -->
+        <h2><a href="<?php echo G5_SHOP_URL; ?>/listtype.php?type=2">추천상품</a></h2>
         <?php
-        // $list = new item_list();
-        // $list->set_mobile(true);
-        // $list->set_type(2);
-        // $list->set_view('it_id', false);
-        // $list->set_view('it_name', true);
-        // $list->set_view('it_cust_price', true);
-        // $list->set_view('it_price', true);
-        // $list->set_view('it_icon', true);
-        // $list->set_view('sns', true);
-        // echo $list->run();
+        $list = new item_list();
+        $list->set_mobile(true);
+        $list->set_type(2);
+        $list->set_view('it_id', false);
+        $list->set_view('it_name', true);
+        $list->set_view('it_cust_price', true);
+        $list->set_view('it_price', true);
+        $list->set_view('it_icon', true);
+        $list->set_view('sns', true);
+        echo $list->run();
         ?>
     </div>
     <?php } ?>

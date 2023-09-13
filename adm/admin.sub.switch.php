@@ -81,6 +81,14 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
 		</td>
 	</tr>
 
+
+	<tr>
+		<th scope="row"><label for="nw_shop"> 쇼핑몰 </label></th>
+		<td>
+            <p style="padding:0;"><input type="checkbox" id="nw_shop" name="nw_shop" <?if($nw['nw_shop'] == 'Y') {echo "checked";}?>/><label for="nw_shop" style=""><span class="ui"></span><span class="nw_shop_txt">사용 설정</span></label></p>
+		</td>
+	</tr>
+
     </tbody>
     </table>
 </div>
@@ -134,6 +142,14 @@ $(document).ready(function(){
 		}
 	});
 
+	$('#nw_shop').on('click',function(){
+		if($('#nw_shop').is(":checked")){
+			$('.nw_shop_txt').html('사용함');
+		}else{
+			$('.nw_shop_txt').html('사용안함');
+		}
+	});
+
 });
 
 
@@ -183,6 +199,14 @@ function frmnewwin_check(f)
 	}
 
 	f.nw_enroll = $('#nw_enroll').val();
+
+	if ($('input[name=nw_shop]').is(":checked")) {
+    $('input[name=nw_shop]').val('Y');
+	} else {
+		$('input[name=nw_shop]').val('N');
+	}
+
+	f.nw_shop = $('#nw_shop').val();
 
 
     if (errmsg != "") {

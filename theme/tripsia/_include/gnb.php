@@ -196,7 +196,7 @@ $(document).ready(function(){
 					</div>
 				</a>
 			</li>
-			
+			<?if($nw['nw_shop'] == 'Y'){?>
 			<li class="shop_icon">
 				<a href="/shop">
 					<div class="gnb_img_wrap"></div>
@@ -205,6 +205,7 @@ $(document).ready(function(){
 					</div>
 				</a>
 			</li>
+			<?}?>
 
 			<div class='gnb_bottom text-center hidden'><i class="ri-arrow-down-s-line" style='font-size:20px;vertical-align:top'></i></div>
 			<div id='gnb_language'>
