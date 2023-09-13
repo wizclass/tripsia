@@ -277,6 +277,7 @@ if( function_exists('pg_setting_check') ){
         <th scope="col" id="th_odrertel">주문자전화</th>
         <th scope="col" id="th_recvr">받는분</th>
         <th scope="col" rowspan="3">주문합계<br>선불배송비포함</th>
+        <th scope="col" rowspan="3">주문합계<br>(USDP)</th>
         <th scope="col" rowspan="3">입금합계</th>
         <th scope="col" rowspan="3">주문취소</th>
         <th scope="col" rowspan="3">쿠폰</th>
@@ -385,9 +386,9 @@ if( function_exists('pg_setting_check') ){
         <td headers="th_odrertel" class="td_tel"><?php echo get_text($row['od_tel']); ?></td>
         <td headers="th_recvr" class="td_name"><a href="<?php echo $_SERVER['SCRIPT_NAME']; ?>?sort1=<?php echo $sort1; ?>&amp;sort2=<?php echo $sort2; ?>&amp;sel_field=od_b_name&amp;search=<?php echo get_text($row['od_b_name']); ?>"><?php echo get_text($row['od_b_name']); ?></a></td>
         <td rowspan="3" class="td_num_right"><?php echo number_format($row['od_cart_price'] + $row['od_send_cost'] + $row['od_send_cost2']); ?> 
-        <?php if($row['od_settle_case'] == "코인"){?>
-        (<?=$row['od_token_price']?> VCT-K)
-        <?php } ?>
+       
+        </td>
+        <td rowspan="3" class="td_num_right"><?=number_format($row['od_token_price'],2)?>
         </td>
         <td rowspan="3" class="td_num_right"><?php echo number_format($row['od_receipt_price']); ?></td>
         <td rowspan="3" class="td_numcancel<?php echo $td_color; ?> td_num"><?php echo number_format($row['od_cancel_price']); ?></td>

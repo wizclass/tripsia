@@ -134,7 +134,7 @@ $mshop_categories = get_shop_category_array(true);
             <li><a href="<?php echo G5_BBS_URL; ?>/faq.php"><i class="fa fa-question"></i>FAQ</a></li>
             <li><a href="<?php echo G5_BBS_URL; ?>/qalist.php"><i class="fa fa-comments"></i>1:1문의</a></li>
             <!-- <li><a href="<?php echo G5_SHOP_URL; ?>/personalpay.php"><i class="fa fa-credit-card"></i>개인결제</a></li> -->
-            <li><a href="<?php echo G5_URL; ?>"><i class="fa fa-home"></i>커뮤니티</a></li>
+            <li><a href="<?php echo G5_URL; ?>"><i class="fa fa-home"></i>마이오피스</a></li>
         </ul> 
     </div>
 </div>

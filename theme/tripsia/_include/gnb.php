@@ -196,6 +196,16 @@ $(document).ready(function(){
 					</div>
 				</a>
 			</li>
+			
+			<li class="shop_icon">
+				<a href="/shop">
+					<div class="gnb_img_wrap"></div>
+					<div class="gnb_title_Wrap">
+						<span >쇼핑몰</span>
+					</div>
+				</a>
+			</li>
+
 			<div class='gnb_bottom text-center hidden'><i class="ri-arrow-down-s-line" style='font-size:20px;vertical-align:top'></i></div>
 			<div id='gnb_language'>
 				<p class='f_small title'>언어선택</p>

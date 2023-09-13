@@ -71,18 +71,18 @@ include_once(G5_MSHOP_PATH.'/_head.php');
 
     <?php if($default['de_mobile_type4_list_use']) { ?>
     <div class="sct_wrap">
-        <!-- <h2><a href="<?php echo G5_SHOP_URL; ?>/listtype.php?type=4">인기상품</a></h2> -->
+        <h2><a href="<?php echo G5_SHOP_URL; ?>/listtype.php?type=4">인기상품</a></h2>
         <?php
-        // $list = new item_list();
-        // $list->set_mobile(true);
-        // $list->set_type(4);
-        // $list->set_view('it_id', false);
-        // $list->set_view('it_name', true);
-        // $list->set_view('it_cust_price', false);
-        // $list->set_view('it_price', true);
-        // $list->set_view('it_icon', false);
-        // $list->set_view('sns', false);
-        // echo $list->run();
+        $list = new item_list();
+        $list->set_mobile(true);
+        $list->set_type(4);
+        $list->set_view('it_id', false);
+        $list->set_view('it_name', true);
+        $list->set_view('it_cust_price', false);
+        $list->set_view('it_price', true);
+        $list->set_view('it_icon', false);
+        $list->set_view('sns', false);
+        echo $list->run();
         ?>
     </div>
     <?php } ?>

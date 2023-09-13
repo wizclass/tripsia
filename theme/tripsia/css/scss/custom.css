@@ -206,6 +206,17 @@ header .left_gnb .reffer_icon:hover .gnb_img_wrap, header .left_gnb .reffer_icon
   width: 38px;
   height: 38px;
 }
+header .left_gnb .shop_icon .gnb_img_wrap {
+  background-position: 7px -62px;
+}
+header .left_gnb .shop_icon:hover .gnb_img_wrap, header .left_gnb .shop_icon.active .gnb_img_wrap {
+  background: url("../../img/gnb/menu_set_white_hover.svg");
+  background-repeat: no-repeat;
+  background-size: 227px;
+  background-position: 7px -62px;
+  width: 38px;
+  height: 38px;
+}
 header .left_gnb .logout_wrap .logout_icon .gnb_img_wrap {
   background-position: -127px -30px;
 }
@@ -1833,6 +1844,17 @@ a.btn_cancle,
   background-repeat: no-repeat;
   background-size: 227px;
   background-position: -94px -30px;
+  width: 38px;
+  height: 38px;
+}
+.dark header .left_gnbWrap .left_gnb .shop_icon .gnb_img_wrap {
+  background-position: 5px -62px;
+}
+.dark header .left_gnbWrap .left_gnb .shop_icon:hover .gnb_img_wrap, .dark header .left_gnbWrap .left_gnb .shop_icon.active .gnb_img_wrap {
+  background: url("../../img/gnb/menu_set_dark_hover.svg");
+  background-repeat: no-repeat;
+  background-size: 227px;
+  background-position: 5px -62px;
   width: 38px;
   height: 38px;
 }

@@ -1041,3 +1041,9 @@ box-shadow:0 0 8px rgba(65,98,255,0.8)}
 #m_sod_frm_paysel .lb_icon {margin: 0;}
 
 #hd #logo a{padding:0;}
+
+
+/* Arcthan 샵 수정 230913*/
+
+.menu{background:rgba(0,0,0,0.25)}
+.menu .menu_wr{width:320px;}
