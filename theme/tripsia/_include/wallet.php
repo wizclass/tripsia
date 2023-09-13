@@ -26,7 +26,7 @@ $total_deposit = $member['mb_deposit_point'] + $member['mb_deposit_calc'];
 $total_bonus = $member['mb_balance']; 
 $total_shift_amt = $member['mb_shift_amt'];
 
-$total_fund = $total_bonus;
+$total_fund = ($member['mb_balance'] + $member['mb_shop_point']);
 
 // $shop_point = $total_bonus*0.1;
 
@@ -225,17 +225,17 @@ function express_nick_name($mb_id){
 
 // 보너스 수당-한계 퍼센트
 function bonus_per($mb_id ='',$mb_balance='', $mb_limit = ''){
-	global $member,$limited_per,$mb_balance_ignore;
+	global $member,$limited_per,$mb_balance_ignore,$total_fund;
 
 	if($mb_id == ''){
 		if($member['mb_save_point'] != 0 && $member['mb_balance'] !=0 && $limited_per != 0){
-			$bonus_per = ($member['mb_balance']/($member['mb_save_point'] * $limited_per));
+			$bonus_per = (($member['mb_balance'] + $member['mb_shop_point'] - $member['mb_balance_ignore']) /($member['mb_save_point'] * $limited_per));
 		}else{
 			$bonus_per = 0;
 		}
 	}else{
 		if($mb_limit != 0 && $mb_balance !=0 && $limited_per != 0){
-			$bonus_per = (($mb_balance-$mb_balance_ignore)/($mb_limit * $limited_per));
+			$bonus_per = (($total_fund-$mb_balance_ignore)/($mb_limit * $limited_per));
 		}else{
 			$bonus_per = 0;
 		}

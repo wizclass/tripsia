@@ -90,7 +90,7 @@ $grade_order = ($total_order * ($company_sales * 0.01));
 
 
 // 수당제한 제외 
-$balanace_ignore = false;
+$balanace_ignore = TRUE;
 
 // 디버그 로그 
 if($debug){

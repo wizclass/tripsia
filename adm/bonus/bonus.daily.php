@@ -7,7 +7,7 @@ include_once('./bonus_inc.php');
 auth_check($auth[$sub_menu], 'r');
 
 // 데일리수당
-$debug = false;
+$debug = FALSE;
 $bonus_row = bonus_pick($code);
 
 $bonus_rate = explode(",",$bonus_row['layer']);
@@ -77,8 +77,8 @@ if(!$get_today){
 		$mb_index = $order_list_row['mb_index'];
 		$benefit = $goods_price *(0.01 * $daily_bonus_rate);
 		
-		$total_benefit = $mb_balance + $benefit + $total_paid_list[$order_list_row['mb_id']]['total_benefit'];
-
+		$total_benefit = ($mb_balance - $mb_balance_ignore) + $benefit + $total_paid_list[$order_list_row['mb_id']]['total_benefit'];
+		
 		$clean_number_goods_price = clean_number_format($goods_price);
 		$clean_number_mb_balance = clean_number_format($mb_balance - $mb_balance_ignore);
 		$clean_number_mb_index = clean_number_format($mb_index);
@@ -88,9 +88,10 @@ if(!$get_today){
 
 		$over_benefit_log  = "";
 
+
 		if( $total_benefit > $mb_index ){
 			$remaining_benefit = $total_benefit - $mb_index;
-			$cut_benefit = $mb_index - $mb_balance <= 0 ? 0 : clean_coin_format($mb_index-$mb_balance,2);
+			$cut_benefit = ($mb_index - $mb_balance + $mb_balance_ignore) <= 0 ? 0 : clean_coin_format($mb_index-$mb_balance + $mb_balance_ignore,2);
 			
 			$origin_benefit = $benefit;
 			if($benefit - $remaining_benefit > 0) {

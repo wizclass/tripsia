@@ -4,7 +4,7 @@ $sub_menu = "600200";
 include_once('./_common.php');
 include_once('./bonus_inc.php');
 
-$debug = false;
+$debug = FALSE;
 
 auth_check($auth[$sub_menu], 'r');
 
@@ -135,7 +135,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             $mb_balance = $row['mb_balance'];
             $mb_balance_ignore = $row['mb_balance_ignore'];
 
-            $total_left_benefit = $mb_index - $mb_balance <= 0 ? 0 : clean_coin_format($mb_index - $mb_balance);
+            $total_left_benefit = $mb_index - $mb_balance + $mb_balance_ignore <= 0 ? 0 : clean_coin_format($mb_index - $mb_balance + $mb_balance_ignore);
 
 
             $clean_total_left_benefit = clean_number_format($total_left_benefit);
@@ -164,6 +164,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             $origin_benefit = $add_benefit;
             $over_benefit_log = "";
             if ($total_left_benefit < $add_benefit) {
+
                 $add_benefit = $total_left_benefit;
                 $over_benefit = $origin_benefit - $total_left_benefit;
                 $clean_over_benefit = clean_number_format($over_benefit);

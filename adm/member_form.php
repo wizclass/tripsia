@@ -161,7 +161,7 @@ if (!isset($mb['mb_email_certify2'])) {
 }
 
 
-$bonus_per = bonus_per($mb['mb_id'], $mb['mb_balance'], $mb['mb_save_point']);
+$bonus_per = bonus_per($mb['mb_id'], $mb['mb_balance'], $mb['mb_index']);
 
 if ($mb['mb_intercept_date']) $g5['title'] = "차단된 ";
 else $g5['title'] .= "";
