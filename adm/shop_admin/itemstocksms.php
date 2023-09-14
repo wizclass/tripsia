@@ -156,7 +156,7 @@ $listall = '<a href="'.$_SERVER['SCRIPT_NAME'].'" class="ov_listall">전체목�
     <?php if ($is_admin == 'super') { ?>
     <input type="submit" name="act_button" value="선택삭제" onclick="document.pressed=this.value" class="btn btn_02">
     <?php } ?>
-    <input type="submit" name="act_button" value="선택SMS전송" class="btn_submit btn" onclick="document.pressed=this.value">
+    <input type="submit" name="act_button" value="선택전송" class="btn_submit btn" onclick="document.pressed=this.value">
 </div>
 </form>
 
