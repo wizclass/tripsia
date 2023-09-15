@@ -1,5 +1,9 @@
 <?php
 include_once('./_common.php');
+define('QA',true);
+define('_INDEX_', true);
+define('_SHOP_', true);
+include_once(G5_MSHOP_PATH.'/_head.php');
 include_once(G5_EDITOR_LIB);
 
 if($w != '' && $w != 'u' && $w != 'r') {
@@ -136,7 +140,6 @@ if(is_file($skin_file)) {
     $list_href = G5_BBS_URL.'/qalist.php'.preg_replace('/^&amp;/', '?', $qstr);
 
     $action_url = https_url(G5_BBS_DIR).'/qawrite_update.php';
-
     include_once($skin_file);
 } else {
     echo '<div>'.str_replace(G5_PATH.'/', '', $skin_file).'이 존재하지 않습니다.</div>';

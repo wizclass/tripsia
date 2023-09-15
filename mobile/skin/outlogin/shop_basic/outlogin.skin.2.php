@@ -14,7 +14,7 @@ add_stylesheet('<link rel="stylesheet" href="'.$outlogin_skin_url.'/style.css">'
             <!-- <a href="<?php echo G5_BBS_URL ?>/member_confirm.php?url=register_form.php" id="ol_after_info"><i class="fa fa-cog" aria-hidden="true"></i><span class="sound_only">정보수정</span></a> -->
         </span>
         <strong class="nickname"><?php echo $nick ?>님</strong>
-        <strong><?php echo $shop_balance ?></strong>  <?=$token_arr['vct']['symbol']?>
+        <strong><?php echo $shop_balance ?></strong>  <?=$token_symbol?>
         
         <div id="ol_after_btn">
             <?php if ($is_admin == 'super' || $is_auth) { ?><a href="<?php echo G5_ADMIN_URL ?>" class="btn_admin">관리자</a><?php } ?>

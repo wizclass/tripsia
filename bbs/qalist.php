@@ -1,6 +1,9 @@
 <?php
 include_once('./_common.php');
-
+define('QA',true);
+define('_INDEX_', true);
+define('_SHOP_', true);
+include_once(G5_MSHOP_PATH.'/_head.php');
 if($is_guest)
     alert('회원이시라면 로그인 후 이용해 보십시오.', './login.php?url='.urlencode(G5_BBS_URL.'/qalist.php'));
 
@@ -84,30 +87,30 @@ if(is_file($skin_file)) {
                 limit $from_record, $page_rows ";
     $result = sql_query($sql);
 
-    $list = array();
+    $_list = array();
     $num = $total_count - ($page - 1) * $page_rows;
     $subject_len = G5_IS_MOBILE ? $qaconfig['qa_mobile_subject_len'] : $qaconfig['qa_subject_len'];
     for($i=0; $row=sql_fetch_array($result); $i++) {
-        $list[$i] = $row;
+        $_list[$i] = $row;
 
-        $list[$i]['category'] = get_text($row['qa_category']);
-        $list[$i]['subject'] = conv_subject($row['qa_subject'], $subject_len, '…');
+        $_list[$i]['category'] = get_text($row['qa_category']);
+        $_list[$i]['subject'] = conv_subject($row['qa_subject'], $subject_len, '…');
         if ($stx) {
-            $list[$i]['subject'] = search_font($stx, $list[$i]['subject']);
+            $_list[$i]['subject'] = search_font($stx, $_list[$i]['subject']);
         }
 
-        $list[$i]['view_href'] = G5_BBS_URL.'/qaview.php?qa_id='.$row['qa_id'].$qstr;
+        $_list[$i]['view_href'] = G5_BBS_URL.'/qaview.php?qa_id='.$row['qa_id'].$qstr;
 
-        $list[$i]['icon_file'] = '';
+        $_list[$i]['icon_file'] = '';
         if(trim($row['qa_file1']) || trim($row['qa_file2']))
-            $list[$i]['icon_file'] = '<img src="'.$qa_skin_url.'/img/icon_file.gif">';
+            $_list[$i]['icon_file'] = '<img src="'.$qa_skin_url.'/img/icon_file.gif">';
 
-        $list[$i]['name'] = get_text($row['qa_name']);
+        $_list[$i]['name'] = get_text($row['qa_name']);
         // 사이드뷰 적용시
-        //$list[$i]['name'] = get_sideview($row['mb_id'], $row['qa_name']);
-        $list[$i]['date'] = substr($row['qa_datetime'], 2, 8);
+        //$_list[$i]['name'] = get_sideview($row['mb_id'], $row['qa_name']);
+        $_list[$i]['date'] = substr($row['qa_datetime'], 2, 8);
 
-        $list[$i]['num'] = $num - $i;
+        $_list[$i]['num'] = $num - $i;
     }
 
     $is_checkbox = false;
@@ -127,5 +130,4 @@ if(is_file($skin_file)) {
 } else {
     echo '<div>'.str_replace(G5_PATH.'/', '', $skin_file).'이 존재하지 않습니다.</div>';
 }
-
 include_once('./qatail.php');

@@ -35,7 +35,7 @@ include_once(G5_MOBILE_PATH.'/head.php');
 
     <div id="main_card">
             <a href="/page.php?id=deposit"><div class='dual left'><img src="<?=$token_symbol_img?>" alt=""> <?=$token_symbol?></div></a>
-            <a href="/shop"><div class='dual right'><img src="<?=$point_symbol_img?>" alt=""> VCT - SHOP</div></a>
+            <a href="/shop"><div class='dual right'><img src="<?=$point_symbol_img?>" alt=""> <?=$token_symbol?> - SHOP</div></a>
             <!-- <div class="wallet_link_bar"></div> -->
     </div>
 
@@ -44,7 +44,7 @@ include_once(G5_MOBILE_PATH.'/head.php');
 		<div class="notice_inner">
 			<a href="/bbs?bo_table=notice">
 				<p><b>공지사항</b>
-					<img src="/img/victor/dot_yellow.png" alt=""> <?=$token_symbol?> 쇼핑몰이 오픈되었습니다.
+					<img src="/img/project/dot_yellow.png" alt=""> <?=$token_symbol?> 쇼핑몰이 오픈되었습니다.
 				</p>
 			</a>
 		</div>

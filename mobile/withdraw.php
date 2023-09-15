@@ -3,7 +3,7 @@ include_once('./_common.php');
 include_once(G5_MOBILE_PATH.'/head.php');
 include_once(G5_LIB_PATH."/bootbox/bootbox.php");
 if($wallet_addr == ""){
-	alert('입금페이지에서 VCT-K 지갑생성후 이용해주세요.',G5_URL);
+	alert('입금페이지에서 '.$token_symbol.' 지갑생성후 이용해주세요.',G5_URL);
 	return false;
   }
 
@@ -215,7 +215,7 @@ if($encrypt == "N"){
 
 
 				function estimate_pre_gas(address,contract_address,decimal){
-					var to_wallet =  "<?=VCT_COMPANY_ADDR?>";
+					var to_wallet =  "<?=TOKEN_COMPANY_ADDR?>";
 					var send_coin = 0.000000001;
 					
 					estimate_gas(address,to_wallet,contract_address,decimal,send_coin, (estimateGas,estimateData) => { // 추가

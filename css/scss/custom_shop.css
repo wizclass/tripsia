@@ -187,23 +187,23 @@ main {
 }
 
 .partner {
-  background: url("/img/victor/partner.png") no-repeat center;
+  background: url("/img/project/partner.png") no-repeat center;
 }
 
 .confirm {
-  background: url("/img/victor/confirm.png") no-repeat center;
+  background: url("/img/project/confirm.png") no-repeat center;
 }
 
 .shopping {
-  background: url("/img/victor/shopping.png") no-repeat center;
+  background: url("/img/project/shopping.png") no-repeat center;
 }
 
 .my_info {
-  background: url("/img/victor/icon_my.png") no-repeat center;
+  background: url("/img/project/icon_my.png") no-repeat center;
 }
 
 .logout {
-  background: url("/img/victor/icon_logout.png") no-repeat center;
+  background: url("/img/project/icon_logout.png") no-repeat center;
 }
 
 .sysbtnset {

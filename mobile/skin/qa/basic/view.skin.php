@@ -1,17 +1,16 @@
 <?php
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 include_once(G5_LIB_PATH.'/thumbnail.lib.php');
-
 // add_stylesheet('css 구문', 출력순서); 숫자가 작을 수록 먼저 출력됨
-add_stylesheet('<link rel="stylesheet" href="'.$qa_skin_url.'/style.css">', 0);
+// add_stylesheet('<link rel="stylesheet" href="'.$qa_skin_url.'/style.css">', 0);
 ?>
-
+<link rel="stylesheet" href="<?=$qa_skin_url?>/style.css">
 <script src="<?php echo G5_JS_URL; ?>/viewimageresize.js"></script>
 
 <ul class="btn_top top btn_bo_user"> 
-	<li><a href="<?php echo $list_href ?>" class="btn_b03 btn"><i class="fa fa-list" aria-hidden="true"></i><span class="sound_only">목록</span></a></li>
+	<li><a href="<?php echo $list_href ?>" class="btn_b03"><i class="fa fa-list" aria-hidden="true"></i><span class="sound_only">목록</span></a></li>
     <?php if ($write_href) { ?>
-    <li><a href="<?php echo $write_href ?>" class="btn_b03 btn"><i class="fa fa-pencil" aria-hidden="true"></i><span class="sound_only">글쓰기</a></li>
+    <li><a href="<?php echo $write_href ?>" class="btn_b03"><i class="fa fa-pencil" aria-hidden="true"></i><span class="sound_only">글쓰기</a></li>
     <?php } ?>
 	<li>
 		<button type="button" class="btn_more_opt btn_b03 btn"><i class="fa fa-ellipsis-v" aria-hidden="true"></i><span class="sound_only">게시판 리스트 옵션</span></button>

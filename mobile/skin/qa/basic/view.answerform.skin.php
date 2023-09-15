@@ -24,7 +24,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
     if ($is_dhtml_editor) {
         $option_hidden .= '<input type="hidden" name="qa_html" value="1">';
     } else {
-        $option .= "\n".'<input type="checkbox" id="qa_html" name="qa_html" onclick="html_auto_br(this);" value="'.$html_value.'" '.$html_checked.'>'."\n".'<label for="qa_html">html</label>';
+        $option .= "\n".'<input type="checkbox" id="qa_html" name="qa_html" onclick="html_auto_br(this);" value="'.$html_value.'" '.$html_checked.' style="width:auto;">'."\n".'<label for="qa_html">html</label>';
     }
 
     echo $option_hidden;

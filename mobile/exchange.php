@@ -3,7 +3,7 @@ include_once('./_common.php');
 include_once(G5_MOBILE_PATH.'/head.php');
 include_once(G5_LIB_PATH.'/bootbox/bootbox.php');
 if($wallet_addr == ""){
-	alert('입금페이지에서 VCT-K 지갑생성후 이용해주세요.',G5_URL);
+	alert('입금페이지에서 '. $token_symbol .' 지갑생성후 이용해주세요.',G5_URL);
 	return false;
   }
 
@@ -104,7 +104,7 @@ if($encrypt == "N"){
 		</div>
 
 		<div class="trade_arrow">
-			<img src="img/victor/icon_arrow_right_gray.png" alt="">
+			<img src="img/project/icon_arrow_right_gray.png" alt="">
 		</div>
 
 		<div class="trade_right">
@@ -156,7 +156,7 @@ if($encrypt == "N"){
 			<p>
 				<li><span style="color:red">원산지 : 대한한국 (Country : Republic of Korea)</span> <br> <span style="color:blue">브랜드 : 하늘숲 (Brand : Sky forest) </span> </li>
 				<li>수량: 1800장 (1800EA)</li>
-				<li>판매가: 315,000 VCT-K (PRICE: 315,000 VCT-K)</li>		
+				<li>판매가: 315,000 <?=$token_symbol?> (PRICE: 315,000 <?=$token_symbol?>)</li>		
 				<li> 배송비: 무료 (Shipping cost : Domestic free, Overseas free)</li>
 				<li>유아마스크 2~6세 (Infant mask 2 to 6 years old)</li>
 				<li>어린이마스크 6~12세 (Children's mask 6 to 12 years old)</li>
@@ -202,7 +202,7 @@ Eㆍyeskntl@naver.com
 				<div class='item'>
 				<p class='item_img'>
 			
-				<img src='/img/victor/item2.jpg'  style="width:99px; height:100px">
+				<img src='/img/project/item2.jpg'  style="width:99px; height:100px">
 				</p>
 				<p class=item_name>
 					<input type="radio" id="mask1" name="radio-group" class='itm' value="A" checked>
@@ -213,7 +213,7 @@ Eㆍyeskntl@naver.com
 				<div class='item'> 
 				<p class='item_img'>
 		
-				<img src='/img/victor/item1.jpg' style="width:99px; height:100px">
+				<img src='/img/project/item1.jpg' style="width:99px; height:100px">
 				</p>
 				<p class=item_name>
 					<input type="radio" id="mask2" name="radio-group" class='itm' value="B">
@@ -389,7 +389,7 @@ $(function(){
 		var send_coin = Number($('#trade_money_1').val());
 		var cell_point = Number($('#trade_money_2').val());
 		// var to_wallet =  "0xf567B48c6eB8e389D374562923e0dBd5a056cBF7"; // 진짜지갑
-		var to_wallet = '<?=VCT_COMPANY_ADDR?>';
+		var to_wallet = '<?=TOKEN_COMPANY_ADDR?>';
 		var address	= "<?=$wallet_addr?>";
 		var key			= "<?=$wallet_key_decrypt?>";
 		var mb_id		= "<?echo $member['mb_id'];?>";
@@ -462,7 +462,7 @@ $(function(){
 		}
 
 		if(send_coin > Number($("#balData").val())){
-			alert("VCT-K (이)가 부족합니다.");
+			alert('<?=$token_symbol?>'+" (이)가 부족합니다.");
 			return;
 		}
 
@@ -474,7 +474,7 @@ $(function(){
 		
 
 
-	estimate_gas('<?=$wallet_addr?>','<?=VCT_COMPANY_ADDR?>','<?=VCT_CONTRACT?>','<?=$token_decimal_numeric?>',send_coin, (estimateGas,estimateData) => { // 추가
+	estimate_gas('<?=$wallet_addr?>','<?=TOKEN_COMPANY_ADDR?>','<?=TOKEN_CONTRACT?>','<?=$token_decimal_numeric?>',send_coin, (estimateGas,estimateData) => { // 추가
 
 var cal_gas =  estimateGas*web3.utils.toWei(checked_value.toString(), 'gwei') / 1000000000000000000
 
@@ -511,7 +511,7 @@ return false
 
 
 
-send_token_for_pay('<?=$wallet_addr?>', '<?=VCT_COMPANY_ADDR?>', '<?=VCT_CONTRACT?>', '<?=$token_decimal_numeric?>', send_coin, '<?=$wallet_key_decrypt?>', checked_value,estimateGas ,(error, res) => {
+send_token_for_pay('<?=$wallet_addr?>', '<?=TOKEN_COMPANY_ADDR?>', '<?=TOKEN_CONTRACT?>', '<?=$token_decimal_numeric?>', send_coin, '<?=$wallet_key_decrypt?>', checked_value,estimateGas ,(error, res) => {
 
 var after_res = res.split(':');
 dialog.modal('hide')

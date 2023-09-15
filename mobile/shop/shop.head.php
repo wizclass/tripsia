@@ -7,10 +7,11 @@ if(!$is_member){
 
 $q = isset($_GET['q']) ? clean_xss_tags($_GET['q'], 1, 1) : '';
 
-if(defined('G5_THEME_PATH')) {
+if(defined('G5_THEME_PATH') && !defined('QA')) {
     require_once(G5_THEME_MSHOP_PATH.'/shop.head.php');
     return;
 }
+
 include_once(G5_PATH."/theme/{$config['cf_theme']}/_include/wallet.php");
 include_once(G5_PATH."/util/coin_config.php");
 include_once(G5_PATH.'/head.sub.php');
@@ -23,18 +24,20 @@ include_once(G5_LIB_PATH.'/latest.lib.php');
 if($default['de_coin_use'] > 1){
     include_once(G5_PATH."/util/callOneCoin.php");
 }
+
 ?>
 
 <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.35/dist/web3.min.js"></script>
 <script src="/lib/wallet/erc_wallet.js"></script>
-<link rel="stylesheet" href="<?=G5_CSS_URL?>/scss/victor.css"/>
+<link rel="stylesheet" href="<?=G5_CSS_URL?>/scss/custom_shop.css"/>
 
 <header id="hd">
     <?php if ((!$bo_table || $w == 's' ) && defined('_INDEX_')) { ?><h1><?php echo $config['cf_title'] ?></h1><?php } ?>
 
     <div id="skip_to_container"><a href="#container">본문 바로가기</a></div>
 
-    <?php if(defined('_INDEX_')) { // index에서만 실행
+    <?php 
+    if(defined('_INDEX_')) { // index에서만 실행
         include G5_MOBILE_PATH.'/newwin.inc.php'; // 팝업레이어
     } ?>
 
@@ -136,5 +139,6 @@ if($default['de_coin_use'] > 1){
         $container_class[] = 'is_community';
     }
 ?>
-<div id="container" class="<?php echo implode(' ', $container_class); ?>">
+<!-- <div id="container" class="<?php echo implode(' ', $container_class); ?>"> -->
+<div style="padding:10px;">
     <?php if ((!$bo_table || $w == 's' ) && !defined('_INDEX_')) { ?><h1 id="container_title"><a href="javascript:history.back()" class="btn_back"><i class="fa fa-chevron-left" aria-hidden="true"></i><span class="sound_only">뒤로</span></a> <?php echo $g5['title'] ?></h1><?php }

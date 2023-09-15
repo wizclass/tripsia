@@ -58,11 +58,11 @@ function get_order_date_sum($date)
 // 일자별 결제수단 주문 합계 금액
 function get_order_settle_sum($date)
 {
-    global $g5, $default, $token_arr;
+    global $g5, $default, $token_symbol;
 
     $category = "";
     if($default['de_coin_use'] > 0){
-        $category = $token_arr['vct']['symbol'];
+        $category = $token_symbol;
     }
     if($default['de_coin_use'] > 1){ 
         $category = "코인";
@@ -358,7 +358,7 @@ function get_max_value($arr)
         <?php
         $category = "";
         if($default['de_coin_use'] > 0){
-            $category = $token_arr['vct']['symbol'];
+            $category = $token_symbol;
         }
         if($default['de_coin_use'] > 1){ 
             $category = "코인";
@@ -381,7 +381,7 @@ function get_max_value($arr)
             <td><?php echo number_format($info[$date][$val]['count']); ?></td>
             
             <?php if($info[$date][$val]['token_price'] > 0){?>
-                <td style="font-size: 11px;"><?php echo $info[$date][$val]['token_price']; ?> <?=$token_arr['vct']['symbol']?></td>
+                <td style="font-size: 11px;"><?php echo $info[$date][$val]['token_price']; ?> <?=$token_symbol?></td>
             <?php }else{ ?>
                 <td><?php echo number_format($info[$date][$val]['price']); ?></td> 
         <?php 

@@ -1,5 +1,9 @@
 <?php
 include_once('./_common.php');
+define('QA',true);
+define('_INDEX_', true);
+define('_SHOP_', true);
+include_once(G5_MSHOP_PATH.'/_head.php');
 include_once(G5_EDITOR_LIB);
 
 $qa_id = isset($_REQUEST['qa_id']) ? (int) $_REQUEST['qa_id'] : 0;
@@ -183,7 +187,6 @@ if(is_file($skin_file)) {
         if($view['qa_html'] == 1 && !$is_dhtml_editor)
             $html_value = 2;
     }
-
     include_once($skin_file);
 } else {
     echo '<div>'.str_replace(G5_PATH.'/', '', $skin_file).'이 존재하지 않습니다.</div>';

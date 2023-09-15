@@ -1,7 +1,7 @@
 $main-color: #222436;
-$victor-color: #f6bd14;
+$project-color: #f6bd14;
 
-$img_ : "/img/victor";
+$img_ : "/img/project";
 
 
 /* Header */
@@ -24,7 +24,7 @@ $img_ : "/img/victor";
 }
 
 /* 회원가입 */
-.mbskin .btn_submit, .btn_submit{background:$victor-color;border-radius: 0 !important;border: 1px solid #bc8d00;}
+.mbskin .btn_submit, .btn_submit{background:$project-color;border-radius: 0 !important;border: 1px solid #bc8d00;}
 
 #mb_login .frm_input{
     border:1px solid #eeeeee;
@@ -198,7 +198,7 @@ main{
     }
 }
 
-.main_icon{font-size:36px;color:$victor-color;}
+.main_icon{font-size:36px;color:$project-color;}
 .partner{background:url('#{$img_}/partner.png') no-repeat center;}
 .confirm{background:url('#{$img_}/confirm.png') no-repeat center;}
 .shopping{background:url('#{$img_}/shopping.png') no-repeat center;}

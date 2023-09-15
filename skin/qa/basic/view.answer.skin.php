@@ -35,6 +35,6 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
     </div>
 
 </section>
-<div class="bo_v_btn">
+<!-- <div class="bo_v_btn">
 	<a href="<?php echo $rewrite_href; ?>" class="add_qa" title="추가질문">추가질문</a>  
-</div>
+</div> -->

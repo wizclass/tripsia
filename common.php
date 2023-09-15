@@ -618,9 +618,9 @@ if(defined('_THEME_PREVIEW_') && _THEME_PREVIEW_ === true)
 if(isset($config['cf_theme']) && trim($config['cf_theme'])) {
     $theme_path = G5_PATH.'/'.G5_THEME_DIR.'/'.$config['cf_theme'];
     if(is_dir($theme_path)) {
-        
+
         /* Myoffice 와 Shop 테마 분리_230810 */
-        if(strpos($_SERVER['REQUEST_URI'],'/shop/') === false){
+        if(strpos($_SERVER['REQUEST_URI'],'/shop/') === false && !defined('QA')){
             define('G5_THEME_PATH',        $theme_path);
         }else{
             

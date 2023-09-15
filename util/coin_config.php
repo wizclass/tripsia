@@ -37,16 +37,13 @@ if(strtolower($mode) == 'test'){
     //  테스트모드일때
     define('NETWORK','ropsten');
     define('ETHERSCAN_ENDPOINT','api-ropsten');
-    define('VCT_COMPANY_ADDR','0x5Cc8C164F0cB14bf72E15C8021c27fdEb3313c8a');
-    define('VCT_CONTRACT', '0x0b49e59bc424e9f616eb86fd3002757eab4c8a28'); // victor 테스트
-    // define('VCT_CONTRACT', '0xcd20bc3d4fc1f5654ec8aca99a9c5b412b4f1696'); // GIO 테스트
+    define('TOKEN_COMPANY_ADDR','0x5Cc8C164F0cB14bf72E15C8021c27fdEb3313c8a');
+    define('TOKEN_CONTRACT', '0x0b49e59bc424e9f616eb86fd3002757eab4c8a28'); // 테스트
 }else{
   define('NETWORK','mainnet');
   define('ETHERSCAN_ENDPOINT','API');
-  define('VCT_COMPANY_ADDR',$default['de_coin_account']);
-  define('VCT_CONTRACT', '0x31C785fcbA8429e1E566a0110D75ee42687aac9B');
-  // define('VCT_CONTRACT', '0x35ec9cd695fdd9b3af678a7a199f00aae1ad87d8');
-
+  define('TOKEN_COMPANY_ADDR',$default['de_coin_account']);
+  define('TOKEN_CONTRACT', '0x31C785fcbA8429e1E566a0110D75ee42687aac9B');
 }
 
 define('Ether_API_KEY','V3G3VI316K8BCTGDFQG6QGUAZ4MM1GN9WJ');
@@ -55,11 +52,11 @@ define('WEB3_ENDPOINT','https://'.NETWORK.'.infura.io/v3/'.PROJECT_ID);
 
 
 $token_arr = array(
-  'vct'=>array(
-    'addr'=>VCT_CONTRACT,
+  'token'=>array(
+    'addr'=>TOKEN_CONTRACT,
     'symbol'=>'USDP',
-    'coin_img'=>'/img/victor/vct_coin.png',
-    'coin_symbol_img'=>'/img/victor/token_symbol_circle.png',
+    'coin_img'=>'/img/project/vct_coin.png',
+    'coin_symbol_img'=>'/img/project/token_symbol_circle.png',
     'decimal'=>'8',
     'decimal_numeric'=>'100000000',
     'color'=>'gold',
@@ -67,10 +64,12 @@ $token_arr = array(
   )
 );
 
+$token_symbol = $token_arr['vct']['symbol'];
+
 $point_arr = array(
   'symbol'=>'MASK',
-  'point_img'=>'/img/victor/point_symbol.png',
-  'point_symbol_img'=>'/img/victor/point_symbol_circle.png',
+  'point_img'=>'/img/project/point_symbol.png',
+  'point_symbol_img'=>'/img/project/point_symbol_circle.png',
   'color'=>'royalblue',
   'id'=>'mask'
 
@@ -81,7 +80,7 @@ $point_arr = array(
 if( isset($_REQUEST['token']) ){
   $_token= $token_arr[strtolower($_REQUEST['token'])];
 }else{
-  $_token= $token_arr['vct'];
+  $_token= $token_arr['token'];
 }
 $token_address = $_token['addr']; // 토큰 컨트렉트
 $token_symbol = $_token['symbol']; // 코인 심볼
@@ -106,5 +105,5 @@ $point_id = $point_arr['id'];
 
 <script>
     var WEB3_ENDPOINT = "<?=WEB3_ENDPOINT?>";
-    var TokenContract = "<?=VCT_CONTRACT?>";
+    var TokenContract = "<?=TOKEN_CONTRACT?>";
 </script>

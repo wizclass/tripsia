@@ -745,7 +745,7 @@ if ($is_kakaopay_use) {
 
             if ($default['de_coin_use'] > 1) {
                 // 코인계좌를 배열로 만든후
-                $str_2 = explode("\n", trim(VCT_COMPANY_ADDR));
+                $str_2 = explode("\n", trim(TOKEN_COMPANY_ADDR));
                 if (count($str_2) <= 1) {
                     $bank_account_2 = '<input type="hidden" name="od_coin_account" value="' . $str_2[0] . '">' . $str_2[0] . PHP_EOL;
                 } else {
@@ -1567,7 +1567,7 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
                     return false
                 }
         
-                estimate_gas('<?= $wallet_addr ?>', '<?= VCT_COMPANY_ADDR ?>', '<?= VCT_CONTRACT ?>', '<?= $token_decimal_numeric ?>', coin_point, (estimateGas, estimateData) => { // 추가
+                estimate_gas('<?= $wallet_addr ?>', '<?= TOKEN_COMPANY_ADDR ?>', '<?= TOKEN_CONTRACT ?>', '<?= $token_decimal_numeric ?>', coin_point, (estimateGas, estimateData) => { // 추가
     
                     var cal_gas = estimateGas * web3.utils.toWei(gas.toString(), 'gwei') / 1000000000000000000
                     var user_eth = $(".eth_balance").text().split(" ")
@@ -1604,7 +1604,7 @@ if (function_exists('is_use_easypay') && is_use_easypay('global_nhnkcp')) {  // 
                     })
     
     
-                    send_token_for_pay('<?= $wallet_addr ?>', '<?= VCT_COMPANY_ADDR ?>', '<?= VCT_CONTRACT ?>', '<?= $token_decimal_numeric ?>', coin_point, '<?= $wallet_key_decrypt ?>', gas, estimateGas, (error, res) => {
+                    send_token_for_pay('<?= $wallet_addr ?>', '<?= TOKEN_COMPANY_ADDR ?>', '<?= TOKEN_CONTRACT ?>', '<?= $token_decimal_numeric ?>', coin_point, '<?= $wallet_key_decrypt ?>', gas, estimateGas, (error, res) => {
     
                         var after_res = res.split(':');
                         dialog.modal('hide');

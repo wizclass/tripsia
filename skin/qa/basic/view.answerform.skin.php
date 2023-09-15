@@ -52,7 +52,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
     </div>
 
     <div class="btn_confirm">
-        <button type="submit" id="btn_submit" accesskey="s" class="btn_submit">답변등록</button>
+        <button type="submit" id="btn_submit" accesskey="s" class="btn_submit" style="height:35px;">답변등록</button>
     </div>
     </form>
 

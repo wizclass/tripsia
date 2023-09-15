@@ -12,7 +12,7 @@ add_stylesheet('<link rel="stylesheet" href="'.$member_skin_url.'/style.css">', 
  <?php } ?> 
 
 <div id="mb_login" class="mbskin">
-    <h1><img class="logo" src="<?=G5_IMG_URL?>/victor/logo.png" alt="logo" /></h1>
+    <h1><img class="logo" src="<?=G5_IMG_URL?>/project/logo.png" alt="logo" /></h1>
 
     <form name="flogin" action="<?php echo $login_action_url ?>" onsubmit="return flogin_submit(this);" method="post" id="flogin">
     <input type="hidden" name="url" value="<?php echo $login_url ?>">
@@ -22,7 +22,7 @@ add_stylesheet('<link rel="stylesheet" href="'.$member_skin_url.'/style.css">', 
         <label for="login_id" class="sound_only">아이디(이메일)<strong class="sound_only"> 필수</strong></label>
         <input type="text" name="mb_id" id="login_id" placeholder="아이디(이메일)" required class="frm_input" maxLength="20">
         <div class="input_img">
-            <img src="<?=G5_IMG_URL?>/victor/icon_email.png" alt="login email icon">
+            <img src="<?=G5_IMG_URL?>/project/icon_email.png" alt="login email icon">
         </div>
     </div>
 
@@ -30,7 +30,7 @@ add_stylesheet('<link rel="stylesheet" href="'.$member_skin_url.'/style.css">', 
         <label for="login_pw" class="sound_only">비밀번호<strong class="sound_only"> 필수</strong></label>
         <input type="password" name="mb_password" id="login_pw" placeholder="비밀번호" required class="frm_input" maxLength="20">
         <div class="input_img">
-            <img src="<?=G5_IMG_URL?>/victor/icon_pw.png" alt="login pw icon">
+            <img src="<?=G5_IMG_URL?>/project/icon_pw.png" alt="login pw icon">
         </div>
     </div>
         

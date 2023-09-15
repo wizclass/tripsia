@@ -17,7 +17,7 @@ var etherApiKey = "<?=$Ether_API_KEY?>";
       dataType: "json",
       data:  {
         address : address,
-        contractaddress : '<?=VCT_CONTRACT?>',
+        contractaddress : '<?=TOKEN_CONTRACT?>',
         apikey : etherApiKey
       },
       success: function(data) {

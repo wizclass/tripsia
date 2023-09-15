@@ -3,7 +3,7 @@ include_once('./_common.php');
 include_once(G5_MOBILE_PATH.'/head.php');
 
 if($wallet_addr == ""){
-  alert('입금페이지에서 VCT-K 지갑생성후 이용해주세요.',G5_URL);
+  alert('입금페이지에서 '.$token_symbol.' 지갑생성후 이용해주세요.',G5_URL);
   return false;
 }
 

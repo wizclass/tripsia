@@ -608,7 +608,7 @@ $od_tax_flag      = $default['de_tax_flag_use'];
 
 if($default['de_coin_use'] == 1 && $od_settle_case == "코인"){
     include_once(G5_PATH.'/util/coin_config.php');
-    $od_settle_case =  $token_arr['vct']['symbol'];
+    $od_settle_case =  $token_symbol;
     $update_point_sql = "update g5_member set mb_shop_calc =  mb_shop_calc + {$_POST['od_token_price']} where mb_id = '{$member['mb_id']}'";
 }
 

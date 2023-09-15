@@ -3,7 +3,7 @@
 if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
 // 테마 head.sub.php 파일
-if(!defined('G5_IS_ADMIN') && defined('G5_THEME_PATH') && is_file(G5_THEME_PATH.'/head.sub.php')) {
+if(!defined('G5_IS_ADMIN') && defined('G5_THEME_PATH') && is_file(G5_THEME_PATH.'/head.sub.php') && !defined('QA')) {
     // require_once(G5_THEME_PATH.'/head.sub.php');
     require_once(G5_THEME_PATH.'/_include/head.php');
     return;
@@ -73,8 +73,6 @@ if (defined('G5_IS_ADMIN')) {
     echo '<link rel="stylesheet" href="'.run_replace('head_css_url', G5_CSS_URL.'/'.(G5_IS_MOBILE?'mobile':'default').$shop_css.'.css?ver='.G5_CSS_VER, G5_URL).'">'.PHP_EOL;
 }
 ?>
-
-<!-- VICTOR-SHOP CSS 추가 -->
 
 <link rel="stylesheet" href="<?=G5_CSS_URL?>/bootstrap-grid.css"/>
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.4.0/fonts/remixicon.css" rel="stylesheet">
