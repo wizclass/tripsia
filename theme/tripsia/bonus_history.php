@@ -82,7 +82,7 @@ SELECT allowance_name AS cate, DAY, SUM(benefit) AS c_sum  FROM soodang_pay WHER
                         $sub_result = sql_query($sub_sql);
                         while($row_ = sql_fetch_array($sub_result) ){?>
 
-                        <div class='inblock row' id="<?=$row['cate']?>_detail " data-target="<?=$row['cate']?>" data-day="<?=$row_['day']?>">
+                        <div class='inblock row' id="<?=$row['cate']?>_detail " data-target="<?=$row['cate']?>" data-day="<?=$row_['day']?>" onclick="go_detail('<?=$row['cate']?>','<?=$row_['day']?>');">
                             <dt><?=$row_['day']?></dt>
                             <dd>
                                 <span> <i class="ri-add-line"></i></span>
@@ -127,7 +127,12 @@ function search_submit(act = null)
     f.submit();
 }
 
-$(function(){
+function go_detail(cate, day){
+
+    document.location.href = "/dialog.php?id=bonus_detail&cate="+cate+"&day="+day;
+}
+
+$(function(){    
     $('.hist').click(function () {
         var target = $(this).data('target');
     });

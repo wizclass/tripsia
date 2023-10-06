@@ -179,12 +179,16 @@ $title = 'Dashboard';
 						<li class="col-4">
 							<dt class="title" >나의구매등급</dt>
 							<dd class="value"><?=$member['rank_note']?><?=rank_name($member['rank_note'])?></dd>
-							<dd class="value">(<?=shift_auto($rank_note_price['it_price'], $curencys[0])?> <?=$curencys[0]?>)</dd>
+							<dd class="value" style='font-size:11px;font-weight:300;line-height:11px;'>(<?=shift_auto($rank_note_price['it_price'], $curencys[0])?> <?=$curencys[0]?>)</dd>
 						</li>
 
-						<li class="col-4">
+						<!-- <li class="col-4">
 							<dt class="title">승급대상 USDT</dt>
 							<dd class="value"><?=Number_format($member['recom_sales'])?> </dd>
+						</li> -->
+						<li class="col-4">
+							<dt class="title">쇼핑몰포인트</dt>
+							<dd class="value"><?=shift_auto($shop_balance,$curencys[0])?><span class='currency'>usdp</span></dd>
 						</li>
 
 					</ul>
@@ -224,7 +228,6 @@ $title = 'Dashboard';
 								<?=check_value($member['mb_7'])?>
 							</dd>
 						</li>
-
 
 						<li class="col-4">
 							<dt class="title">승급기준</dt>

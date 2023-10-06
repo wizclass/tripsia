@@ -3393,6 +3393,7 @@ input.input_price {
 .history_detail .inblock {
   background: transparent;
   line-height: 34px;
+  cursor: pointer;
 }
 
 .history_detail .inblock:last-child {
@@ -3449,6 +3450,11 @@ input.input_price {
 #grade.content-box {
   border-left: 3px solid sienna;
 }
+
+#matching.content-box {
+  border-left: 3px solid teal;
+}
+
 
 #rollup.content-box {
   border-left: 3px solid slateblue;

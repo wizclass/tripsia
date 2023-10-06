@@ -1425,6 +1425,12 @@ a.btn_cancle,
 .dark {
   /* 유저 아이콘*/
 }
+.dark .more_btn {
+  color: white;
+}
+.dark .more_btn:hover {
+  color: black;
+}
 .dark #ui-datepicker-div.ui-datepicker {
   background: #17191d;
   color: #fff;

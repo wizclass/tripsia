@@ -1824,6 +1824,13 @@ a.btn_cancle,
 // 다크모드
 .dark {
 
+    .more_btn{
+        color:white;
+
+        &:hover{
+            color:black;
+        }
+    }
     // datepicker
     #ui-datepicker-div.ui-datepicker {
         background: #17191d;
