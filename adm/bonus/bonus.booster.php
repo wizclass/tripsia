@@ -128,11 +128,10 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
                 $recom_sales = 0;
             }
 
-            if ($debug) {
-                
-                echo " / 하부매출 : " . $recom_sales;
-                echo "</code>";
-            }
+            
+            echo " / 하부매출 : " . $recom_sales;
+            echo "</code>";
+            
 
             echo "<div><span class='title'>{$mb_id} ( 추천인수 : {$row['cnt']}명 [{$recommended_cnt}대] )</span>";
 
