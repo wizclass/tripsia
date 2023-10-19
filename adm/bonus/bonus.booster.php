@@ -69,7 +69,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 
         <?php
 
-        $member_for_paying_sql = "select mb_id as id, mb_name, mb_no, mb_level, grade, (mb_balance + mb_shop_point) as mb_balance, mb_index,mb_balance_ignore, mb_deposit_point, (select count(*) from g5_member where mb_recommend = id and mb_level > 0) as cnt from g5_member where mb_save_point >= 0 and mb_level > 0";
+        $member_for_paying_sql = "select mb_id as id, mb_name, mb_no, mb_level, grade, (mb_balance + mb_shop_point) as mb_balance,mb_save_point, mb_index,mb_balance_ignore, mb_deposit_point, (select count(*) from g5_member where mb_recommend = id and mb_level > 0) as cnt from g5_member where mb_save_point >= 0 and mb_level > 0";
 
         if ($debug) {
             echo "<code>{$member_for_paying_sql}</code>";
@@ -94,33 +94,47 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
         for ($i = 0; $i < $row = sql_fetch_array($member_for_paying_result); $i++) {
 
             $mb_id = $row['id'];
+            $mb_save_point = $row['mb_save_point'];
+
             $recommended_cnt = $row['cnt'];
 
             if ($recommended_cnt >= 5) {
                 $recommended_cnt = 5;
             }
+            
 
-            $recommended_cnt = $bonus_rate[$recommended_cnt - 1];
+            echo "<code>";
+            if($mb_save_point >= 10000){
+
+                echo "<span class='blue'>매출 10,000 이상</span>";
+                $recommended_cnt = 5;
+            }else{
+
+                echo "본인매출 : ";
+                echo clean_number_format($row['mb_save_point']);
+                $recommended_cnt = $bonus_rate[$recommended_cnt - 1];
+            }
+            
 
             $booster_member = return_down_manager($row['mb_no'], $recommended_cnt);
 
             $recom_member = return_down_manager($row['mb_no'], 20);
 
-
             $recom_sales = array_int_sum($recom_member, 'mb_save_point', 'int');
 
 
-
-
+            
             if (!$recom_sales) {
                 $recom_sales = 0;
             }
 
             if ($debug) {
-                echo "<code>";
-                echo "하부매출 : " . $recom_sales;
+                
+                echo " / 하부매출 : " . $recom_sales;
                 echo "</code>";
             }
+
+            echo "<div><span class='title'>{$mb_id} ( 추천인수 : {$row['cnt']}명 [{$recommended_cnt}대] )</span>";
 
 
             $sort_arr = array();
@@ -143,7 +157,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 
             $clean_number_mb_index = clean_number_format($mb_index);
 
-            echo "<div><span class='title'>{$mb_id} ( 추천인수 : {$row['cnt']}명 [{$recommended_cnt}대] )</span> 현재총수당 : {$clean_number_mb_balance}, 수당한계점 : {$clean_number_mb_index} => 총 수용가능 수당 : {$clean_total_left_benefit}</div><br>";
+            echo " 현재총수당 : {$clean_number_mb_balance}, 수당한계점 : {$clean_number_mb_index} => 총 수용가능 수당 : {$clean_total_left_benefit}</div><br>";
 
             foreach ($booster_member as $key => $value) {
 
