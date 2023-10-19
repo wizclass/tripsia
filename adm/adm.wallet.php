@@ -188,6 +188,17 @@ function shift_auto($val,$coin = '원'){
 	}
 }
 
+
+function clean_number_format($val, $decimal = ASSETS_NUMBER_POINT){
+	$_decimal = $decimal <= 0 ? 1 : $decimal;
+	$_num = number_format(shift_coin($val,$decimal), $_decimal);
+    $_num = rtrim($_num, 0);
+    $_num= rtrim($_num, '.');
+
+    return $_num;
+}
+
+
 /*숫자표시*/
 function shift_number($val){
 	return preg_replace("/[^0-9].*/s","",$val);

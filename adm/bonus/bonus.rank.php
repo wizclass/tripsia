@@ -83,10 +83,10 @@ function grade_name($val)
     global $grade_cnt;
     $full_name = '';
     if($val == 0){$full_name = '일반';}
-    else if($val == 4){$full_name = 'VIP';} 
-    else if($val == 3){$full_name = '퍼스트';} 
-    else if($val == 2){$full_name = '비지니스';} 
-    else if($val == 1){$full_name = '이코노미';} 
+    else if($val == 4){$full_name = '퍼스트';} 
+    else if($val == 3){$full_name = '비지니스';} 
+    else if($val == 2){$full_name = '이코노미';} 
+    else if($val == 1){$full_name = '여행플래너';} 
 
     $grade_name = $val . " STAR = ".$full_name;
 

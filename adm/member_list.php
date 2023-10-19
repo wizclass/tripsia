@@ -839,7 +839,7 @@ while ($l_row = sql_fetch_array($get_lc)) {
 						<td headers="mb_list_auth" class="td_mbstat" rowspan="2"><?= Number_format($total_bonus) ?></td>
 						<td headers="mb_list_auth" class="td_mbstat" rowspan="2"><?= Number_format($row['mb_save_point']) ?></td>
 
-						<td headers="mb_list_auth" class="td_mbstat" rowspan="2"><?= shift_auto($row['mb_shop_point'] - $row['mb_shop_calc'],2) ?></td>
+						<td headers="mb_list_auth" class="td_mbstat" rowspan="2"><?= clean_number_format($row['mb_shop_point'] - $row['mb_shop_calc'],2) ?></td>
 						<!-- <td headers="mb_list_auth" class="td_mbstat" rowspan="2" style="min-width:50px;width:50px;"><?= Number_format($row['mb_rate']) ?></td>
 						<td headers="mb_list_auth" class="td_mbstat strong" rowspan="2" style="min-width:70px;color:black">
 							

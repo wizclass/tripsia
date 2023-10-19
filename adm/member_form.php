@@ -417,7 +417,7 @@ $rank_result = sql_fetch($rank_sql);
 					<td><?php echo get_member_level_select('mb_level', 0, $member['mb_level'], $mb['mb_level']) ?> <div></td>
 					<th scope="row"><label for="grade">회원 등급</label></th>
 					<?php if($w != "u"){$mb['grade'] = 0;}?>
-					<td><? echo "<img src='/img/" . $mb['grade'] . ".png' style='width:40px;height:40px;'>"; ?><?php echo get_grade_select('grade', 0, $member['grade'], $mb['grade']) ?><?= $rank_result['rank_day'] ?></td>
+					<td><? echo "<img src='/img/" . $mb['grade'] . ".png' style='width:40px;height:40px;'>"; ?><?php echo get_grade_select('grade', 0, 4, $mb['grade']) ?><?= $rank_result['rank_day'] ?></td>
 				</tr>
 				<tr>
 					<th scope="row">추천인</th>
