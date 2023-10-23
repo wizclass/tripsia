@@ -15,7 +15,7 @@ if($row['cnt'] <= 0 ){
 $to_id = $row['mb_id'];
 
 $auth_number = sprintf("%06d", rand(000000, 999999));
-$sql = "update {$g5['member_table']} set mail_invalid = '{$auth_number}' where mb_id = '{$mb_id}' and mb_email = '{$to_email}'";
+$sql = "update {$g5['member_table']} set mb_lost_certify = '{$auth_number}' where mb_id = '{$mb_id}' and mb_email = '{$to_email}'";
 sql_query($sql);
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -95,5 +95,3 @@ try {
     $mail -> send();
 
 } catch (Exception $e) {}
-
-?>
