@@ -600,7 +600,7 @@ $rank_result = sql_fetch($rank_sql);
 		<td colspan="1"><span class='strong amt'><?= shift_auto($mb['mb_shift_amt'],$curencys[0])?></span> <?=$curencys[0]?></td>
 
 		<th scope="row">쇼핑몰 사용</th>
-		<td colspan="1"><span class='strong amt'><?=shift_auto($mb['mb_fee'],$curencys[0])?></span> <?=$curencys[0]?></td>
+		<td colspan="1"><span class='strong amt'><?=shift_auto($mb['mb_shop_calc'],$curencys[0])?></span> usdp</td>
 	</tr>
 
 

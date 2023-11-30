@@ -910,7 +910,7 @@ function curency_txt($value, $kind = 'deposit')
     var out_day_limit = '<?= $withdrwal_day_limit ?>';
 
     var withdrawal_price = <?= $withdrawal_price ?>;
-    var coin_eth_usdt = <?= $coin_eth_usdt ?>;
+    // var coin_eth_usdt = <?= $coin_eth_usdt ?>;
     var coin_usdt_etc = <?= $coin_usdt_etc ?>;
 
 

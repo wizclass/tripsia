@@ -107,7 +107,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             if($mb_save_point >= 10000){
 
                 echo "<span class='blue'>매출 10,000 이상</span>";
-                $recommended_cnt = 5;
+                $recommended_cnt = 15;
             }else{
 
                 echo "본인매출 : ";
