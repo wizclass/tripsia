@@ -41,16 +41,16 @@ $end_week    = date('Y-m-'.$lastday, $prev_month); // 매월 말일 */
 
 $previous_week = strtotime("-1 week +1 day");
 
-$start_week = strtotime("last monday midnight",$previous_week);
-$end_week = strtotime("next sunday",$start_week);
+$start_week = strtotime("last monday midnight", $previous_week);
+$end_week = strtotime("next sunday", $start_week);
 
-$start_week = date("Y-m-d",$start_week);
-$end_week = date("Y-m-d",$end_week);
+$start_week = date("Y-m-d", $start_week);
+$end_week = date("Y-m-d", $end_week);
 
 
 // 직급 수당
 $bonus_row = bonus_pick($code);
-$bonus_limit = $bonus_row['limited']/100;
+$bonus_limit = $bonus_row['limited'] / 100;
 
 // 직급 사용 단계
 $bonus_rate_array_cnt = 4;
@@ -63,7 +63,7 @@ if($bonus_rate_array_cnt > 0){
     $bonus_rate = $bonus_row['rate']*0.01;  
 } */
 
-$bonus_rate = explode(',',$bonus_row['rate']);
+$bonus_rate = explode(',', $bonus_row['rate']);
 
 $bonus_condition = $bonus_row['source'];
 $bonus_condition_tx = bonus_condition_tx($bonus_condition);
@@ -90,23 +90,23 @@ $grade_order = ($total_order * ($company_sales * 0.01));
 
 
 // 수당제한 제외 
-$balanace_ignore = TRUE;
+$balanace_ignore = FALSE;
 
 
 
 // 디버그 로그 
-if($debug){
-	echo "매출 합계 - <code>";
+if ($debug) {
+    echo "매출 합계 - <code>";
     print_r($total_order_query);
-	echo "</code><br>";
+    echo "</code><br>";
 }
 
 
 //회원 리스트를 읽어 온다.
 $sql_common = " FROM g5_member ";
 // $sql_search=" WHERE o.mb_id=m.mb_id AND DATE_FORMAT(o.od_time,'%Y-%m-%d')='".$bonus_day."'";
-$sql_search=" WHERE grade > 0 ".$pre_condition.$admin_condition;
-$sql_mgroup=" GROUP BY grade ORDER BY grade asc ";
+$sql_search = " WHERE grade > 0 " . $pre_condition . $admin_condition;
+$sql_mgroup = " GROUP BY grade ORDER BY grade asc ";
 
 $pre_sql = "select grade, count(*) as cnt
                 {$sql_common}
@@ -119,32 +119,39 @@ function grade_name($val)
 {
     global $grade_cnt;
     $full_name = '';
-    if($val == 0){$full_name = '일반';}
-    else if($val == 4){$full_name = '퍼스트';} 
-    else if($val == 3){$full_name = '비지니스';} 
-    else if($val == 2){$full_name = '이코노미';} 
-    else if($val == 1){$full_name = '여행플래너';} 
+    if ($val == 0) {
+        $full_name = '일반';
+    } else if ($val == 4) {
+        $full_name = 'VIP';
+    } else if ($val == 3) {
+        $full_name = '퍼스트';
+    } else if ($val == 2) {
+        $full_name = '비즈니스';
+    } else if ($val == 1) {
+        $full_name = '이코노미';
+    }
 
-    $grade_name = $val . " STAR = ".$full_name;
+    $grade_name = $val . " STAR = " . $full_name;
 
     return $grade_name;
 }
 
-function rate_txt($val){
-    $list = explode(',',$val);
-    $i =0;
+function rate_txt($val)
+{
+    $list = explode(',', $val);
+    $i = 0;
 
-    while($i < count($list)){
-        echo $list[$i]."% ";
+    while ($i < count($list)) {
+        echo $list[$i] . "% ";
         $i++;
     }
 }
 
 // 디버그 로그 
-if($debug){
-	echo "대상 회원 - <code>";
+if ($debug) {
+    echo "대상 회원 - <code>";
     print_r($pre_sql);
-	echo "</code><br>";
+    echo "</code><br>";
 }
 
 ob_start();
@@ -152,19 +159,19 @@ ob_start();
 // 설정로그 
 echo "<strong>직급(등급) 지급비율 : ";
 print_R(rate_txt($bonus_row['rate']));
-echo "   </strong> |    지급조건 :".$pre_condition.' | '.$bonus_condition_tx." | ".$bonus_layer_tx."<br>";
-echo "<br><strong> 현재일 : ".$bonus_day." |  ".$half." 매출산정기준 : 구매일 + 3Day | <span class='red'>".$start_week."~".$end_week."</span> | ".$half." PV 합계 : <span class='blue big'>".Number_format($total_order).' '.$curencys[0]."</span>  </strong><br>";
-echo "<br> 직급수당 대상금액 : <span class='blue big'>".$company_sales."% = ".Number_format($grade_order).' '.$curencys[0]."</span>";
+echo "   </strong> |    지급조건 :" . $pre_condition . ' | ' . $bonus_condition_tx . " | " . $bonus_layer_tx . "<br>";
+echo "<br><strong> 현재일 : " . $bonus_day . " |  " . $half . " 매출산정기준 : 구매일 + 3Day | <span class='red'>" . $start_week . "~" . $end_week . "</span> | " . $half . " PV 합계 : <span class='blue big'>" . Number_format($total_order) . ' ' . $curencys[0] . "</span>  </strong><br>";
+echo "<br> 직급수당 대상금액 : <span class='blue big'>" . $company_sales . "% = " . Number_format($grade_order) . ' ' . $curencys[0] . "</span>";
 echo "<br><br>기준대상자(직급 0 이상) : ";
 
 
 $cnt_total = 0;
 $cnt_arr = [];
 
-while( $cnt_row = sql_fetch_array($pre_result)){
-    echo "<br><strong>".$cnt_row['grade']." STAR</strong> : <span class='red'>".$cnt_row['cnt'].'</span> 명';  
-    array_push($cnt_arr,$cnt_row['cnt']);
-    $cnt_total++; 
+while ($cnt_row = sql_fetch_array($pre_result)) {
+    echo "<br><strong>" . $cnt_row['grade'] . " STAR</strong> : <span class='red'>" . $cnt_row['cnt'] . '</span> 명';
+    array_push($cnt_arr, $cnt_row['cnt']);
+    $cnt_total++;
 }
 
 
@@ -172,10 +179,10 @@ $k = 0;
 $cnt_reverse_arr = array_reverse($cnt_arr);
 $cnt_result_arr = [];
 
-for($k=0; $k<$cnt_total; $k++){
+for ($k = 0; $k < $cnt_total; $k++) {
 
     $temp += $cnt_reverse_arr[$k];
-    array_push($cnt_result_arr,$temp);
+    array_push($cnt_result_arr, $temp);
 }
 
 $member_cnt_result = array_reverse($cnt_result_arr);
@@ -188,39 +195,44 @@ echo "</span><br><br>";
 echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 ?>
 
-<html><body>
-<header>정산시작</header>    
-<div>
+<html>
 
-<?
-if($grade_order > 0){
-    excute();
-}else{
-    echo "<span class='red'>해당 기간 기준매출 없음</span>";
-}
+<body>
+    <header>정산시작</header>
+    <div>
 
-function  excute(){
+        <?
+        if ($grade_order > 0) {
+            excute();
+        } else {
+            echo "<span class='red'>해당 기간 기준매출 없음</span>";
+        }
 
-    global $g5,$admin_condition,$pre_condition;
-    global $bonus_day, $bonus_condition, $bonus_rate_array_cnt, $code, $bonus_rate,$bonus_limit,$total_order,$Khan_order,$grade_order;
-    global $debug,$prev_m,$live_bonus_rate,$shop_bonus_rate,$balanace_ignore,$member_cnt_result;
+        function  excute()
+        {
 
-    for ($i=$bonus_rate_array_cnt; $i>0; $i--) {   
-        $cnt_sql = "SELECT count(*) as cnt From {$g5['member_table']} WHERE grade = {$i} ".$admin_condition.$pre_condition." ORDER BY mb_no" ;
-        $cnt_result = sql_fetch($cnt_sql);
-        
+            global $g5, $admin_condition, $pre_condition;
+            global $bonus_day, $bonus_condition, $bonus_rate_array_cnt, $code, $bonus_rate, $bonus_limit, $total_order, $Khan_order, $grade_order;
+            global $debug, $prev_m, $live_bonus_rate, $shop_bonus_rate, $balanace_ignore, $member_cnt_result;
 
-        $sql = "SELECT * FROM {$g5['member_table']} WHERE grade = {$i} ".$admin_condition.$pre_condition." ORDER BY mb_no ";
-        $result = sql_query($sql);
+            $acc_grade_arr = array();
 
-        // 직급표기예외
-        $member_count  = $cnt_result['cnt'];
-        $member_grade_count = $member_cnt_result[$i-1];
-        $grade_name = $i;
-       
+            for ($i = 1; $i <= $bonus_rate_array_cnt; $i++) {
+                $cnt_sql = "SELECT count(*) as cnt From {$g5['member_table']} WHERE grade = {$i} " . $admin_condition . $pre_condition . " ORDER BY mb_no";
+                $cnt_result = sql_fetch($cnt_sql);
 
-        // 수당예외
-        /* if($i == 1 ){
+
+                $sql = "SELECT * FROM {$g5['member_table']} WHERE grade = {$i} " . $admin_condition . $pre_condition . " ORDER BY mb_no ";
+                $result = sql_query($sql);
+
+                // 직급표기예외
+                $member_count  = $cnt_result['cnt'];
+                $member_grade_count = $member_cnt_result[$i - 1];
+                $grade_name = $i;
+
+
+                // 수당예외
+                /* if($i == 1 ){
             $star_rate = 500000;
             $star_rate_tx = "500,000 원 고정지급";
         }else{
@@ -228,39 +240,42 @@ function  excute(){
             $star_rate_tx = $bonus_rate[$i -1]."%";
         } */
 
-        $star_rate = $bonus_rate[$i -1]*0.01;
-        $star_rate_tx = $bonus_rate[$i -1]."%";
+                $star_rate = $bonus_rate[$i - 1] * 0.01;
+                $star_rate_tx = $bonus_rate[$i - 1] . "%";
+                $acc_grade_balance = array_sum($acc_grade_arr);
 
 
-        echo "<br><br><span class='title block'>".grade_name($grade_name)." (<span class='red'>".$member_count."</span> | ".$member_grade_count.") - ".$star_rate_tx." (".($grade_order*$star_rate)." usdt)"."</span><br>";
+                echo "<br><br><span class='title block'>" . grade_name($grade_name) . " (<span class='red'>" . $member_count . "</span> | " . $member_grade_count . ") - " . $star_rate_tx . " (" . ($grade_order * $star_rate) . " usdt)" . "</span><br>";
 
-        // 디버그 로그 
-        if($debug){
-            echo "<code>";
-            echo($sql);
-            echo "</code><br>";
-        }
-       
-        while($row = sql_fetch_array($result)){
-        
-            $mb_no=$row['mb_no'];
-            $mb_id=$row['mb_id'];
-            $mb_name=$row['mb_name'];
-            $mb_level=$row['mb_level'];
-            $mb_deposit=$row['mb_deposit_point'];
-            $mb_balance=$row['mb_balance'];
-            $grade=$row['grade'];
-            
+                // 디버그 로그 
+                if ($debug) {
+                    echo "<code>";
+                    echo ($sql);
+                    echo "</code><br>";
+                }
 
-            echo "<br><br><span class='title' >".$row['mb_id']."</span> <br>";
+                while ($row = sql_fetch_array($result)) {
 
-            // 관리자 제외
-            if($mb_id == 'admin' && $mb_level > 9 ){ break;}
-            
-            if( $member_count != 0 ){ 
-                
-                // 수당예외
-                /* if($i == 1 ){
+                    $mb_no = $row['mb_no'];
+                    $mb_id = $row['mb_id'];
+                    $mb_name = $row['mb_name'];
+                    $mb_level = $row['mb_level'];
+                    $mb_deposit = $row['mb_deposit_point'];
+                    $mb_balance = $row['mb_balance'];
+                    $grade = $row['grade'];
+
+
+                    echo "<br><br><span class='title' >" . $row['mb_id'] . "</span> <br>";
+
+                    // 관리자 제외
+                    if ($mb_id == 'admin' && $mb_level > 9) {
+                        break;
+                    }
+
+                    if ($member_count != 0) {
+
+                        // 수당예외
+                        /* if($i == 1 ){
 
                     $benefit = $star_rate  ;
                     $benefit = round($benefit);
@@ -282,33 +297,34 @@ function  excute(){
                     $benefit_tx = ' '.$grade_order.' * '.$star_rate.' * 1/'.$member_count.'='.$benefit; 
                 } */
 
-                $benefit = ( ($grade_order*$star_rate) * (1/$member_grade_count) );// 매출자 * 수당비율 * 1/n
-                // $benefit = shift_auto($benefit,'$');
+                        $benefit = (($grade_order * $star_rate) * (1 / $member_grade_count)); // 매출자 * 수당비율 * 1/n
+                        // $benefit = shift_auto($benefit,'$');
 
-                $live_benefit = clean_coin_format($benefit,2);
-                $shop_benefit = 0;
+                        $live_benefit = clean_coin_format($benefit, 2);
+                        $shop_benefit = 0;
 
-                // $live_benefit = $benefit*$live_bonus_rate;
-                // $shop_benefit = $benefit*$shop_bonus_rate;
+                        // $live_benefit = $benefit*$live_bonus_rate;
+                        // $shop_benefit = $benefit*$shop_bonus_rate;
 
-                $benefit_tx = ' '.$grade_order.' * '.$star_rate.' * 1/'.$member_grade_count.'*'.$live_bonus_rate.'='.$live_benefit; 
-                $benefit_limit = $live_benefit;
+                        $benefit_tx = ' ' . $grade_order . ' * ' . $star_rate . ' * 1/' . $member_grade_count . '*' . $live_bonus_rate . '=' . $live_benefit;
 
-                
-                
-                /* list($mb_balance,$balance_limit,$benefit_limit) = bonus_limit_check($mb_id,$benefit);
+                        $benefit_limit = $live_benefit + $acc_grade_balance;
+
+
+
+                        /* list($mb_balance,$balance_limit,$benefit_limit) = bonus_limit_check($mb_id,$benefit);
 
                 echo "<code>";
                 echo "현재수당 : ".Number_format($mb_balance)."  | 수당한계 :". Number_format($balance_limit).' | ';
                 echo "발생할수당: ".Number_format($benefit)." | 지급할수당 :".Number_format($benefit_limit);
                 echo "</code><br>"; */
-                
-                echo $benefit_tx;
-                
-                $rec= $code.' Bonus from '.$grade_name;
-                $rec_adm= $prev_m."M | ".$grade_name.' : '.$benefit_tx;
 
-                /* if($benefit > $benefit_limit && $balance_limit != 0 ){
+                        echo $benefit_tx;
+
+                        $rec = $code . ' Bonus from ' . $grade_name;
+                        $rec_adm = $prev_m . "M | " . $grade_name . ' : ' . $benefit_tx;
+
+                        /* if($benefit > $benefit_limit && $balance_limit != 0 ){
 
                     $rec_adm .= "<span class=red> |  Bonus overflow :: ".Number_format($benefit_limit - $benefit)."</span>";
                     echo "<span class=blue> ▶▶ 수당 지급 : ".Number_format($benefit)."</span>";
@@ -325,54 +341,53 @@ function  excute(){
                 }else{
                     echo "<span class=blue> ▶▶ 수당 지급 : ".Number_format($benefit)."</span><br>";
                 } */
+                        $final_live_benefit = $live_benefit + $acc_grade_balance;
+                        echo "<span class=blue> ▶▶ 직급 수당 : " . $live_benefit . " + 직급별 누적할당금액 : " . $acc_grade_balance . " = 수당 지급 : " . $final_live_benefit . "<br> ▶▶▶ 쇼핑몰보너스 지급 : " . $shop_benefit . "</span><br>";
 
-                echo "<span class=blue> ▶▶ 수당 지급 : ".$live_benefit." <br> ▶▶▶ 쇼핑몰보너스 지급 : ".$shop_benefit."</span><br>";
-                
 
 
-                if($benefit > 0 && $benefit_limit > 0){
+                        if ($benefit > 0 && $benefit_limit > 0) {
 
-                    $record_result = soodang_record($mb_id, $code, $benefit_limit,$rec,$rec_adm,$bonus_day);
-    
-                    if($record_result){
-                        
-                        if($balanace_ignore){
-                            $balance_ignore_sql = ", mb_balance_ignore = mb_balance_ignore + {$benefit_limit} ";
-                        }else{
-                            $balance_ignore_sql = "";
+                            $record_result = soodang_record($mb_id, $code, $benefit_limit, $rec, $rec_adm, $bonus_day);
+
+                            if ($record_result) {
+
+                                if ($balanace_ignore) {
+                                    $balance_ignore_sql = ", mb_balance_ignore = mb_balance_ignore + {$benefit_limit} ";
+                                } else {
+                                    $balance_ignore_sql = "";
+                                }
+
+                                $balance_up = "update g5_member set mb_balance = mb_balance + {$benefit_limit} {$balance_ignore_sql}, mb_shop_point = mb_shop_point + {$shop_benefit}   where mb_id = '" . $mb_id . "'";
+
+                                // 디버그 로그
+                                if ($debug) {
+                                    echo "<code>";
+                                    print_R($balance_up);
+                                    echo "</code>";
+                                } else {
+                                    sql_query($balance_up);
+                                }
+                            }
                         }
+                    } // if else
+                } //while
+                if ($member_count > 0) array_push($acc_grade_arr, $live_benefit);
+                // var_dump($acc_grade_arr);
+                $rec = '';
+            } //for
+        } //function
+        ?>
 
-                        $balance_up = "update g5_member set mb_balance = mb_balance + {$benefit_limit} {$balance_ignore_sql}, mb_shop_point = mb_shop_point + {$shop_benefit}   where mb_id = '".$mb_id."'";
+        <? include_once('./bonus_footer.php'); ?>
 
-                        // 디버그 로그
-                        if($debug){
-                            echo "<code>";
-                            print_R($balance_up);
-                            echo "</code>";
-                        }else{
-                            sql_query($balance_up);
-                        }
-                    }
-                    
-                }
-
-            
- 
-            } // if else
-        } //while
-        $rec='';
-    } //for
-} //function
-?>
-
-<?include_once('./bonus_footer.php');?>
-
-<?
-if($debug){}else{
-    $html = ob_get_contents();
-    //ob_end_flush();
-    $logfile = G5_PATH.'/data/log/'.$code.'/'.$code.'_'.$bonus_day.'.html';
-    fopen($logfile, "w");
-    file_put_contents($logfile, ob_get_contents());
-}
-?>
+        <?
+        if ($debug) {
+        } else {
+            $html = ob_get_contents();
+            //ob_end_flush();
+            $logfile = G5_PATH . '/data/log/' . $code . '/' . $code . '_' . $bonus_day . '.html';
+            fopen($logfile, "w");
+            file_put_contents($logfile, ob_get_contents());
+        }
+        ?>

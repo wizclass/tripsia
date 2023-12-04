@@ -101,20 +101,20 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             if ($recommended_cnt >= 5) {
                 $recommended_cnt = 5;
             }
-            
+
 
             echo "<code>";
-            if($mb_save_point >= 10000){
+            if ($mb_save_point >= 10000) {
 
                 echo "<span class='blue'>매출 10,000 이상</span>";
                 $recommended_cnt = 15;
-            }else{
+            } else {
 
                 echo "본인매출 : ";
                 echo clean_number_format($row['mb_save_point']);
                 $recommended_cnt = $bonus_rate[$recommended_cnt - 1];
             }
-            
+
 
             $booster_member = return_down_manager($row['mb_no'], $recommended_cnt);
 
@@ -123,15 +123,15 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             $recom_sales = array_int_sum($recom_member, 'mb_save_point', 'int');
 
 
-            
+
             if (!$recom_sales) {
                 $recom_sales = 0;
             }
 
-            
+
             echo " / 하부매출 : " . $recom_sales;
             echo "</code>";
-            
+
 
             echo "<div><span class='title'>{$mb_id} ( 추천인수 : {$row['cnt']}명 [{$recommended_cnt}대] )</span>";
 
